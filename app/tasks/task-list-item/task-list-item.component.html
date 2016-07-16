@@ -1,0 +1,15 @@
+<md-card>
+    <md-card-title>
+        {{ task.title }}
+    </md-card-title>
+    <md-card-content *ngIf="task.description">
+        <p>{{ task.description }}</p>
+    </md-card-content>
+    <div>
+        <button class="toggle-run" md-raised-button [color]="task.isActive ? 'accent' : 'warn'" (click)="toggleRun()">
+            <span class="total-time-spent">{{ totalTimeSpent | duration }}</span>
+            <span class="revenue">${{ revenue }}</span>
+            <md-icon>{{ task.isActive ? 'pause' : 'play_arrow' }}</md-icon>
+        </button>
+    </div>
+</md-card>
