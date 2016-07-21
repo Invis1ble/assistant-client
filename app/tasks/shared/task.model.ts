@@ -1,20 +1,23 @@
 import { PeriodModel } from './period.model';
-import { TaskPeriodCollection } from "./task-period.collection";
+import { TaskPeriodCollection } from './task-period.collection';
+import { TaskPeriodLinks } from './task-period-collection.links';
 
 export class TaskModel {
-    constructor(
-        public id: string,
-        public title: string,
-        public description: string,
-        public rate: number,
-        public createdAt: number,
-        public periods: TaskPeriodCollection
-    ) {
-        
-    }
+    id: string;
+    title: string;
+    description: string;
+    rate: number;
+    createdAt: number;
+    periods: TaskPeriodCollection = new TaskPeriodCollection([], <TaskPeriodLinks>{});
 
     get isActive(): boolean {
-        return this.periods.getLatest().isActive;
+        let latestPeriod = this.periods.getLatest();
+
+        if (undefined === latestPeriod) {
+            return false;
+        }
+
+        return latestPeriod.isActive;
     }
 
     get revenue(): number {

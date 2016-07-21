@@ -12,7 +12,7 @@ import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
 
 @Component({
-    selector: 'assistant-task',
+    selector: 'assistant-task-list-item',
     templateUrl: 'app/tasks/task-list-item/task-list-item.component.html',
     styleUrls: [
         'app/tasks/task-list-item/task-list-item.component.css'

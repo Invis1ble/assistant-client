@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TaskListItemComponent } from "./../task-list-item/task-list-item.component";
-import { TaskModel } from './../shared/task.model';
-import { TaskService } from './../shared/task.service';
+import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
+import { TaskModel } from '../shared/task.model';
+import { TaskService } from '../shared/task.service';
+import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
     selector: 'assistant-task-list',
@@ -11,12 +12,14 @@ import { TaskService } from './../shared/task.service';
         'app/tasks/task-list/task-list.component.css'
     ],
     directives: [
-        TaskListItemComponent
+        TaskListItemComponent,
+        TaskFormComponent
     ]
 })
 export class TaskListComponent implements OnInit {
     errorMessage: string;
     tasks: TaskModel[];
+    addingTask = false;
 
     constructor(
         private taskService: TaskService
@@ -26,6 +29,10 @@ export class TaskListComponent implements OnInit {
 
     ngOnInit() {
         this.getTasks();
+    }
+
+    addNewTask() {
+        this.addingTask = true;
     }
 
     getTasks() {

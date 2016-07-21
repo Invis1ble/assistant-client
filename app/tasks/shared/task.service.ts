@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/catch';
@@ -22,12 +22,27 @@ export class TaskService {
     ) {
 
     }
+
+    getTask(url: string): Observable<TaskModel> {
+        return this.http.get(url)
+            .map(this.extractData)
+            // .map(this.createModel)
+            .catch(this.handleError);
+    }
     
     getTasks(): Observable<TaskModel[]> {
         return this.http.get(this.config.apiEndpoint)
             .map(this.extractData)
             .switchMap((tasks) => this.hydrateData(tasks))
             .catch(this.handleError);
+    }
+
+    save(task: TaskModel): Observable<TaskModel> {
+        if (task.id) {
+            // return this.patch();
+        }
+
+        return this.post(task);
     }
 
     toggleRun(task: TaskModel): Observable<TaskModel> {
@@ -53,6 +68,10 @@ export class TaskService {
         return response.json().entities;
     }
 
+    private extractLocation(response: Response): string {
+        return response.headers.get('Location');
+    }
+
     private hydrateData(tasks: Object[]) {
         return Observable.from(tasks)
             .mergeMap((task: any) => {
@@ -64,14 +83,16 @@ export class TaskService {
                     });
             })
             .map((task) => {
-                return new TaskModel(
-                    task.id,
-                    task.title,
-                    task.description,
-                    task.rate,
-                    task.createdAt,
-                    task.periods
-                );
+                let taskModel = new TaskModel();
+
+                taskModel.id = task.id;
+                taskModel.title = task.title;
+                taskModel.description = task.description;
+                taskModel.rate = task.rate;
+                taskModel.createdAt = task.createdAt;
+                taskModel.periods = task.periods;
+
+                return taskModel;
             })
             .toArray();
     }
@@ -91,5 +112,23 @@ export class TaskService {
 
         console.error(errorMessage);
         return Observable.throw(errorMessage);
+    }
+
+    private post(task: TaskModel): Observable<TaskModel> {
+        let headers = new Headers({
+            'Content-Type': 'application/json'
+        });
+
+        return this.http
+            .post(this.config.apiEndpoint, JSON.stringify({
+                title: task.title,
+                description: task.description,
+                rate: task.rate
+            }), {
+                headers: headers
+            })
+            .map(this.extractLocation)
+            .mergeMap((url) => this.getTask(url))
+            .catch(this.handleError);
     }
 }

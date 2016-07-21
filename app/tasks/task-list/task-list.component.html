@@ -1,1 +1,7 @@
-<assistant-task class="task-list-item-layout" *ngFor="let task of tasks" [task]="task"></assistant-task>
+<button type="button" (click)="addNewTask()">Add New Task</button>
+
+<div *ngIf="addingTask">
+    <assistant-task-form></assistant-task-form>
+</div>
+
+<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of tasks" [task]="task"></assistant-task-list-item>

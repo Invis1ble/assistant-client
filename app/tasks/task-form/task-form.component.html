@@ -1,0 +1,15 @@
+<div *ngIf="task">
+    <div>
+        <label>Title:</label>
+        <textarea [(ngModel)]="task.title" placeholder="Title"></textarea>
+    </div>
+    <div>
+        <label>Description:</label>
+        <textarea [(ngModel)]="task.description" placeholder="Description"></textarea>
+    </div>
+    <div>
+        <label>Rate:</label>
+        <input type="number" [(ngModel)]="task.rate" placeholder="Rate" min="0.01" step="0.01" value="20">
+    </div>
+    <button type="button" (click)="save()">Save</button>
+</div>
