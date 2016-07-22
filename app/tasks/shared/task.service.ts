@@ -8,10 +8,11 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
-import { PeriodService } from './period.service';
-import { TaskModel } from './task.model';
-import { PeriodModel } from './period.model';
 import { APP_CONFIG, AppConfig } from '../../app-config';
+import { PeriodModel } from './period.model';
+import { PeriodService } from './period.service';
+import { TaskCollection } from './task.collection';
+import { TaskModel } from './task.model';
 
 @Injectable()
 export class TaskService {
@@ -26,14 +27,14 @@ export class TaskService {
     getTask(url: string): Observable<TaskModel> {
         return this.http.get(url)
             .map(this.extractData)
-            // .map(this.createModel)
+            .map(this.createModel)
             .catch(this.handleError);
     }
     
-    getTasks(): Observable<TaskModel[]> {
+    getTasks(): Observable<TaskCollection> {
         return this.http.get(this.config.apiEndpoint)
             .map(this.extractData)
-            .switchMap((tasks) => this.hydrateData(tasks))
+            .switchMap((data) => this.hydrateData(data), this.createCollection)
             .catch(this.handleError);
     }
 
@@ -64,39 +65,32 @@ export class TaskService {
             });
     }
 
+    private createCollection(data: any, tasks: TaskModel[]) {
+        // return new TaskCollection(tasks, data._links);
+        return new TaskCollection(tasks);
+    }
+
+    private createModel(data: any) {
+        let taskModel = new TaskModel();
+
+        taskModel.id = data.id;
+        taskModel.title = data.title;
+        taskModel.description = data.description;
+        taskModel.rate = data.rate;
+        taskModel.createdAt = data.createdAt;
+        taskModel.periods = data.periods;
+
+        return taskModel;
+    }
+
     private extractData(response: Response) {
-        return response.json().entities;
+        return response.json();
     }
 
     private extractLocation(response: Response): string {
         return response.headers.get('Location');
     }
 
-    private hydrateData(tasks: Object[]) {
-        return Observable.from(tasks)
-            .mergeMap((task: any) => {
-                return this.periodService
-                    .getPeriods(task._links.periods.href)
-                    .map((periods) => {
-                        task.periods = periods;
-                        return task;
-                    });
-            })
-            .map((task) => {
-                let taskModel = new TaskModel();
-
-                taskModel.id = task.id;
-                taskModel.title = task.title;
-                taskModel.description = task.description;
-                taskModel.rate = task.rate;
-                taskModel.createdAt = task.createdAt;
-                taskModel.periods = task.periods;
-
-                return taskModel;
-            })
-            .toArray();
-    }
-    
     private handleError(error: any) {
         let errorMessage;
 
@@ -112,6 +106,20 @@ export class TaskService {
 
         console.error(errorMessage);
         return Observable.throw(errorMessage);
+    }
+
+    private hydrateData(data: any) {
+        return Observable.from(data.entities)
+            .mergeMap((task: any) => {
+                return this.periodService
+                    .getPeriods(task._links.periods.href)
+                    .map((periods) => {
+                        task.periods = periods;
+                        return task;
+                    });
+            })
+            .map(this.createModel)
+            .toArray();
     }
 
     private post(task: TaskModel): Observable<TaskModel> {

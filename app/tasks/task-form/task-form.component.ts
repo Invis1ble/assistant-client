@@ -27,7 +27,7 @@ export class TaskFormComponent implements OnInit {
         this.taskService.save(this.task)
             .subscribe((data) => {
                 console.log(data);
-            })
+            });
     }
 
 }

@@ -40,7 +40,7 @@ export class TaskListComponent implements OnInit {
             .getTasks()
             .subscribe(
                 tasks => {
-                    this.tasks = tasks.sort((task1: TaskModel, task2: TaskModel) => task2.createdAt - task1.createdAt);
+                    this.tasks = tasks.getItems();
                 },
                 error => this.errorMessage = error
             );
