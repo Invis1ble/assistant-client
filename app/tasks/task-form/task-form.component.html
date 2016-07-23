@@ -2,15 +2,14 @@
     <md-card-title>{{ task.id ? 'Редактирование задачи' : 'Новая задача' }}</md-card-title>
     <md-card-content>
         <form>
-            <div>
+            <div class="form-group">
                 <md-input name="title" placeholder="Заголовок" [(ngModel)]="task.title"></md-input>
             </div>
-            <div>
+            <div class="form-group">
                 <md-input name="description" placeholder="Описание" [(ngModel)]="task.description"></md-input>
             </div>
-            <div>
-                <md-input type="number" min="5.00" step="0.10" name="rate" placeholder="Рейт" [(ngModel)]="task.rate"
-                          dividerColor="warn">
+            <div class="form-group">
+                <md-input type="number" min="5.00" step="0.10" name="rate" placeholder="Рейт" [(ngModel)]="task.rate">
                     <span md-prefix>$</span>
                 </md-input>
             </div>

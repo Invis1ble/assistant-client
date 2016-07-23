@@ -17,6 +17,7 @@ import { TaskService } from '../shared/task.service';
 export class TaskFormComponent implements OnInit {
     task: TaskModel;
     @Output() onSaved = new EventEmitter();
+    @Output() onCanceled = new EventEmitter();
 
     constructor(
         private taskService: TaskService
@@ -36,6 +37,6 @@ export class TaskFormComponent implements OnInit {
     }
 
     cancel() {
-
+        this.onCanceled.emit(null);
     }
 }

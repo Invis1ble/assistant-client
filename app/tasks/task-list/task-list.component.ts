@@ -25,7 +25,7 @@ import { TaskService } from '../shared/task.service';
     ],
 })
 export class TaskListComponent implements OnInit {
-    addingTask = true;
+    showingTaskForm = true;
     tasks: TaskCollection;
 
     constructor(
@@ -35,7 +35,7 @@ export class TaskListComponent implements OnInit {
     }
 
     addNewTask() {
-        this.addingTask = true;
+        this.showTaskForm();
     }
 
     getTasks() {
@@ -47,12 +47,25 @@ export class TaskListComponent implements OnInit {
             );
     }
 
-    onSaved(task: TaskModel) {
-        this.tasks.add(task);
+    hideTaskForm() {
+        this.showingTaskForm = false;
     }
 
     ngOnInit() {
         this.getTasks();
+    }
+
+    onFormCanceled() {
+        this.hideTaskForm();
+    }
+
+    onTaskSaved(task: TaskModel) {
+        this.tasks.add(task);
+        this.hideTaskForm();
+    }
+
+    showTaskForm() {
+        this.showingTaskForm = true;
     }
 
     private handleError() {
