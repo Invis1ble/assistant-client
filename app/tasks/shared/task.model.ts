@@ -1,14 +1,13 @@
 import { PeriodModel } from './period.model';
 import { TaskPeriodCollection } from './task-period.collection';
-import { TaskPeriodLinks } from './task-period-collection.links';
 
 export class TaskModel {
     id: string;
     title: string;
     description: string;
-    rate: number;
+    rate = 20;
     createdAt: number;
-    periods: TaskPeriodCollection = new TaskPeriodCollection([], <TaskPeriodLinks>{});
+    periods: TaskPeriodCollection = new TaskPeriodCollection();
 
     get isActive(): boolean {
         let latestPeriod = this.periods.getLatest();

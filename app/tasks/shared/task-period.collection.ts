@@ -1,41 +1,28 @@
 import { PeriodModel } from './period.model';
+import { SortableCollection } from './sortable.collection';
 import { TaskPeriodLinks } from './task-period-collection.links';
 
-export class TaskPeriodCollection {
+export class TaskPeriodCollection extends SortableCollection<PeriodModel> {
+    private links: TaskPeriodLinks;
 
-    constructor(
-        private periods: PeriodModel[] = [],
-        private links: TaskPeriodLinks
-    ) {
-        this.sort();
+    getEntityUrl(period: PeriodModel): string {
+        return this.links.entity.href.replace('{id}', period.id);
     }
 
-    add(period: PeriodModel) {
-        this.periods.push(period);
-        this.sort();
-    }
-
-    getItem(index: number) {
-        return this.periods[index];
-    }
-
-    getItems() {
-        return this.periods;
-    }
-    
     getLatest() {
-        return this.periods[0];
+        return this.items[0];
     }
 
     getSelfUrl(): string {
         return this.links.self.href;
     }
 
-    getEntityUrl(period: PeriodModel): string {
-        return this.links.entity.href.replace('{id}', period.id);
+    setLinks(links: TaskPeriodLinks) {
+        this.links = links;
     }
 
     sort() {
-        this.periods.sort((period1: PeriodModel, period2: PeriodModel) => period2.startedAt - period1.startedAt);
+        this.items.sort((period1: PeriodModel, period2: PeriodModel) => period2.startedAt - period1.startedAt);
     }
+
 }

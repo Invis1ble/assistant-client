@@ -26,7 +26,7 @@ export class PeriodService {
     getPeriods(url: string): Observable<TaskPeriodCollection> {
         return this.http.get(url)
             .map(this.extractData)
-            .switchMap((data) => this.hydrateData(data), this.createCollection)
+            .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
             .catch(this.handleError);
     }
 
@@ -39,7 +39,11 @@ export class PeriodService {
     }
 
     private createCollection(data: any, periods: PeriodModel[]) {
-        return new TaskPeriodCollection(periods, data._links);
+        let taskPeriodCollection = new TaskPeriodCollection(periods);
+
+        taskPeriodCollection.setLinks(data._links);
+
+        return taskPeriodCollection;
     }
 
     private createModel(data: any) {
@@ -83,8 +87,8 @@ export class PeriodService {
         return Observable.throw(errorMessage);
     }
 
-    private hydrateData(data: any) {
-        return Observable.from(data.entities)
+    private hydrateData(dataset: any[]) {
+        return Observable.from(dataset)
             .map(this.createModel)
             .toArray();
     }

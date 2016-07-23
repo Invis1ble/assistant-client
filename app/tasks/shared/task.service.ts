@@ -27,14 +27,15 @@ export class TaskService {
     getTask(url: string): Observable<TaskModel> {
         return this.http.get(url)
             .map(this.extractData)
-            .map(this.createModel)
+            .switchMap((data) => this.hydrateData([data]))
+            .map((data) => data[0])
             .catch(this.handleError);
     }
     
     getTasks(): Observable<TaskCollection> {
         return this.http.get(this.config.apiEndpoint)
             .map(this.extractData)
-            .switchMap((data) => this.hydrateData(data), this.createCollection)
+            .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
             .catch(this.handleError);
     }
 
@@ -108,14 +109,14 @@ export class TaskService {
         return Observable.throw(errorMessage);
     }
 
-    private hydrateData(data: any) {
-        return Observable.from(data.entities)
-            .mergeMap((task: any) => {
+    private hydrateData(dataset: any[]) {
+        return Observable.from(dataset)
+            .mergeMap((data: any) => {
                 return this.periodService
-                    .getPeriods(task._links.periods.href)
+                    .getPeriods(data._links.periods.href)
                     .map((periods) => {
-                        task.periods = periods;
-                        return task;
+                        data.periods = periods;
+                        return data;
                     });
             })
             .map(this.createModel)

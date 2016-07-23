@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
 
-import { TaskService } from '../shared/task.service';
 import { TaskModel } from '../shared/task.model';
+import { TaskService } from '../shared/task.service';
 
 @Component({
     selector: 'assistant-task-form',
     templateUrl: 'app/tasks/task-form/task-form.component.html',
     styleUrls: [
         'app/tasks/task-form/task-form.component.css'
+    ],
+    directives: [
+        MD_INPUT_DIRECTIVES
     ]
 })
 export class TaskFormComponent implements OnInit {
     task: TaskModel;
+    @Output() onSaved = new EventEmitter();
 
     constructor(
         private taskService: TaskService
@@ -25,9 +30,12 @@ export class TaskFormComponent implements OnInit {
 
     save() {
         this.taskService.save(this.task)
-            .subscribe((data) => {
-                console.log(data);
+            .subscribe((task: TaskModel) => {
+                this.onSaved.emit(task);
             });
     }
 
+    cancel() {
+
+    }
 }

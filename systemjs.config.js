@@ -20,6 +20,7 @@
         'common',
         'compiler',
         'core',
+        'forms',
         'http',
         'platform-browser',
         'platform-browser-dynamic',
@@ -32,7 +33,8 @@
         'button',
         'card',
         'toolbar',
-        'icon'
+        'icon',
+        'input'
     ];
 
     // Individual files (~300 requests):

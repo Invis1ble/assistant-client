@@ -1,4 +1,16 @@
+.task-form-layout {
+    display: block;
+    margin: 20px;
+}
+
 .task-list-item-layout {
     display: block;
     margin: 20px;
+}
+
+.button-add-task {
+    position: fixed;
+    z-index: 2;
+    bottom: 24px;
+    right: 24px;
 }

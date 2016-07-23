@@ -1,7 +1,9 @@
-<button type="button" (click)="addNewTask()">Add New Task</button>
+<button class="button-add-task" md-fab color="primary" (click)="addNewTask()">
+    <md-icon class="md-24">playlist_add</md-icon>
+</button>
 
-<div *ngIf="addingTask">
-    <assistant-task-form></assistant-task-form>
-</div>
+<assistant-task-form class="task-form-layout" *ngIf="addingTask" (onSaved)="onSaved($event)">
+</assistant-task-form>
 
-<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of tasks" [task]="task"></assistant-task-list-item>
+<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of tasks" [task]="task">
+</assistant-task-list-item>

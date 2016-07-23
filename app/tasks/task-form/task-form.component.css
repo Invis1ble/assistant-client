@@ -1,0 +1,11 @@
+md-input {
+    width: 100%;
+}
+
+md-input >>> .md-input-prefix {
+    width: 1px;
+}
+
+md-input [md-prefix] {
+    margin-right: .3em;
+}

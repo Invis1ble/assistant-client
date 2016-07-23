@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
+import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
+import { TaskCollection } from '../shared/task.collection';
+import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
-import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
     selector: 'assistant-task-list',
@@ -12,23 +15,23 @@ import { TaskFormComponent } from '../task-form/task-form.component';
         'app/tasks/task-list/task-list.component.css'
     ],
     directives: [
-        TaskListItemComponent,
-        TaskFormComponent
-    ]
+        MD_BUTTON_DIRECTIVES,
+        MdIcon,
+        TaskFormComponent,
+        TaskListItemComponent
+    ],
+    providers: [
+        MdIconRegistry
+    ],
 })
 export class TaskListComponent implements OnInit {
-    errorMessage: string;
-    tasks: TaskModel[];
-    addingTask = false;
+    addingTask = true;
+    tasks: TaskCollection;
 
     constructor(
         private taskService: TaskService
     ) {
 
-    }
-
-    ngOnInit() {
-        this.getTasks();
     }
 
     addNewTask() {
@@ -39,11 +42,17 @@ export class TaskListComponent implements OnInit {
         this.taskService
             .getTasks()
             .subscribe(
-                tasks => {
-                    this.tasks = tasks.getItems();
-                },
-                error => this.errorMessage = error
+                (tasks: TaskCollection) => this.tasks = tasks,
+                this.handleError
             );
+    }
+
+    onSaved(task: TaskModel) {
+        this.tasks.add(task);
+    }
+
+    ngOnInit() {
+        this.getTasks();
     }
 
     private handleError() {
