@@ -1,0 +1,16 @@
+<md-card class="login-form" *ngIf="user">
+    <md-card-title>Авторизация</md-card-title>
+    <md-card-content>
+        <form>
+            <div class="form-group">
+                <md-input name="username" placeholder="Имя пользователя" [(ngModel)]="user.username"></md-input>
+            </div>
+            <div class="form-group">
+                <md-input type="password" name="password" placeholder="Пароль" [(ngModel)]="user.password"></md-input>
+            </div>
+        </form>
+    </md-card-content>
+    <md-card-actions align="end">
+        <button md-button color="primary" (click)="signIn()">ВОЙТИ</button>
+    </md-card-actions>
+</md-card>

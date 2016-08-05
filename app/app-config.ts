@@ -5,7 +5,7 @@ export interface AppConfig {
 }
 
 export const TASK_DI_CONFIG: AppConfig = {
-    apiEndpoint: 'http://assistant/app_dev.php/api/tasks'
+    apiEndpoint: 'http://assistant/app_dev.php/api/users'
 };
 
 export let APP_CONFIG = new OpaqueToken('app.config');
