@@ -1,6 +1,6 @@
 assistant-login-form {
     display: flex;
     height: 100%;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }

@@ -8,3 +8,20 @@ md-toolbar.md-primary a {
     height: 100%;
     flex-direction: column;
 }
+
+:host >>> .form-group + .form-group {
+    margin-top: 20px;
+}
+
+:host >>> .form-group.has-error md-input >>> .md-input-underline .md-input-ripple {
+    /* md-warn color */
+    background-color: #f44336;
+}
+
+:host >>> .form-group:not(.has-error) md-hint {
+    display: none;
+}
+
+:host >>> .form-group.has-error md-hint {
+    color: #f44336;
+}

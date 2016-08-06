@@ -32,6 +32,10 @@ export class LoginFormComponent {
 
     }
 
+    onSubmit() {
+        console.log('onSubmit()');
+    }
+
     signIn() {
         this.tokenService.getToken(this.user)
             .subscribe((token: JWTModel) => {

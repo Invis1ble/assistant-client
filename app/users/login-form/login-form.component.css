@@ -1,12 +1,8 @@
 .login-form {
     max-width: 300px;
     width: 100%;
-    box-sizing: border-box;
-    margin-top: -33.3333%;
-}
-
-.form-group + .form-group {
-    margin-top: 20px;
+    position: relative;
+    top: 10%;
 }
 
 md-input {
