@@ -14,7 +14,7 @@ export class PeriodService extends AbstractService {
     constructor(
         private http: Http
     ) {
-        
+        super();
     }
 
     getPeriod(url: string): Observable<PeriodModel> {

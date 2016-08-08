@@ -13,7 +13,7 @@ export class JWTService extends AbstractService {
     constructor(
         private http: Http
     ) {
-
+        super();
     }
 
     getToken(user: UserModel): Observable<JWTModel> {

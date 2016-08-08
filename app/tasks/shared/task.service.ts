@@ -22,7 +22,7 @@ export class TaskService extends AbstractService {
         private http: Http,
         private periodService: PeriodService
     ) {
-
+        super();
     }
 
     getTask(url: string): Observable<TaskModel> {
