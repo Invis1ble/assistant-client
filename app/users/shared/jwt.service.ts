@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -58,6 +59,7 @@ export class JWTService {
         }
 
         console.error(errorMessage);
-        return Observable.throw(errorMessage);
+
+        return Observable.throw(error);
     }
 }

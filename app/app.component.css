@@ -25,3 +25,20 @@ md-toolbar.md-primary a {
 :host >>> .form-group.has-error md-hint {
     color: #f44336;
 }
+
+:host >>> .form-error {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    color: #f44336;
+}
+
+:host >>> .form-error .material-icons {
+    font-size: 45px;
+    margin-right: 10px;
+}
+
+:host >>> .form-error md-icon {
+    width: auto;
+    height: auto;
+}

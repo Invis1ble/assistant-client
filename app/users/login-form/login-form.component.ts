@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormBuilder, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
+import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
 import { UserModel } from '../shared/user.model';
 import { JWTModel } from '../shared/jwt.model';
@@ -14,32 +16,51 @@ import { JWTService } from '../shared/jwt.service';
         'app/users/login-form/login-form.component.css'
     ],
     providers: [
-        JWTService
+        JWTService,
+        MdIconRegistry
     ],
     directives: [
         MD_BUTTON_DIRECTIVES,
         MD_CARD_DIRECTIVES,
-        MD_INPUT_DIRECTIVES
+        MD_INPUT_DIRECTIVES,
+        MdIcon,
+        REACTIVE_FORM_DIRECTIVES,
     ]
 })
 export class LoginFormComponent {
-    user = new UserModel();
-    @Output() onSignedIn = new EventEmitter();
+    error: string;
+    form: FormGroup;
+    @Output() onLoggedIn = new EventEmitter();
 
     constructor(
-        private tokenService: JWTService
+        private tokenService: JWTService,
+        private formBuilder: FormBuilder
     ) {
-
+        this.form = formBuilder.group({
+            username: ['', Validators.required],
+            password: ['', Validators.required]
+        });
     }
 
     onSubmit() {
-        console.log('onSubmit()');
+        this.error = null;
+        this.logIn(this.form.value);
     }
 
-    signIn() {
-        this.tokenService.getToken(this.user)
-            .subscribe((token: JWTModel) => {
-                this.onSignedIn.emit(token);
-            });
+    logIn(user: UserModel) {
+        this.tokenService.getToken(user)
+            .subscribe(
+                (token: JWTModel) => {
+                    this.onLoggedIn.emit(token);
+                },
+                (error: any) => {
+                    if (401 === error.status) {
+                        this.error = 'Неверное имя пользователя или пароль.';
+                        return;
+                    }
+
+                    this.error = `${error.statusText}.`;
+                }
+            );
     }
 }

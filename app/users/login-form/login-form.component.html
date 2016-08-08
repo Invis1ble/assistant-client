@@ -1,29 +1,24 @@
-<form class="login-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
-    <md-card *ngIf="user">
+<form class="login-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <md-card>
         <md-card-title>Авторизация</md-card-title>
         <md-card-content>
-            <div class="form-group" [class.has-error]="!username.valid && !username.pristine">
-                <md-input name="username"
-                          placeholder="Имя пользователя"
-                          [(ngModel)]="user.username"
-                          #username="ngModel"
-                          required>
-                </md-input>
-                <md-hint>Введите имя пользователя</md-hint>
+            <div class="form-group"
+                 [class.has-error]="!form.controls.username.valid && !form.controls.username.pristine">
+                <md-input type="text" placeholder="Имя пользователя" formControlName="username"></md-input>
+                <md-hint *ngIf="form.controls.username.hasError('required')">Введите имя пользователя</md-hint>
             </div>
-            <div class="form-group" [class.has-error]="!password.valid && !password.pristine">
-                <md-input type="password"
-                          name="password"
-                          placeholder="Пароль"
-                          [(ngModel)]="user.password"
-                          #password="ngModel"
-                          required>
-                </md-input>
-                <md-hint>Введите пароль</md-hint>
+            <div class="form-group"
+                 [class.has-error]="!form.controls.password.valid && !form.controls.password.pristine">
+                <md-input type="password" placeholder="Пароль" formControlName="password"></md-input>
+                <md-hint *ngIf="form.controls.password.hasError('required')">Введите пароль</md-hint>
+            </div>
+            <div class="form-error" *ngIf="error">
+                <md-icon>error</md-icon>
+                {{ error }}
             </div>
         </md-card-content>
         <md-card-actions align="end">
-            <button type="submit" md-button color="primary" [disabled]="!loginForm.form.valid">ВОЙТИ</button>
+            <button type="submit" md-button color="primary" [disabled]="!form.valid">ВОЙТИ</button>
         </md-card-actions>
     </md-card>
 </form>
