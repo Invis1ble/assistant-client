@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from '../../shared/abstract.service';
 import { JWTModel } from './jwt.model';
 import { UserModel } from './user.model';
 
 @Injectable()
-export class JWTService {
+export class JWTService extends AbstractService {
     constructor(
         private http: Http
     ) {
@@ -43,23 +43,5 @@ export class JWTService {
 
     private extractData(response: Response) {
         return response.json();
-    }
-
-    private handleError(error: any) {
-        let errorMessage;
-
-        if (undefined === error.message) {
-            if (undefined === error.status) {
-                errorMessage = 'Server Error';
-            } else {
-                errorMessage = `${error.status} - ${error.statusText}`;
-            }
-        } else {
-            errorMessage = error.message;
-        }
-
-        console.error(errorMessage);
-
-        return Observable.throw(error);
     }
 }

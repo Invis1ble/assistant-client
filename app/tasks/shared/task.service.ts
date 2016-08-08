@@ -9,13 +9,14 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
 import { APP_CONFIG, AppConfig } from '../../app-config';
+import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { PeriodService } from './period.service';
 import { TaskCollection } from './task.collection';
 import { TaskModel } from './task.model';
 
 @Injectable()
-export class TaskService {
+export class TaskService extends AbstractService {
     constructor(
         @Inject(APP_CONFIG) private config: AppConfig,
         private http: Http,
@@ -90,23 +91,6 @@ export class TaskService {
 
     private extractLocation(response: Response): string {
         return response.headers.get('Location');
-    }
-
-    private handleError(error: any) {
-        let errorMessage;
-
-        if (undefined === error.message) {
-            if (undefined === error.status) {
-                errorMessage = 'Server Error';
-            } else {
-                errorMessage = `${error.status} - ${error.statusText}`;
-            }
-        } else {
-            errorMessage = error.message;
-        }
-
-        console.error(errorMessage);
-        return Observable.throw(errorMessage);
     }
 
     private hydrateData(dataset: any[]) {

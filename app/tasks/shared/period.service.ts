@@ -5,11 +5,12 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
+import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { TaskPeriodCollection } from './task-period.collection';
 
 @Injectable()
-export class PeriodService {
+export class PeriodService extends AbstractService {
     constructor(
         private http: Http
     ) {
@@ -68,23 +69,6 @@ export class PeriodService {
 
     private extractLocation(response: Response): string {
         return response.headers.get('Location');
-    }
-
-    private handleError(error: any) {
-        let errorMessage;
-
-        if (undefined === error.message) {
-            if (undefined === error.status) {
-                errorMessage = 'Server Error';
-            } else {
-                errorMessage = `${error.status} - ${error.statusText}`;
-            }
-        } else {
-            errorMessage = error.message;
-        }
-
-        console.error(errorMessage);
-        return Observable.throw(errorMessage);
     }
 
     private hydrateData(dataset: any[]) {
