@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, REACTIVE_FORM_DIRECTIVES, Validators } from '@a
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
+import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle/progress-circle';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
 import { UserModel } from '../shared/user.model';
@@ -23,14 +24,16 @@ import { JWTService } from '../shared/jwt.service';
         MD_BUTTON_DIRECTIVES,
         MD_CARD_DIRECTIVES,
         MD_INPUT_DIRECTIVES,
+        MD_PROGRESS_CIRCLE_DIRECTIVES,
         MdIcon,
-        REACTIVE_FORM_DIRECTIVES,
+        REACTIVE_FORM_DIRECTIVES
     ]
 })
 export class LoginFormComponent {
     error: string;
     form: FormGroup;
     @Output() onLoggedIn = new EventEmitter();
+    pending = false;
 
     constructor(
         private tokenService: JWTService,
@@ -44,6 +47,7 @@ export class LoginFormComponent {
 
     onSubmit() {
         this.error = null;
+        this.pending = true;
         this.logIn(this.form.value);
     }
 
@@ -52,8 +56,11 @@ export class LoginFormComponent {
             .subscribe(
                 (token: JWTModel) => {
                     this.onLoggedIn.emit(token);
+                    this.pending = false;
                 },
                 (error: any) => {
+                    this.pending = false;
+
                     if (401 === error.status) {
                         this.error = 'Неверное имя пользователя или пароль.';
                         return;

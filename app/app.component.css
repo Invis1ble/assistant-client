@@ -42,3 +42,9 @@ md-toolbar.md-primary a {
     width: auto;
     height: auto;
 }
+
+:host >>> md-card-actions md-spinner {
+    width: 24px;
+    height: 24px;
+    align-self: center;
+}

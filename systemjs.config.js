@@ -34,7 +34,8 @@
         'card',
         'toolbar',
         'icon',
-        'input'
+        'input',
+        'progress-circle'
     ];
 
     // Individual files (~300 requests):

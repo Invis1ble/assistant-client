@@ -4,12 +4,14 @@
         <md-card-content>
             <div class="form-group"
                  [class.has-error]="!form.controls.username.valid && !form.controls.username.pristine">
-                <md-input type="text" placeholder="Имя пользователя" formControlName="username"></md-input>
+                <md-input type="text" placeholder="Имя пользователя" formControlName="username"
+                          [disabled]="pending"></md-input>
                 <md-hint *ngIf="form.controls.username.hasError('required')">Введите имя пользователя</md-hint>
             </div>
             <div class="form-group"
                  [class.has-error]="!form.controls.password.valid && !form.controls.password.pristine">
-                <md-input type="password" placeholder="Пароль" formControlName="password"></md-input>
+                <md-input type="password" placeholder="Пароль" formControlName="password"
+                          [disabled]="pending"></md-input>
                 <md-hint *ngIf="form.controls.password.hasError('required')">Введите пароль</md-hint>
             </div>
             <div class="form-error" *ngIf="error">
@@ -18,7 +20,8 @@
             </div>
         </md-card-content>
         <md-card-actions align="end">
-            <button type="submit" md-button color="primary" [disabled]="!form.valid">ВОЙТИ</button>
+            <md-spinner *ngIf="pending"></md-spinner>
+            <button type="submit" md-button color="primary" [disabled]="!form.valid || pending">ВОЙТИ</button>
         </md-card-actions>
     </md-card>
 </form>
