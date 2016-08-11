@@ -23,4 +23,3 @@ import { TaskService } from './tasks/shared/task.service';
 export class AppComponent {
     title = 'Assistant App';
 }
-

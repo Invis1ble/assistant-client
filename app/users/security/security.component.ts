@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { AuthService } from '../../shared/auth.service';
 import { JwtModel } from '../shared/jwt.model';
-import { JwtStorage } from '../shared/jwt-storage';
 import { LoginFormComponent } from '../login-form/login-form.component';
 
 @Component({
@@ -16,12 +17,21 @@ import { LoginFormComponent } from '../login-form/login-form.component';
 })
 export class SecurityComponent {
     constructor(
-        private jwtStorage: JwtStorage
+        private authService: AuthService,
+        private router: Router
     ) {
 
     }
 
-    onLoggedIn(token: JwtModel) {
-        this.jwtStorage.setToken(token);
+    onLoggedIn(jwt: JwtModel) {
+        let requestedUrl = this.authService.getRequestedUrl();
+
+        this.authService.setLoggedIn(jwt);
+
+        if (null === requestedUrl) {
+            requestedUrl = '';
+        }
+
+        this.router.navigate([ requestedUrl ]);
     }
 }

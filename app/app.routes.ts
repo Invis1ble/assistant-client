@@ -7,17 +7,16 @@ import { AuthGuard } from './shared/auth-guard.service';
 const routes: RouterConfig = [
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/tasks',
         pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: SecurityComponent
     },
     {
         path: 'tasks',
         component: TaskListComponent,
-        canActivate: [ AuthGuard ]
-    },
-    {
-        path: 'security',
-        component: SecurityComponent,
         canActivate: [ AuthGuard ]
     }
 ];

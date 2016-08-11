@@ -7,12 +7,14 @@ import { APP_CONFIG, TASK_DI_CONFIG } from './app-config';
 import { APP_ROUTER_PROVIDER } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared/auth-guard.service';
+import { AuthService } from './shared/auth.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 
 bootstrap(AppComponent, [
     APP_ROUTER_PROVIDER,
     AuthGuard,
+    AuthService,
     HTTP_PROVIDERS,
     disableDeprecatedForms(),
     provideAuth({
