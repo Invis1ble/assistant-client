@@ -7,8 +7,8 @@ import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circl
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
 import { UserModel } from '../shared/user.model';
-import { JWTModel } from '../shared/jwt.model';
-import { JWTService } from '../shared/jwt.service';
+import { JwtModel } from '../shared/jwt.model';
+import { JwtService } from '../shared/jwt.service';
 
 @Component({
     selector: 'assistant-login-form',
@@ -17,7 +17,7 @@ import { JWTService } from '../shared/jwt.service';
         'app/users/login-form/login-form.component.css'
     ],
     providers: [
-        JWTService,
+        JwtService,
         MdIconRegistry
     ],
     directives: [
@@ -36,7 +36,7 @@ export class LoginFormComponent {
     pending = false;
 
     constructor(
-        private tokenService: JWTService,
+        private tokenService: JwtService,
         private formBuilder: FormBuilder
     ) {
         this.form = formBuilder.group({
@@ -54,7 +54,7 @@ export class LoginFormComponent {
     logIn(user: UserModel) {
         this.tokenService.getToken(user)
             .subscribe(
-                (token: JWTModel) => {
+                (token: JwtModel) => {
                     this.onLoggedIn.emit(token);
                     this.pending = false;
                 },

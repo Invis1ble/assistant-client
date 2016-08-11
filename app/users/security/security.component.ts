@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { JwtModel } from '../shared/jwt.model';
+import { JwtStorage } from '../shared/jwt-storage';
 import { LoginFormComponent } from '../login-form/login-form.component';
 
 @Component({
@@ -10,8 +12,16 @@ import { LoginFormComponent } from '../login-form/login-form.component';
     ],
     directives: [
         LoginFormComponent
-    ],
+    ]
 })
 export class SecurityComponent {
+    constructor(
+        private jwtStorage: JwtStorage
+    ) {
 
+    }
+
+    onLoggedIn(token: JwtModel) {
+        this.jwtStorage.setToken(token);
+    }
 }

@@ -4,17 +4,19 @@
 (function(global) {
     // map tells the System loader where to look for things
     var map = {
-        'app':                        'app', // 'dist',
         '@angular':                   'node_modules/@angular',
-        'rxjs':                       'node_modules/rxjs',
-        'moment':                     'node_modules/moment',
         '@angular2-material':         'node_modules/@angular2-material',
+        'moment':                     'node_modules/moment',
+        'angular2-jwt':               'node_modules/angular2-jwt',
+        'app':                        'app',
+        'rxjs':                       'node_modules/rxjs'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
+        'angular2-jwt':               { main: 'angular2-jwt.js',  defaultExtension: 'js' },
         'app':                        { main: 'main.js',  defaultExtension: 'js' },
-        'rxjs':                       { defaultExtension: 'js' },
-        'moment':                     { main: 'moment.js', defaultExtension: 'js' }
+        'moment':                     { main: 'moment.js', defaultExtension: 'js' },
+        'rxjs':                       { defaultExtension: 'js' }
     };
     var ngPackageNames = [
         'common',

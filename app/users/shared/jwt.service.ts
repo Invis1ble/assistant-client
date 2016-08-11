@@ -5,18 +5,18 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { AbstractService } from '../../shared/abstract.service';
-import { JWTModel } from './jwt.model';
+import { JwtModel } from './jwt.model';
 import { UserModel } from './user.model';
 
 @Injectable()
-export class JWTService extends AbstractService {
+export class JwtService extends AbstractService {
     constructor(
         private http: Http
     ) {
         super();
     }
 
-    getToken(user: UserModel): Observable<JWTModel> {
+    getToken(user: UserModel): Observable<JwtModel> {
         let headers = new Headers({
             'Content-Type': 'application/json'
         });
@@ -34,7 +34,7 @@ export class JWTService extends AbstractService {
     }
 
     private createModel(data: any) {
-        let tokenModel = new JWTModel();
+        let tokenModel = new JwtModel();
 
         tokenModel.token = data.token;
 

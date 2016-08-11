@@ -1,16 +1,27 @@
-import { bootstrap } from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS } from '@angular/http';
+import { bootstrap } from '@angular/platform-browser-dynamic';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import { provideAuth } from 'angular2-jwt';
 
 import { APP_CONFIG, TASK_DI_CONFIG } from './app-config';
 import { APP_ROUTER_PROVIDER } from './app.routes';
 import { AppComponent } from './app.component';
+import { AuthGuard } from './shared/auth-guard.service';
+import { JwtStorage } from './users/shared/jwt-storage';
+import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 
 bootstrap(AppComponent, [
     APP_ROUTER_PROVIDER,
+    AuthGuard,
     HTTP_PROVIDERS,
     disableDeprecatedForms(),
+    provideAuth({
+        globalHeaders: [{'Content-Type': 'application/json'}],
+        // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
+        tokenName: TASK_DI_CONFIG.jwtName,
+    }),
     provideForms(),
     { provide: APP_CONFIG, useValue: TASK_DI_CONFIG },
+    { provide: JwtStorage, useClass: JwtLocalStorage }
 ])
     .catch((err: any) => console.error(err));

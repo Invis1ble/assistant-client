@@ -1,3 +1,3 @@
-export class JWTModel {
+export class JwtModel {
     token: string;
 }
