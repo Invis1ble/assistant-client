@@ -4,6 +4,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { PeriodService } from './tasks/shared/period.service';
 import { TaskService } from './tasks/shared/task.service';
+import { UserService } from './users/shared/user.service';
 
 @Component({
     selector: 'assistant-app',
@@ -17,7 +18,8 @@ import { TaskService } from './tasks/shared/task.service';
     ],
     providers: [
         PeriodService,
-        TaskService
+        TaskService,
+        UserService
     ]
 })
 export class AppComponent {

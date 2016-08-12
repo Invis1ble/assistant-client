@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -8,33 +9,31 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
-import { APP_CONFIG, AppConfig } from '../../app-config';
 import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { PeriodService } from './period.service';
-import { TaskCollection } from './task.collection';
+import { UserTaskCollection } from './user-task.collection';
 import { TaskModel } from './task.model';
 
 @Injectable()
 export class TaskService extends AbstractService {
     constructor(
-        @Inject(APP_CONFIG) private config: AppConfig,
-        private http: Http,
+        private authHttp: AuthHttp,
         private periodService: PeriodService
     ) {
         super();
     }
 
     getTask(url: string): Observable<TaskModel> {
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .map(this.extractData)
             .switchMap((data) => this.hydrateData([data]))
             .map((data) => data[0])
             .catch(this.handleError);
     }
     
-    getTasks(): Observable<TaskCollection> {
-        return this.http.get(this.config.apiEndpoint)
+    getTasks(url: string): Observable<UserTaskCollection> {
+        return this.authHttp.get(url)
             .map(this.extractData)
             .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
             .catch(this.handleError);
@@ -68,8 +67,11 @@ export class TaskService extends AbstractService {
     }
 
     private createCollection(data: any, tasks: TaskModel[]) {
-        // return new TaskCollection(tasks, data._links);
-        return new TaskCollection(tasks);
+        let userTaskCollection = new UserTaskCollection(tasks);
+
+        userTaskCollection.setLinks(data._links);
+
+        return userTaskCollection;
     }
 
     private createModel(data: any) {
@@ -108,18 +110,12 @@ export class TaskService extends AbstractService {
     }
 
     private post(task: TaskModel): Observable<TaskModel> {
-        let headers = new Headers({
-            'Content-Type': 'application/json'
-        });
-
-        return this.http
+        return this.authHttp
             .post(this.config.apiEndpoint, JSON.stringify({
                 title: task.title,
                 description: task.description,
                 rate: task.rate
-            }), {
-                headers: headers
-            })
+            }))
             .map(this.extractLocation)
             .mergeMap((url) => this.getTask(url))
             .catch(this.handleError);

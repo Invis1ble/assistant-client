@@ -1,6 +1,7 @@
+import { AuthHttp } from 'angular2-jwt';
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
@@ -12,20 +13,20 @@ import { TaskPeriodCollection } from './task-period.collection';
 @Injectable()
 export class PeriodService extends AbstractService {
     constructor(
-        private http: Http
+        private authHttp: AuthHttp
     ) {
         super();
     }
 
     getPeriod(url: string): Observable<PeriodModel> {
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .map(this.extractData)
             .map(this.createModel)
             .catch(this.handleError);
     }
     
     getPeriods(url: string): Observable<TaskPeriodCollection> {
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .map(this.extractData)
             .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
             .catch(this.handleError);
@@ -78,31 +79,20 @@ export class PeriodService extends AbstractService {
     }
 
     private post(period: PeriodModel, url: string): Observable<PeriodModel> {
-        let headers = new Headers({
-            'Content-Type': 'application/json'
-        });
-
-        return this.http
+        return this.authHttp
             .post(url, JSON.stringify({
                 startedAt: Math.round(period.startedAt / 1000)
-            }), {
-                headers: headers
-            })
+            }))
             .map(this.extractLocation)
             .mergeMap((url) => this.getPeriod(url))
             .catch(this.handleError);
     }
 
     private patch(period: PeriodModel, url: string): Observable<PeriodModel> {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        return this.http
+        return this.authHttp
             .patch(url, JSON.stringify({
                 finishedAt: Math.round(period.finishedAt / 1000)
-            }), {
-                headers: headers
-            })
+            }))
             .map(this.extractLocation)
             .mergeMap((url) => this.getPeriod(url))
             .catch(this.handleError);

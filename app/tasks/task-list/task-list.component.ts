@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
-import { TaskCollection } from '../shared/task.collection';
+import { UserTaskCollection } from '../shared/user-task.collection';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
+import { UserModel } from '../../users/shared/user.model';
+import { UserService } from '../../users/shared/user.service';
 
 @Component({
     selector: 'assistant-task-list',
@@ -26,10 +28,10 @@ import { TaskService } from '../shared/task.service';
 })
 export class TaskListComponent implements OnInit {
     showingTaskForm = true;
-    tasks: TaskCollection;
+    user: UserModel;
 
     constructor(
-        private taskService: TaskService
+        private userService: UserService
     ) {
 
     }
@@ -38,11 +40,15 @@ export class TaskListComponent implements OnInit {
         this.showTaskForm();
     }
 
-    getTasks() {
-        this.taskService
-            .getTasks()
+    getUser() {
+        this.userService
+            .getUser('http://assistant/app_dev.php/api/users/cf270e76-c3fb-4235-a2af-8f4eacd81635')
             .subscribe(
-                (tasks: TaskCollection) => this.tasks = tasks,
+                (user: UserModel) => {
+                    // console.log(user);
+
+                    this.user = user;
+                },
                 this.handleError
             );
     }
@@ -52,7 +58,7 @@ export class TaskListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getTasks();
+        this.getUser();
     }
 
     onFormCanceled() {
@@ -60,7 +66,7 @@ export class TaskListComponent implements OnInit {
     }
 
     onTaskSaved(task: TaskModel) {
-        this.tasks.add(task);
+        this.user.tasks.add(task);
         this.hideTaskForm();
     }
 

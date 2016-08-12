@@ -15,8 +15,14 @@ export class AuthService {
 
     }
 
-    isLoggedIn() {
-        return !this.jwtHelper.isTokenExpired(this.jwtStorage.getToken());
+    isLoggedIn(): boolean {
+        let jwt = this.jwtStorage.getToken();
+
+        if (null === jwt) {
+            return false;
+        }
+
+        return !this.jwtHelper.isTokenExpired(jwt.token);
     }
 
     setLoggedIn(jwt: JwtModel) {

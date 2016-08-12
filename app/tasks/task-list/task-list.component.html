@@ -6,5 +6,5 @@
                      (onCanceled)="onFormCanceled($event)">
 </assistant-task-form>
 
-<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of tasks" [task]="task">
+<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of user.tasks" [task]="task">
 </assistant-task-list-item>

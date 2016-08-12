@@ -37,6 +37,7 @@ export class JwtService extends AbstractService {
         let tokenModel = new JwtModel();
 
         tokenModel.token = data.token;
+        tokenModel.data = data.data;
 
         return tokenModel;
     }

@@ -54,8 +54,8 @@ export class LoginFormComponent {
     logIn(user: UserModel) {
         this.tokenService.getToken(user)
             .subscribe(
-                (token: JwtModel) => {
-                    this.onLoggedIn.emit(token);
+                (jwt: JwtModel) => {
+                    this.onLoggedIn.emit(jwt);
                     this.pending = false;
                 },
                 (error: any) => {

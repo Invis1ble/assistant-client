@@ -20,6 +20,7 @@ bootstrap(AppComponent, [
     provideAuth({
         globalHeaders: [{'Content-Type': 'application/json'}],
         // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
+        tokenGetter: () => JSON.parse(localStorage.getItem(TASK_DI_CONFIG.jwtName)).token,
         tokenName: TASK_DI_CONFIG.jwtName,
     }),
     provideForms(),
