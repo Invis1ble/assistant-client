@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
-import { UserTaskCollection } from '../shared/user-task.collection';
+import { AuthService } from '../../shared/auth.service';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
 import { TaskModel } from '../shared/task.model';
-import { TaskService } from '../shared/task.service';
 import { UserModel } from '../../users/shared/user.model';
-import { UserService } from '../../users/shared/user.service';
 
 @Component({
     selector: 'assistant-task-list',
@@ -28,10 +26,10 @@ import { UserService } from '../../users/shared/user.service';
 })
 export class TaskListComponent implements OnInit {
     showingTaskForm = true;
-    user: UserModel;
+    user = new UserModel();
 
     constructor(
-        private userService: UserService
+        private authService: AuthService
     ) {
 
     }
@@ -41,14 +39,9 @@ export class TaskListComponent implements OnInit {
     }
 
     getUser() {
-        this.userService
-            .getUser('http://assistant/app_dev.php/api/users/cf270e76-c3fb-4235-a2af-8f4eacd81635')
+        this.authService.getUser()
             .subscribe(
-                (user: UserModel) => {
-                    // console.log(user);
-
-                    this.user = user;
-                },
+                (user: UserModel) => this.user = user,
                 this.handleError
             );
     }

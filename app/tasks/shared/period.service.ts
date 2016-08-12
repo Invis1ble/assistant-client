@@ -32,7 +32,7 @@ export class PeriodService extends AbstractService {
             .catch(this.handleError);
     }
 
-    save(period: PeriodModel, url: string): Observable<PeriodModel> {
+    savePeriod(period: PeriodModel, url: string): Observable<PeriodModel> {
         if (period.id) {
             return this.patch(period, url);
         }

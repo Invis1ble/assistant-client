@@ -10,12 +10,18 @@ import { AuthGuard } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
+import { UserService } from './users/shared/user.service';
+import { PeriodService } from './tasks/shared/period.service';
+import { TaskService } from './tasks/shared/task.service';
 
 bootstrap(AppComponent, [
     APP_ROUTER_PROVIDER,
     AuthGuard,
     AuthService,
     HTTP_PROVIDERS,
+    UserService,
+    PeriodService,
+    TaskService,
     disableDeprecatedForms(),
     provideAuth({
         globalHeaders: [{'Content-Type': 'application/json'}],

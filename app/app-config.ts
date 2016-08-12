@@ -1,12 +1,17 @@
 import { OpaqueToken } from '@angular/core';
 
+import { Link } from './tasks/shared/link';
+
 export interface AppConfig {
-    apiEndpoint: string;
+    apiEndpoint: Link;
     jwtName: string;
 }
 
 export const TASK_DI_CONFIG: AppConfig = {
-    apiEndpoint: 'http://assistant/app_dev.php/api/users',
+    apiEndpoint: {
+        href: 'http://assistant/app_dev.php/api/users/{id}',
+        templated: true
+    },
     jwtName: 'jwt'
 };
 

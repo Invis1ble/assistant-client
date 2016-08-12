@@ -12,8 +12,8 @@ import 'rxjs/add/operator/toArray';
 import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { PeriodService } from './period.service';
-import { UserTaskCollection } from './user-task.collection';
 import { TaskModel } from './task.model';
+import { UserTaskCollection } from './user-task.collection';
 
 @Injectable()
 export class TaskService extends AbstractService {
@@ -39,12 +39,12 @@ export class TaskService extends AbstractService {
             .catch(this.handleError);
     }
 
-    save(task: TaskModel): Observable<TaskModel> {
+    saveTask(task: TaskModel, url: string): Observable<TaskModel> {
         if (task.id) {
             // return this.patch();
         }
 
-        return this.post(task);
+        return this.post(task, url);
     }
 
     toggleRun(task: TaskModel): Observable<TaskModel> {
@@ -53,13 +53,13 @@ export class TaskService extends AbstractService {
 
             period.finishedAt = Date.now();
             
-            return this.periodService.save(period, task.periods.getEntityUrl(period))
+            return this.periodService.savePeriod(period, task.periods.getEntityUrl(period))
                 .map((period: PeriodModel) => {
                     return task;
                 });
         }
         
-        return this.periodService.save(new PeriodModel(null, Date.now(), null), task.periods.getSelfUrl())
+        return this.periodService.savePeriod(new PeriodModel(null, Date.now(), null), task.periods.getSelfUrl())
             .map((period: PeriodModel) => {
                 task.periods.add(period);
                 return task;
@@ -109,9 +109,9 @@ export class TaskService extends AbstractService {
             .toArray();
     }
 
-    private post(task: TaskModel): Observable<TaskModel> {
+    private post(task: TaskModel, url: string): Observable<TaskModel> {
         return this.authHttp
-            .post(this.config.apiEndpoint, JSON.stringify({
+            .post(url, JSON.stringify({
                 title: task.title,
                 description: task.description,
                 rate: task.rate

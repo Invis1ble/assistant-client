@@ -1,8 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
 
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
+import { UserModel } from '../../users/shared/user.model';
 
 @Component({
     selector: 'assistant-task-form',
@@ -16,6 +17,7 @@ import { TaskService } from '../shared/task.service';
 })
 export class TaskFormComponent implements OnInit {
     task: TaskModel;
+    @Input() user: UserModel;
     @Output() onSaved = new EventEmitter();
     @Output() onCanceled = new EventEmitter();
 
@@ -30,7 +32,7 @@ export class TaskFormComponent implements OnInit {
     }
 
     save() {
-        this.taskService.save(this.task)
+        this.taskService.saveTask(this.task, this.user.tasks.getSelfUrl())
             .subscribe((task: TaskModel) => {
                 this.onSaved.emit(task);
             });

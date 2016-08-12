@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
+import { Observable } from 'rxjs/Observable';
 
+import { APP_CONFIG, AppConfig } from '../app-config';
 import { JwtModel } from '../users/shared/jwt.model';
 import { JwtStorage } from '../users/shared/jwt-storage';
+import { UserModel } from '../users/shared/user.model';
+import { UserService } from '../users/shared/user.service';
 
 @Injectable()
 export class AuthService {
@@ -10,9 +14,22 @@ export class AuthService {
     private requestedUrl: string;
 
     constructor(
-        private jwtStorage: JwtStorage
+        @Inject(APP_CONFIG) private config: AppConfig,
+        private jwtStorage: JwtStorage,
+        private userService: UserService
     ) {
 
+    }
+
+    getRequestedUrl() {
+        return this.requestedUrl;
+    }
+
+    getUser(): Observable<UserModel> {
+        let user = <UserModel> this.jwtStorage.getToken().data;
+
+        return this.userService
+            .getUser(this.config.apiEndpoint.href.replace('{id}', user.id));
     }
 
     isLoggedIn(): boolean {
@@ -27,10 +44,6 @@ export class AuthService {
 
     setLoggedIn(jwt: JwtModel) {
         this.jwtStorage.setToken(jwt);
-    }
-
-    getRequestedUrl() {
-        return this.requestedUrl;
     }
 
     setRequestedUrl(url: string) {
