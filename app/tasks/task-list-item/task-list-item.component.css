@@ -21,13 +21,17 @@ button .revenue {
     vertical-align: middle;
 }
 
-button .material-icons {
+button.toggle-run .material-icons {
     font-size: 36px;
     margin-left: 10px;
 }
 
-button md-icon {
+button.toggle-run md-icon {
     width: 36px;
     height: 36px;
     vertical-align: middle;
+}
+
+button.more {
+    float: right;
 }

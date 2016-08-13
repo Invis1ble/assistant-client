@@ -7,6 +7,7 @@ import { provideAuth } from 'angular2-jwt/angular2-jwt';
 
 import { MdButtonModule } from '@angular2-material/button';
 import { MdCardModule } from '@angular2-material/card';
+import { MdMenuModule } from '@angular2-material/menu';
 import { MdIconModule } from '@angular2-material/icon';
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdInputModule } from '@angular2-material/input';
@@ -33,6 +34,7 @@ import { JwtLocalStorage } from './users/shared/jwt-local-storage';
         HttpModule,
         MdToolbarModule,
         MdCardModule,
+        MdMenuModule,
         MdButtonModule,
         MdInputModule,
         MdIconModule,

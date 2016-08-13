@@ -1,5 +1,13 @@
 <md-card>
     <md-card-title>
+        <button class="more" md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu x-position="before" #menu="mdMenu">
+            <button md-menu-item>Редактировать</button>
+            <button md-menu-item>Удалить</button>
+        </md-menu>
+
         {{ task.title }}
     </md-card-title>
     <md-card-content *ngIf="task.description">
