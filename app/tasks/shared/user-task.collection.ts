@@ -21,10 +21,6 @@ export class UserTaskCollection extends SortableCollection<TaskModel> {
         this.links = links;
     }
 
-    getLatest() {
-        return this.items[0];
-    }
-
     sort() {
         this.items.sort((task1: TaskModel, task2: TaskModel) => task2.createdAt - task1.createdAt);
     }
