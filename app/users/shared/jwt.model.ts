@@ -1,4 +1,4 @@
 export class JwtModel {
     token: string;
-    data: any[];
+    data: any;
 }
