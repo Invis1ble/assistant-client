@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
+import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
-import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle/progress-circle';
+import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
+import 'rxjs/add/operator/finally';
 
 import { UserModel } from '../shared/user.model';
 import { JwtModel } from '../shared/jwt.model';
@@ -45,22 +46,14 @@ export class LoginFormComponent {
         });
     }
 
-    onSubmit() {
-        this.error = null;
-        this.pending = true;
-        this.logIn(this.form.value);
-    }
-
     logIn(user: UserModel) {
         this.tokenService.getToken(user)
+            .finally(() => this.pending = false)
             .subscribe(
                 (jwt: JwtModel) => {
                     this.onLoggedIn.emit(jwt);
-                    this.pending = false;
                 },
                 (error: any) => {
-                    this.pending = false;
-
                     if (401 === error.status) {
                         this.error = 'Неверное имя пользователя или пароль.';
                         return;
@@ -69,5 +62,11 @@ export class LoginFormComponent {
                     this.error = `${error.statusText}.`;
                 }
             );
+    }
+
+    onSubmit() {
+        this.error = null;
+        this.pending = true;
+        this.logIn(this.form.value);
     }
 }

@@ -4,6 +4,7 @@ import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
+import 'rxjs/add/operator/finally';
 
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
@@ -52,13 +53,12 @@ export class TaskFormComponent {
 
     saveTask(task: TaskModel) {
         this.taskService.saveTask(task, this.user.tasks.getSelfUrl())
+            .finally(() => this.pending = false)
             .subscribe(
                 (task: TaskModel) => {
                     this.onSaved.emit(task);
-                    this.pending = false;
                 },
                 (error: any) => {
-                    this.pending = false;
                     this.error = `${error.statusText}.`;
                 }
             );
