@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from "rxjs/Rx";
 import 'rxjs/add/observable/interval';
@@ -16,14 +13,6 @@ import { TaskService } from '../shared/task.service';
     templateUrl: 'app/tasks/task-list-item/task-list-item.component.html',
     styleUrls: [
         'app/tasks/task-list-item/task-list-item.component.css'
-    ],
-    directives: [
-        MD_BUTTON_DIRECTIVES,
-        MD_CARD_DIRECTIVES,
-        MdIcon
-    ],
-    providers: [
-        MdIconRegistry
     ],
     pipes: [
         DurationPipe

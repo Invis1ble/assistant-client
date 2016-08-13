@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
-import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
 import { AuthService } from '../../shared/auth.service';
 import { TaskFormComponent } from '../task-form/task-form.component';
@@ -15,13 +13,8 @@ import { UserModel } from '../../users/shared/user.model';
         'app/tasks/task-list/task-list.component.css'
     ],
     directives: [
-        MD_BUTTON_DIRECTIVES,
-        MdIcon,
         TaskFormComponent,
         TaskListItemComponent
-    ],
-    providers: [
-        MdIconRegistry
     ],
 })
 export class TaskListComponent implements OnInit {

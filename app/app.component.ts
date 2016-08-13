@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
@@ -9,7 +8,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
         'app/app.component.css'
     ],
     directives: [
-        MD_TOOLBAR_DIRECTIVES,
         ROUTER_DIRECTIVES
     ]
 })

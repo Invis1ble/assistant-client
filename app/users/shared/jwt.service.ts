@@ -22,10 +22,10 @@ export class JwtService extends AbstractService {
         });
 
         return this.http
-            .post('http://assistant/app_dev.php/api/tokens', JSON.stringify({
+            .post('http://assistant/app_dev.php/api/tokens', {
                 username: user.username,
                 password: user.password
-            }), {
+            }, {
                 headers: headers
             })
             .map(this.extractData)

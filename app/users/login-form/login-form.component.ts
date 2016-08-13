@@ -1,10 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
-import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
-import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 
 import { UserModel } from '../shared/user.model';
@@ -18,16 +13,7 @@ import { JwtService } from '../shared/jwt.service';
         'app/users/login-form/login-form.component.css'
     ],
     providers: [
-        JwtService,
-        MdIconRegistry
-    ],
-    directives: [
-        MD_BUTTON_DIRECTIVES,
-        MD_CARD_DIRECTIVES,
-        MD_INPUT_DIRECTIVES,
-        MD_PROGRESS_CIRCLE_DIRECTIVES,
-        MdIcon,
-        REACTIVE_FORM_DIRECTIVES
+        JwtService
     ]
 })
 export class LoginFormComponent {

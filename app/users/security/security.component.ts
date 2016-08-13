@@ -28,7 +28,7 @@ export class SecurityComponent {
 
         this.authService.setLoggedIn(jwt);
 
-        if (null === requestedUrl) {
+        if (undefined === requestedUrl) {
             requestedUrl = '';
         }
 

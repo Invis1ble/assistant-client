@@ -1,10 +1,10 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { SecurityComponent } from './users/security/security.component';
 import { AuthGuard } from './shared/auth-guard.service';
 
-const routes: RouterConfig = [
+const appRoutes: Routes = [
     {
         path: '',
         redirectTo: '/tasks',
@@ -21,6 +21,4 @@ const routes: RouterConfig = [
     }
 ];
 
-export const APP_ROUTER_PROVIDER = [
-    provideRouter(routes)
-];
+export const routing = RouterModule.forRoot(appRoutes);

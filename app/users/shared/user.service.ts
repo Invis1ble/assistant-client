@@ -9,6 +9,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
+import 'rxjs/add/operator/do';
+
 import { AbstractService } from '../../shared/abstract.service';
 import { TaskService } from '../../tasks/shared/task.service';
 import { UserModel } from './user.model';

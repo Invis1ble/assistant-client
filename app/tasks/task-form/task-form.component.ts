@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup, FormBuilder, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
-import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
-import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 
 import { TaskModel } from '../shared/task.model';
@@ -15,16 +11,6 @@ import { UserModel } from '../../users/shared/user.model';
     templateUrl: 'app/tasks/task-form/task-form.component.html',
     styleUrls: [
         'app/tasks/task-form/task-form.component.css'
-    ],
-    providers: [
-        MdIconRegistry
-    ],
-    directives: [
-        MD_BUTTON_DIRECTIVES,
-        MD_INPUT_DIRECTIVES,
-        MD_PROGRESS_CIRCLE_DIRECTIVES,
-        MdIcon,
-        REACTIVE_FORM_DIRECTIVES
     ]
 })
 export class TaskFormComponent {
