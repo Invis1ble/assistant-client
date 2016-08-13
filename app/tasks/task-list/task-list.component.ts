@@ -25,7 +25,7 @@ import { UserModel } from '../../users/shared/user.model';
     ],
 })
 export class TaskListComponent implements OnInit {
-    showingTaskForm = true;
+    showingTaskForm = false;
     user = new UserModel();
 
     constructor(

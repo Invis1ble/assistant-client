@@ -1,22 +1,35 @@
-<md-card *ngIf="task">
-    <md-card-title>{{ task.id ? 'Редактирование задачи' : 'Новая задача' }}</md-card-title>
-    <md-card-content>
-        <form>
-            <div class="form-group">
-                <md-input name="title" placeholder="Заголовок" [(ngModel)]="task.title"></md-input>
+<form class="task-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <md-card *ngIf="task">
+        <md-card-title>{{ task.id ? 'Редактирование задачи' : 'Новая задача' }}</md-card-title>
+        <md-card-content>
+            <div class="form-group"
+                 [class.has-error]="!form.controls.title.valid && !form.controls.title.pristine">
+                <md-input type="text" placeholder="Заголовок" formControlName="title" [disabled]="pending">
+                </md-input>
+                <md-hint *ngIf="form.controls.title.hasError('required')">Введите заголовок</md-hint>
             </div>
-            <div class="form-group">
-                <md-input name="description" placeholder="Описание" [(ngModel)]="task.description"></md-input>
-            </div>
-            <div class="form-group">
-                <md-input type="number" min="5.00" step="0.10" name="rate" placeholder="Рейт" [(ngModel)]="task.rate">
-                    <span md-prefix>$</span>
+            <div class="form-group"
+                 [class.has-error]="!form.controls.description.valid && !form.controls.description.pristine">
+                <md-input type="text" placeholder="Описание" formControlName="description" [disabled]="pending">
                 </md-input>
             </div>
-        </form>
-    </md-card-content>
-    <md-card-actions align="end">
-        <button md-button color="primary" (click)="cancel()">ОТМЕНА</button>
-        <button md-button color="primary" (click)="save()">СОХРАНИТЬ</button>
-    </md-card-actions>
-</md-card>
+            <div class="form-group"
+                 [class.has-error]="!form.controls.rate.valid && !form.controls.rate.pristine">
+                <md-input type="number" min="5.00" step="0.10" placeholder="Рейт" formControlName="rate"
+                          [disabled]="pending">
+                    <span md-prefix>$</span>
+                </md-input>
+                <md-hint *ngIf="form.controls.rate.hasError('required')">Введите рейт</md-hint>
+            </div>
+            <div class="form-error" *ngIf="error">
+                <md-icon>error</md-icon>
+                {{ error }}
+            </div>
+        </md-card-content>
+        <md-card-actions align="end">
+            <md-spinner *ngIf="pending"></md-spinner>
+            <button type="button" md-button color="primary" (click)="cancel()">ОТМЕНА</button>
+            <button type="submit" md-button color="primary" [disabled]="!form.valid || pending">СОХРАНИТЬ</button>
+        </md-card-actions>
+    </md-card>
+</form>
