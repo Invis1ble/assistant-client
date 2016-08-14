@@ -41,7 +41,7 @@ export class TaskService extends AbstractService {
 
     saveTask(task: TaskModel, url: string): Observable<TaskModel> {
         if (task.id) {
-            // return this.patch();
+            return this.patch(task, url);
         }
 
         return this.post(task, url);
@@ -107,6 +107,18 @@ export class TaskService extends AbstractService {
             })
             .map(this.createModel)
             .toArray();
+    }
+
+    private patch(task: TaskModel, url: string): Observable<TaskModel> {
+        return this.authHttp
+            .patch(url, JSON.stringify({
+                title: task.title,
+                description: task.description,
+                rate: task.rate
+            }))
+            .map(this.extractLocation)
+            .mergeMap((url) => this.getTask(url))
+            .catch(this.handleError);
     }
 
     private post(task: TaskModel, url: string): Observable<TaskModel> {

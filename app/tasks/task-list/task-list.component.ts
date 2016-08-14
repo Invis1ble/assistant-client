@@ -18,8 +18,9 @@ import { UserModel } from '../../users/shared/user.model';
     ],
 })
 export class TaskListComponent implements OnInit {
-    showingTaskForm = false;
+    private showingTaskForm = false;
     user = new UserModel();
+    task: TaskModel;
 
     constructor(
         private authService: AuthService
@@ -28,6 +29,7 @@ export class TaskListComponent implements OnInit {
     }
 
     addNewTask() {
+        this.task = new TaskModel();
         this.showTaskForm();
     }
 
@@ -51,8 +53,13 @@ export class TaskListComponent implements OnInit {
         this.hideTaskForm();
     }
 
+    onTaskEdit(task: TaskModel) {
+        this.task = task;
+        this.showTaskForm();
+    }
+
     onTaskSaved(task: TaskModel) {
-        this.user.tasks.add(task);
+        this.user.tasks.update(task);
         this.hideTaskForm();
     }
 

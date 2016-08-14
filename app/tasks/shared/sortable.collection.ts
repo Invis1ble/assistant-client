@@ -10,6 +10,21 @@ export abstract class SortableCollection<T> implements Iterable<T> {
         this.sort();
     }
 
+    update(item: T) {
+        let replaced = this.getItems().some((currentItem, i, items) => {
+            if (currentItem.id === item.id) {
+                items[i] = item;
+                return true;
+            }
+        });
+
+        if (replaced) {
+            this.sort();
+        } else {
+            this.add(item);
+        }
+    }
+
     getItem(index: number): T {
         return this.items[index];
     }

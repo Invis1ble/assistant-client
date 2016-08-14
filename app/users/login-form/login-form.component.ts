@@ -19,7 +19,7 @@ import { JwtService } from '../shared/jwt.service';
 export class LoginFormComponent {
     error: string;
     form: FormGroup;
-    @Output() onLoggedIn = new EventEmitter();
+    @Output() onLoggedIn = new EventEmitter<JwtModel>();
     pending = false;
 
     constructor(

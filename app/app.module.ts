@@ -25,6 +25,7 @@ import { TaskService } from './tasks/shared/task.service';
 import { PeriodService } from './tasks/shared/period.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
+import { DurationPipe } from './duration.pipe';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { JwtLocalStorage } from './users/shared/jwt-local-storage';
     declarations: [
         AppComponent,
         SecurityComponent,
-        TaskListComponent
+        TaskListComponent,
+        DurationPipe
     ],
     providers: [
         AuthGuard,

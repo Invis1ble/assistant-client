@@ -6,8 +6,12 @@
                      *ngIf="showingTaskForm"
                      (onSaved)="onTaskSaved($event)"
                      (onCanceled)="onFormCanceled($event)"
+                     [task]="task"
                      [user]="user">
 </assistant-task-form>
 
-<assistant-task-list-item class="task-list-item-layout" *ngFor="let task of user.tasks" [task]="task">
+<assistant-task-list-item class="task-list-item-layout"
+                          *ngFor="let task of user.tasks"
+                          (onTaskEdit)="onTaskEdit($event)"
+                          [task]="task">
 </assistant-task-list-item>

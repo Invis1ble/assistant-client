@@ -4,8 +4,8 @@
             <md-icon>more_vert</md-icon>
         </button>
         <md-menu x-position="before" #menu="mdMenu">
-            <button md-menu-item>Редактировать</button>
-            <button md-menu-item>Удалить</button>
+            <button md-menu-item (click)="editTask()">Редактировать</button>
+            <button md-menu-item (click)="deleteTask()">Удалить</button>
         </md-menu>
 
         {{ task.title }}

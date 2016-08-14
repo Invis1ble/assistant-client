@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 
@@ -13,32 +13,46 @@ import { UserModel } from '../../users/shared/user.model';
         'app/tasks/task-form/task-form.component.css'
     ]
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnInit {
     error: string;
     form: FormGroup;
-    @Output() onSaved = new EventEmitter();
+    @Output() onSaved = new EventEmitter<TaskModel>();
     @Output() onCanceled = new EventEmitter();
     pending = false;
-    task = new TaskModel();
+    @Input() task: TaskModel;
     @Input() user: UserModel;
 
     constructor(
         private taskService: TaskService,
         private formBuilder: FormBuilder
     ) {
-        this.form = formBuilder.group({
+
+    }
+
+    cancel() {
+        this.onCanceled.emit();
+    }
+
+    ngOnInit() {
+        this.form = this.formBuilder.group({
             title: [this.task.title, Validators.required],
             description: [this.task.description],
             rate: [this.task.rate, Validators.required]
         });
     }
 
-    cancel() {
-        this.onCanceled.emit(null);
-    }
-
     saveTask(task: TaskModel) {
-        this.taskService.saveTask(task, this.user.tasks.getSelfUrl())
+        let url;
+
+        task.id = this.task.id;
+
+        if (task.id) {
+            url = this.user.tasks.getEntityUrl(task);
+        } else {
+            url = this.user.tasks.getSelfUrl();
+        }
+
+        this.taskService.saveTask(task, url)
             .finally(() => this.pending = false)
             .subscribe(
                 (task: TaskModel) => {
