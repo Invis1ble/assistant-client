@@ -49,17 +49,17 @@ export class TaskService extends AbstractService {
 
     toggleRun(task: TaskModel): Observable<TaskModel> {
         if (task.isActive) {
-            let period = task.periods.getLatest();
+            let period = <PeriodModel>task.periods.getLatest();
 
             period.finishedAt = Date.now();
             
-            return this.periodService.savePeriod(period, task.periods.getEntityUrl(period))
+            return this.periodService.savePeriod(period, task.periods.getUrl(period))
                 .map((period: PeriodModel) => {
                     return task;
                 });
         }
         
-        return this.periodService.savePeriod(new PeriodModel(null, Date.now(), null), task.periods.getSelfUrl())
+        return this.periodService.savePeriod(new PeriodModel(null, Date.now(), null), task.periods.getUrl())
             .map((period: PeriodModel) => {
                 task.periods.add(period);
                 return task;

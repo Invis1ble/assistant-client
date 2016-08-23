@@ -10,7 +10,7 @@ export class TaskModel {
     periods: TaskPeriodCollection = new TaskPeriodCollection();
 
     get isActive(): boolean {
-        let latestPeriod = this.periods.getLatest();
+        let latestPeriod = <PeriodModel>this.periods.getLatest();
 
         if (undefined === latestPeriod) {
             return false;

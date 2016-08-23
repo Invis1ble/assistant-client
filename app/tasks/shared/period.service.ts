@@ -9,6 +9,7 @@ import 'rxjs/add/operator/switchMap';
 import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { TaskPeriodCollection } from './task-period.collection';
+import { AbstractModelCollectionLinks } from './abstract-model-collection.links';
 
 @Injectable()
 export class PeriodService extends AbstractService {

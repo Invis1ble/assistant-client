@@ -1,6 +1,5 @@
-import { Link } from './link';
+import { AbstractModelCollectionLinks } from './abstract-model-collection.links';
 
-export interface TaskPeriodLinks {
-    self: Link,
-    entity: Link
+export interface TaskPeriodLinks extends AbstractModelCollectionLinks {
+
 }

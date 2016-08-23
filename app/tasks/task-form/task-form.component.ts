@@ -47,9 +47,9 @@ export class TaskFormComponent implements OnInit {
         task.id = this.task.id;
 
         if (task.id) {
-            url = this.user.tasks.getEntityUrl(task);
+            url = this.user.tasks.getUrl(task);
         } else {
-            url = this.user.tasks.getSelfUrl();
+            url = this.user.tasks.getUrl();
         }
 
         this.taskService.saveTask(task, url)
