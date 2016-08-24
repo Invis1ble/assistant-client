@@ -55,8 +55,7 @@ import { DurationPipe } from './duration.pipe';
         TaskService,
         PeriodService,
         provideAuth({
-            // TODO: https://github.com/auth0/angular2-jwt/issues/125
-            // globalHeaders: [{'Content-Type': 'application/json'}],
+            globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
             tokenGetter: () => JSON.parse(localStorage.getItem(TASK_DI_CONFIG.jwtName)).token,
             tokenName: TASK_DI_CONFIG.jwtName,
