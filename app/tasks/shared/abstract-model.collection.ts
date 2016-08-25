@@ -23,7 +23,7 @@ export abstract class AbstractModelCollection implements Iterable<AbstractModel>
     }
 
     getUrl(model?: AbstractModel): string {
-        if (null === model) {
+        if (undefined === model) {
             return this.links.self.href;
         }
 
