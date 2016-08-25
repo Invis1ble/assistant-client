@@ -1,6 +1,7 @@
 {
   "name": "assistant-client",
   "version": "0.1.0",
+  "repository": "Invis1ble/assistant-client",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
