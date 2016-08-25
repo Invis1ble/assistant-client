@@ -7,7 +7,4 @@
 
 md-input {
     width: 100%;
-
-    /* TODO: remove after https://github.com/angular/material2/pull/871 release */
-    overflow: inherit;
 }
