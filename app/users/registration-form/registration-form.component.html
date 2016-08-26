@@ -1,18 +1,29 @@
-<form class="login-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+<form class="registration-form" (ngSubmit)="onSubmit()" [formGroup]="form">
     <md-card>
-        <md-card-title>Авторизация</md-card-title>
+        <md-card-title>Регистрация</md-card-title>
         <md-card-content>
             <div class="form-group"
-                 [class.has-error]="!form.controls.username.valid && !form.controls.username.pristine">
+                 [class.has-error]="hasError('username')">
                 <md-input type="text" placeholder="Имя пользователя" formControlName="username"
                           [disabled]="pending"></md-input>
                 <md-hint *ngIf="form.controls.username.hasError('required')">Введите имя пользователя</md-hint>
             </div>
             <div class="form-group"
-                 [class.has-error]="!form.controls.password.valid && !form.controls.password.pristine">
+                 [class.has-error]="hasError('password')">
                 <md-input type="password" placeholder="Пароль" formControlName="password"
                           [disabled]="pending"></md-input>
                 <md-hint *ngIf="form.controls.password.hasError('required')">Введите пароль</md-hint>
+            </div>
+            <div class="form-group"
+                 [class.has-error]="hasError('passwordConfirmation')">
+                <md-input type="password" placeholder="Пароль ещё раз" formControlName="passwordConfirmation"
+                          [disabled]="pending"></md-input>
+                <md-hint *ngIf="form.controls.passwordConfirmation.hasError('required')">
+                    Подтвердите пароль
+                </md-hint>
+                <md-hint *ngIf="form.controls.passwordConfirmation.hasError('equalTo')">
+                    Пароли не свпадают
+                </md-hint>
             </div>
             <div class="form-error" *ngIf="error">
                 <md-icon>error</md-icon>
@@ -20,10 +31,8 @@
             </div>
         </md-card-content>
         <md-card-actions align="end">
-            <a routerLink="/register" align="start" md-button color="primary">РЕГИСТРАЦИЯ</a>
-            <md-spinner *ngIf="pending"></md-spinner>
             <button type="submit" md-button color="primary" [disabled]="!form.valid || pending" align="end">
-                ВОЙТИ
+                ЗАРЕГИСТРИРОВАТЬСЯ
             </button>
         </md-card-actions>
     </md-card>

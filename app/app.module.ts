@@ -17,9 +17,11 @@ import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SecurityComponent } from './users/security/security.component';
+import { RegistrationComponent } from './users/registration/registration.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
+import { AnonymousGuard } from './shared/anonymous-guard.service';
 import { UserService } from './users/shared/user.service';
 import { TaskService } from './tasks/shared/task.service';
 import { PeriodService } from './tasks/shared/period.service';
@@ -45,19 +47,30 @@ import { DurationPipe } from './duration.pipe';
     declarations: [
         AppComponent,
         SecurityComponent,
+        RegistrationComponent,
         TaskListComponent,
         DurationPipe
     ],
     providers: [
         AuthGuard,
         AuthService,
+        AnonymousGuard,
         UserService,
         TaskService,
         PeriodService,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
-            tokenGetter: () => JSON.parse(localStorage.getItem(TASK_DI_CONFIG.jwtName)).token,
+            // tokenGetter: () => JSON.parse(localStorage.getItem(TASK_DI_CONFIG.jwtName)).token,
+            tokenGetter: () => {
+                let jwt = localStorage.getItem(TASK_DI_CONFIG.jwtName);
+
+                if (null === jwt) {
+                    return null;
+                }
+
+                return JSON.parse(jwt).token;
+            },
             tokenName: TASK_DI_CONFIG.jwtName,
         }),
         { provide: APP_CONFIG, useValue: TASK_DI_CONFIG },

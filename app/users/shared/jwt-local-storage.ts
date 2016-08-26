@@ -13,7 +13,13 @@ export class JwtLocalStorage implements JwtStorage {
     }
 
     getToken(): JwtModel {
-        return JSON.parse(localStorage.getItem(this.config.jwtName));
+        let jwt = localStorage.getItem(this.config.jwtName);
+
+        if (null === jwt) {
+            return null;
+        }
+
+        return JSON.parse(jwt);
     }
 
     setToken(jwt: JwtModel) {
