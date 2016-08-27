@@ -3,31 +3,42 @@
         <md-card-title>Регистрация</md-card-title>
         <md-card-content>
             <div class="form-group"
-                 [class.has-error]="hasError('username')">
+                 [class.has-error]="!isControlValid('username')">
                 <md-input type="text" placeholder="Имя пользователя" formControlName="username"
                           [disabled]="pending"></md-input>
-                <md-hint *ngIf="form.controls.username.hasError('required')">Введите имя пользователя</md-hint>
+                <md-input-error *ngIf="hasControlError('username', 'required')">
+                    Введите имя пользователя
+                </md-input-error>
+                <md-input-error *ngIf="hasControlError('username', 'minlength')">
+                    Имя пользователя должно быть не менее {{ getControlError('username', 'minlength').requiredLength }} символов
+                </md-input-error>
+                <md-input-error *ngFor="let error of errors.children?.username?.errors">{{ error }}</md-input-error>
             </div>
             <div class="form-group"
-                 [class.has-error]="hasError('password')">
-                <md-input type="password" placeholder="Пароль" formControlName="password"
+                 [class.has-error]="!isControlValid('plainPassword[first]')">
+                <md-input type="password" placeholder="Пароль" formControlName="plainPassword[first]"
                           [disabled]="pending"></md-input>
-                <md-hint *ngIf="form.controls.password.hasError('required')">Введите пароль</md-hint>
+                <md-input-error *ngIf="hasControlError('plainPassword[first]', 'required')">
+                    Введите пароль
+                </md-input-error>
+                <md-input-error *ngIf="hasControlError('plainPassword[first]', 'minlength')">
+                    Пароль должен быть не менее {{ getControlError('plainPassword[first]', 'minlength').requiredLength }} символов
+                </md-input-error>
             </div>
             <div class="form-group"
-                 [class.has-error]="hasError('passwordConfirmation')">
-                <md-input type="password" placeholder="Пароль ещё раз" formControlName="passwordConfirmation"
+                 [class.has-error]="!isControlValid('plainPassword[second]')">
+                <md-input type="password" placeholder="Пароль ещё раз" formControlName="plainPassword[second]"
                           [disabled]="pending"></md-input>
-                <md-hint *ngIf="form.controls.passwordConfirmation.hasError('required')">
+                <md-input-error *ngIf="hasControlError('plainPassword[second]', 'required')">
                     Подтвердите пароль
-                </md-hint>
-                <md-hint *ngIf="form.controls.passwordConfirmation.hasError('equalTo')">
+                </md-input-error>
+                <md-input-error *ngIf="hasControlError('plainPassword[second]', 'equalTo')">
                     Пароли не свпадают
-                </md-hint>
+                </md-input-error>
             </div>
-            <div class="form-error" *ngIf="error">
+            <div class="form-error" *ngIf="errors.errors?.length">
                 <md-icon>error</md-icon>
-                {{ error }}
+                {{ errors.errors[0] }}
             </div>
         </md-card-content>
         <md-card-actions align="end">

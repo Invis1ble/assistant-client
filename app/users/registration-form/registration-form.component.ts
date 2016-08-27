@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
 import { AppValidators } from '../../shared/app-validators';
+import { FormErrors } from '../../shared/form-errors';
+import { NewUserModel } from '../shared/new-user.model';
 import { UserModel } from '../shared/user.model';
 import { UserService } from '../shared/user.service';
 
@@ -14,44 +17,89 @@ import { UserService } from '../shared/user.service';
     ]
 })
 export class RegistrationFormComponent {
-    private error: string;
+    private errors: FormErrors;
     private form: FormGroup;
     @Output() onRegister = new EventEmitter<UserModel>();
     private pending = false;
-    private user = new UserModel();
+    private user = new NewUserModel();
 
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder
     ) {
+        this.resetErrors();
+
         this.form = formBuilder.group({
-            username: [this.user.username, Validators.required],
-            password: [this.user.password, Validators.required],
-            passwordConfirmation: [this.user.password, [Validators.required, AppValidators.equalTo('password')]]
+            username: [this.user.username, [
+                Validators.required,
+                Validators.minLength(2)
+            ]],
+            'plainPassword[first]': [this.user.plainPassword.first, [
+                Validators.required,
+                Validators.minLength(6)
+            ]],
+            'plainPassword[second]': [this.user.plainPassword.second, [
+                Validators.required,
+                AppValidators.equalTo('plainPassword[first]')
+            ]]
         });
     }
 
+    private getControlError(controlName: string, errorCode: string): string {
+        return this.form.controls[controlName].getError(errorCode);
+    }
+
+    private hasControlError(controlName: string, errorCode: string): boolean {
+        return this.form.controls[controlName].hasError(errorCode);
+    }
+
+    private isControlValid(controlName: string): boolean {
+        return !(
+            this.errors.children &&
+            this.errors.children[controlName] &&
+            this.errors.children[controlName].errors &&
+            this.errors.children[controlName].errors.length
+        ) && (this.form.controls[controlName].valid || this.form.controls[controlName].pristine);
+    }
+
     private onSubmit() {
-        this.error = null;
+        this.resetErrors();
         this.pending = true;
-        this.register(this.form.value);
+
+        this.user.username = this.form.value.username;
+        this.user.plainPassword.first = this.form.value['plainPassword[first]'];
+        this.user.plainPassword.second = this.form.value['plainPassword[second]'];
+
+        this.register(this.user);
     }
 
-    private hasError(name: string): boolean {
-        return !this.form.controls[name].valid && !this.form.controls[name].pristine;
-    }
-
-    private register(user: UserModel) {
-        this.userService.saveUser(user)
+    private register(user: NewUserModel) {
+        this.userService.registerUser(user)
             .finally(() => this.pending = false)
             .subscribe(
                 (user: UserModel) => {
                     this.onRegister.emit(user);
                 },
-                (error: any) => {
-                    // todo: improve validation
-                    this.error = `${error.statusText}.`;
+                (response: Response) => {
+                    if (400 === response.status) {
+                        this.setErrors(response.json().errors);
+                        return;
+                    }
+
+                    if (undefined === this.errors.errors) {
+                        this.errors.errors = [];
+                    }
+
+                    this.errors.errors.push(`${response.statusText}.`);
                 }
             );
+    }
+
+    private resetErrors() {
+        this.setErrors({});
+    }
+
+    private setErrors(errors: FormErrors) {
+        this.errors = errors;
     }
 }

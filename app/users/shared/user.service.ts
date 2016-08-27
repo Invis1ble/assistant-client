@@ -15,6 +15,7 @@ import { APP_CONFIG, AppConfig } from '../../app-config';
 import { AbstractService } from '../../shared/abstract.service';
 import { TaskService } from '../../tasks/shared/task.service';
 import { UserModel } from './user.model';
+import { NewUserModel } from './new-user.model';
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -35,24 +36,29 @@ export class UserService extends AbstractService {
             .catch(this.handleError);
     }
 
-    saveUser(user: UserModel): Observable<UserModel> {
-        if (user.id) {
-            return this.patch(user, this.config.apiEndpoint.href.replace('/{id}', ''));
-        }
-
-        return this.post(
-            <UserModel & { passwordConfirmation: string }>user,
-            this.config.apiEndpoint.href.replace('/{id}', '')
-        );
+    registerUser(user: NewUserModel): Observable<UserModel> {
+        return this.http
+            .post(this.config.apiEndpoint.href.replace('/{id}', ''), user)
+            .map(this.extractLocation)
+            .mergeMap((url) => this.getUser(url))
+            .catch(this.handleError);
     }
 
-    private createModel(data: any) {
+    saveUser(user: UserModel): Observable<UserModel> {
+        return this.patch(user, this.config.apiEndpoint.href.replace('/{id}', ''));
+    }
+
+    private createModel(data: UserModel) {
         let userModel = new UserModel();
 
-        userModel.id = data.id;
-        userModel.username = data.username;
-        userModel.createdAt = data.createdAt;
-        userModel.tasks = data.tasks;
+        [
+            'id',
+            'username',
+            'createdAt',
+            'tasks',
+        ].forEach((propertyName) => {
+            userModel[propertyName] = data[propertyName];
+        });
 
         return userModel;
     }
@@ -83,18 +89,6 @@ export class UserService extends AbstractService {
         return this.authHttp
             .patch(url, JSON.stringify({
                 username: user.username
-            }))
-            .map(this.extractLocation)
-            .mergeMap((url) => this.getUser(url))
-            .catch(this.handleError);
-    }
-
-    private post(user: UserModel & { passwordConfirmation: string }, url: string): Observable<UserModel> {
-        return this.http
-            .post(url, JSON.stringify({
-                username: user.username,
-                password: user.password,
-                passwordConfirmation: user.passwordConfirmation
             }))
             .map(this.extractLocation)
             .mergeMap((url) => this.getUser(url))

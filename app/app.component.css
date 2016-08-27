@@ -18,11 +18,11 @@ md-toolbar.md-primary a {
     background-color: #f44336;
 }
 
-:host >>> .form-group:not(.has-error) md-hint {
+:host >>> .form-group:not(.has-error) md-input-error {
     display: none;
 }
 
-:host >>> .form-group.has-error md-hint {
+:host >>> .form-group.has-error md-input-error {
     color: #f44336;
 }
 

@@ -24,7 +24,7 @@ export class JwtService extends AbstractService {
         return this.http
             .post('http://assistant/app_dev.php/api/tokens', {
                 username: user.username,
-                password: user.password
+                password: user.plainPassword
             }, {
                 headers: headers
             })
