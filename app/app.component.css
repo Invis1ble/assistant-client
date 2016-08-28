@@ -23,6 +23,7 @@ md-toolbar.md-primary a {
 }
 
 :host >>> .form-group.has-error md-input-error {
+    display: block;
     color: #f44336;
 }
 
