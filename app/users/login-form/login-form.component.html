@@ -3,21 +3,33 @@
         <md-card-title>Авторизация</md-card-title>
         <md-card-content>
             <div class="form-group"
-                 [class.has-error]="!form.controls.username.valid && !form.controls.username.pristine">
+                 [class.has-error]="!isControlValid('username')">
                 <md-input type="text" placeholder="Имя пользователя" formControlName="username"
                           [disabled]="pending"></md-input>
-                <md-hint *ngIf="form.controls.username.hasError('required')">Введите имя пользователя</md-hint>
+                <md-input-error *ngIf="hasControlError('username', 'required')">
+                    Введите имя пользователя
+                </md-input-error>
+                <md-input-error *ngFor="let error of getControlErrors('username')">
+                    {{ error }}
+                </md-input-error>
             </div>
             <div class="form-group"
-                 [class.has-error]="!form.controls.password.valid && !form.controls.password.pristine">
+                 [class.has-error]="!isControlValid('password')">
                 <md-input type="password" placeholder="Пароль" formControlName="password"
                           [disabled]="pending"></md-input>
-                <md-hint *ngIf="form.controls.password.hasError('required')">Введите пароль</md-hint>
+                <md-input-error *ngIf="hasControlError('password', 'required')">
+                    Введите пароль
+                </md-input-error>
+                <md-input-error *ngFor="let error of getControlErrors('password')">
+                    {{ error }}
+                </md-input-error>
             </div>
-            <div class="form-error" *ngIf="error">
+            <md-form-error class="form-error" *ngIf="errors.errors?.length">
                 <md-icon>error</md-icon>
-                {{ error }}
-            </div>
+                <ul>
+                    <li class="error-text" *ngFor="let error of errors.errors">{{ error }}</li>
+                </ul>
+            </md-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <a routerLink="/register" align="start" md-button color="primary">РЕГИСТРАЦИЯ</a>

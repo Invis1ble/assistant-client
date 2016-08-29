@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
+import { AbstractFormComponent } from '../../shared/abstract-form.component';
 import { UserModel } from '../shared/user.model';
 import { JwtModel } from '../shared/jwt.model';
 import { JwtService } from '../shared/jwt.service';
@@ -16,43 +18,59 @@ import { JwtService } from '../shared/jwt.service';
         JwtService
     ]
 })
-export class LoginFormComponent {
-    error: string;
-    form: FormGroup;
+export class LoginFormComponent extends AbstractFormComponent {
     @Output() onLoggedIn = new EventEmitter<JwtModel>();
-    pending = false;
 
     constructor(
         private tokenService: JwtService,
         private formBuilder: FormBuilder
     ) {
+        super();
+
         this.form = formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
     }
 
-    logIn(user: UserModel) {
+    protected logIn(user: UserModel) {
         this.tokenService.getToken(user)
-            .finally(() => this.pending = false)
+            .finally(() => {
+                this.onResponse();
+            })
             .subscribe(
                 (jwt: JwtModel) => {
                     this.onLoggedIn.emit(jwt);
                 },
-                (error: any) => {
-                    if (401 === error.status) {
-                        this.error = 'Неверное имя пользователя или пароль.';
-                        return;
+                (response: Response) => {
+                    if (undefined === this.errors.errors) {
+                        this.errors.errors = [];
                     }
 
-                    this.error = `${error.statusText}.`;
+                    switch (response.status) {
+                        case 400:
+                            this.setErrors(response.json().errors);
+                            return;
+
+                        case 401:
+                            this.errors.errors.push('Неверное имя пользователя или пароль.');
+                            return;
+
+                        default:
+                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                    }
                 }
             );
     }
 
-    onSubmit() {
-        this.error = null;
-        this.pending = true;
-        this.logIn(this.form.value);
+    protected onSubmit() {
+        super.onSubmit();
+
+        let user = new UserModel();
+
+        user.username = this.form.value.username;
+        user.plainPassword = this.form.value.password;
+
+        this.logIn(user);
     }
 }
