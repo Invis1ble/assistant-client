@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
 import { AppValidators } from '../../shared/app-validators';
-import { FormErrors } from '../../shared/form-errors';
+import { AbstractFormComponent } from '../../shared/abstract-form.component';
 import { NewUserModel } from '../shared/new-user.model';
 import { UserModel } from '../shared/user.model';
 import { UserService } from '../shared/user.service';
@@ -16,18 +16,15 @@ import { UserService } from '../shared/user.service';
         'app/users/registration-form/registration-form.component.css'
     ]
 })
-export class RegistrationFormComponent {
-    private errors: FormErrors;
-    private form: FormGroup;
+export class RegistrationFormComponent extends AbstractFormComponent {
     @Output() onRegister = new EventEmitter<UserModel>();
-    private pending = false;
     private user = new NewUserModel();
 
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder
     ) {
-        this.resetErrors();
+        super();
 
         this.form = formBuilder.group({
             username: [this.user.username, [
@@ -45,55 +42,8 @@ export class RegistrationFormComponent {
         });
     }
 
-    private getControlError(controlName: string, errorCode: string): string {
-        return this.form.controls[controlName].getError(errorCode);
-    }
-
-    private getControlErrors(controlName: string): Array<Object> | null {
-        return this.getFieldErrors(this.errors, controlName);
-    }
-
-    private getFieldErrors(errors: FormErrors, path: string): Array<Object> | null {
-        if (undefined === errors.children) {
-            return null;
-        }
-
-        let segmentEnd = path.indexOf('[');
-
-        if (segmentEnd !== -1) {
-            let segment = path.substr(0, segmentEnd);
-
-            if (undefined === errors.children[segment]) {
-                return null;
-            }
-
-            return this.getFieldErrors(errors.children[segment], path.replace(/^\w+\[(\w*)]/, '$1'));
-        }
-
-        if (undefined === errors.children[path] || undefined === errors.children[path].errors) {
-            return null;
-        }
-
-        return errors.children[path].errors;
-    }
-
-    private hasControlError(controlName: string, errorCode: string): boolean {
-        return this.form.controls[controlName].hasError(errorCode);
-    }
-
-    private isControlValid(controlName: string): boolean {
-        if (this.form.controls[controlName].valid || this.form.controls[controlName].pristine) {
-            let errors = this.getControlErrors(controlName);
-
-            return errors === null || errors.length === 0;
-        }
-
-        return false;
-    }
-
-    private onSubmit() {
-        this.resetErrors();
-        this.pending = true;
+    protected onSubmit() {
+        super.onSubmit();
 
         this.user.username = this.form.value.username;
         this.user.plainPassword.first = this.form.value['plainPassword[first]'];
@@ -104,7 +54,9 @@ export class RegistrationFormComponent {
 
     private register(user: NewUserModel) {
         this.userService.registerUser(user)
-            .finally(() => this.pending = false)
+            .finally(() => {
+                this.onResponse();
+            })
             .subscribe(
                 (user: UserModel) => {
                     this.onRegister.emit(user);
@@ -122,13 +74,5 @@ export class RegistrationFormComponent {
                     this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
                 }
             );
-    }
-
-    private resetErrors() {
-        this.setErrors({});
-    }
-
-    private setErrors(errors: FormErrors) {
-        this.errors = errors;
     }
 }
