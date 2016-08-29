@@ -44,6 +44,16 @@ md-toolbar.md-primary a {
     height: auto;
 }
 
+:host >>> .form-error ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+:host >>> .form-error .error-text + .error-text {
+    margin-top: 20px;
+}
+
 :host >>> md-card-actions md-spinner {
     width: 24px;
     height: 24px;

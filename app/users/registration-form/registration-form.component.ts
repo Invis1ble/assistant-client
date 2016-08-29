@@ -119,7 +119,7 @@ export class RegistrationFormComponent {
                         this.errors.errors = [];
                     }
 
-                    this.errors.errors.push(`${response.statusText}.`);
+                    this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
                 }
             );
     }

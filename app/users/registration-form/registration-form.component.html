@@ -44,10 +44,12 @@
                     {{ error }}
                 </md-input-error>
             </div>
-            <div class="form-error" *ngIf="errors.errors?.length">
+            <md-form-error class="form-error" *ngIf="errors.errors?.length">
                 <md-icon>error</md-icon>
-                {{ errors.errors[0] }}
-            </div>
+                <ul>
+                    <li class="error-text" *ngFor="let error of errors.errors">{{ error }}</li>
+                </ul>
+            </md-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <md-spinner *ngIf="pending"></md-spinner>
