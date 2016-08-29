@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
+import { AbstractFormComponent } from '../../shared/abstract-form.component';
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
 import { UserModel } from '../../users/shared/user.model';
@@ -13,27 +15,22 @@ import { UserModel } from '../../users/shared/user.model';
         'app/tasks/task-form/task-form.component.css'
     ]
 })
-export class TaskFormComponent implements OnInit {
-    error: string;
-    form: FormGroup;
+export class TaskFormComponent extends AbstractFormComponent implements OnInit {
     @Output() onSaved = new EventEmitter<TaskModel>();
     @Output() onCanceled = new EventEmitter();
-    pending = false;
-    @Input() task: TaskModel;
-    @Input() user: UserModel;
+    @Input() private task: TaskModel;
+    @Input() private user: UserModel;
 
     constructor(
         private taskService: TaskService,
         private formBuilder: FormBuilder
     ) {
-
-    }
-
-    cancel() {
-        this.onCanceled.emit();
+        super();
     }
 
     ngOnInit() {
+        super.ngOnInit();
+
         this.form = this.formBuilder.group({
             title: [this.task.title, Validators.required],
             description: [this.task.description],
@@ -41,10 +38,25 @@ export class TaskFormComponent implements OnInit {
         });
     }
 
-    saveTask(task: TaskModel) {
-        let url;
+    protected cancel() {
+        this.onCanceled.emit();
+    }
+
+    protected onSubmit() {
+        super.onSubmit();
+
+        let task = new TaskModel();
 
         task.id = this.task.id;
+        task.title = this.form.value.title;
+        task.description = this.form.value.description;
+        task.rate = this.form.value.rate;
+
+        this.saveTask(task);
+    }
+
+    protected saveTask(task: TaskModel) {
+        let url;
 
         if (task.id) {
             url = this.user.tasks.getUrl(task);
@@ -53,20 +65,27 @@ export class TaskFormComponent implements OnInit {
         }
 
         this.taskService.saveTask(task, url)
-            .finally(() => this.pending = false)
+            .finally(() => {
+                this.onResponse();
+            })
             .subscribe(
                 (task: TaskModel) => {
                     this.onSaved.emit(task);
                 },
-                (error: any) => {
-                    this.error = `${error.statusText}.`;
+                (response: Response) => {
+                    if (undefined === this.errors.errors) {
+                        this.errors.errors = [];
+                    }
+
+                    switch (response.status) {
+                        case 400:
+                            this.setErrors(response.json().errors);
+                            return;
+
+                        default:
+                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                    }
                 }
             );
-    }
-
-    onSubmit() {
-        this.error = null;
-        this.pending = true;
-        this.saveTask(this.form.value);
     }
 }
