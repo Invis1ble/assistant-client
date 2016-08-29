@@ -62,16 +62,18 @@ export class RegistrationFormComponent extends AbstractFormComponent {
                     this.onRegister.emit(user);
                 },
                 (response: Response) => {
-                    if (400 === response.status) {
-                        this.setErrors(response.json().errors);
-                        return;
-                    }
-
                     if (undefined === this.errors.errors) {
                         this.errors.errors = [];
                     }
 
-                    this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                    switch (response.status) {
+                        case 400:
+                            this.setErrors(response.json().errors);
+                            return;
+
+                        default:
+                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                    }
                 }
             );
     }
