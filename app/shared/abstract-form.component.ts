@@ -1,66 +1,42 @@
-import { FormGroup } from '@angular/forms';
-import { OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 import { FormErrors } from './form-errors';
+import { isPresent } from '@angular/core/src/facade/lang';
+import isIterable = core.isIterable;
 
-export abstract class AbstractFormComponent implements OnInit {
-    protected errors: FormErrors;
+export abstract class AbstractFormComponent {
     protected form: FormGroup;
     protected pending: boolean = false;
-
-    public ngOnInit(): void {
-        this.errors = {};
-    }
+    protected submitted: boolean = false;
 
     protected beforeRequest(): void {
-        this.resetErrors();
         this.lockForm();
+        this.setSubmitted();
     }
 
-    protected getControlError(controlName: string, errorCode: string): string {
-        return this.form.controls[controlName].getError(errorCode);
+    protected getErrors(control: AbstractControl): Array<Object> {
+        return control.errors || [];
     }
 
-    protected getControlErrors(controlName: string): Array<Object> | null {
-        return this.getFieldErrors(this.errors, controlName);
-    }
-
-    protected getFieldErrors(errors: FormErrors, path: string): Array<Object> | null {
-        if (undefined === errors.children) {
-            return null;
+    protected hasError(control: AbstractControl, errorCode?: string): boolean {
+        if (isPresent(errorCode)) {
+            return control.hasError(errorCode);
         }
 
-        let segmentEnd = path.indexOf('[');
-
-        if (segmentEnd !== -1) {
-            let segment = path.substr(0, segmentEnd);
-
-            if (undefined === errors.children[segment]) {
-                return null;
-            }
-
-            return this.getFieldErrors(errors.children[segment], path.replace(/^\w+\[(\w*)]/, '$1'));
-        }
-
-        if (undefined === errors.children[path] || undefined === errors.children[path].errors) {
-            return null;
-        }
-
-        return errors.children[path].errors;
+        return null !== control.errors;
     }
 
-    protected hasControlError(controlName: string, errorCode: string): boolean {
-        return this.form.controls[controlName].hasError(errorCode);
+    protected isDisabled(control: AbstractControl): boolean {
+        return this.pending || (control.root === control &&
+            Object.values(this.form.controls).some((control: AbstractControl): boolean => control.invalid ));
     }
 
-    protected isControlValid(controlName: string): boolean {
-        if (this.form.controls[controlName].valid || this.form.controls[controlName].pristine) {
-            let errors = this.getControlErrors(controlName);
+    protected isSubmitted(): boolean {
+        return this.submitted;
+    }
 
-            return errors === null || errors.length === 0;
-        }
-
-        return false;
+    protected isValid(control: AbstractControl): boolean {
+        return control.valid || (control.pristine && !this.isSubmitted());
     }
 
     protected lockForm(): void {
@@ -75,12 +51,36 @@ export abstract class AbstractFormComponent implements OnInit {
         this.beforeRequest();
     }
 
-    protected resetErrors(): void {
-        this.setErrors({});
+    protected setErrors(control: AbstractControl, errors: FormErrors): void {
+        if (isPresent(errors.errors)) {
+            let controlErrors = {};
+
+            errors.errors.forEach((error) => {
+                controlErrors[error] = true;
+            });
+
+            control.setErrors(controlErrors);
+        }
+
+        if (isPresent(errors.children)) {
+            for (let name in errors.children) {
+                if (errors.children.hasOwnProperty(name)) {
+                    let child = control.get(name);
+
+                    if (null !== child) {
+                        this.setErrors(child, errors.children[name]);
+                    }
+                }
+            }
+        }
     }
 
-    protected setErrors(errors: FormErrors): void {
-        this.errors = errors;
+    protected setFormErrors(errors: FormErrors): void {
+        this.setErrors(this.form, errors);
+    }
+
+    protected setSubmitted(): void {
+        this.submitted = true;
     }
 
     protected unlockForm(): void {

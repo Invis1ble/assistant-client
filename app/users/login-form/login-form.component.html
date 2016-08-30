@@ -3,38 +3,31 @@
         <md-card-title>Авторизация</md-card-title>
         <md-card-content>
             <div class="form-group"
-                 [class.has-error]="!isControlValid('username')">
+                 [class.has-error]="!isValid(form.controls.username)">
                 <md-input type="text" placeholder="Имя пользователя" formControlName="username"
-                          [disabled]="pending"></md-input>
-                <md-input-error *ngIf="hasControlError('username', 'required')">
-                    Введите имя пользователя
-                </md-input-error>
-                <md-input-error *ngFor="let error of getControlErrors('username')">
-                    {{ error }}
+                          [disabled]="isDisabled(form.controls.username)"></md-input>
+                <md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">
+                    {{ error.key }}
                 </md-input-error>
             </div>
-            <div class="form-group"
-                 [class.has-error]="!isControlValid('password')">
+            <div class="form-group" [class.has-error]="!isValid(form.controls.password)">
                 <md-input type="password" placeholder="Пароль" formControlName="password"
-                          [disabled]="pending"></md-input>
-                <md-input-error *ngIf="hasControlError('password', 'required')">
-                    Введите пароль
-                </md-input-error>
-                <md-input-error *ngFor="let error of getControlErrors('password')">
-                    {{ error }}
+                          [disabled]="isDisabled(form.controls.password)"></md-input>
+                <md-input-error *ngFor="let error of getErrors(form.controls.password) | iterable">
+                    {{ error.key }}
                 </md-input-error>
             </div>
-            <md-form-error class="form-error" *ngIf="errors.errors?.length">
+            <md-form-error class="form-error" *ngIf="hasError(form)">
                 <md-icon>error</md-icon>
                 <ul>
-                    <li class="error-text" *ngFor="let error of errors.errors">{{ error }}</li>
+                    <li class="error-text" *ngFor="let error of getErrors(form) | iterable">{{ error.key }}</li>
                 </ul>
             </md-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <a routerLink="/register" align="start" md-button color="primary">РЕГИСТРАЦИЯ</a>
             <md-spinner *ngIf="pending"></md-spinner>
-            <button type="submit" md-button color="primary" [disabled]="!form.valid || pending" align="end">
+            <button type="submit" md-button color="primary" [disabled]="isDisabled(form)" align="end">
                 ВОЙТИ
             </button>
         </md-card-actions>

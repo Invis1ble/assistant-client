@@ -31,25 +31,29 @@ export class RegistrationFormComponent extends AbstractFormComponent {
                 Validators.required,
                 Validators.minLength(2)
             ]],
-            'plainPassword[first]': [this.user.plainPassword.first, [
-                Validators.required,
-                Validators.minLength(6)
-            ]],
-            'plainPassword[second]': [this.user.plainPassword.second, [
-                Validators.required,
-                AppValidators.equalTo('plainPassword[first]')
-            ]]
+            plainPassword: formBuilder.group({
+                first: [this.user.plainPassword.first, [
+                    Validators.required,
+                    Validators.minLength(6)
+                ]],
+                second: [this.user.plainPassword.second, [
+                    Validators.required,
+                    AppValidators.equalTo('plainPassword.first')
+                ]]
+            })
         });
     }
 
     protected onSubmit() {
         super.onSubmit();
 
-        this.user.username = this.form.value.username;
-        this.user.plainPassword.first = this.form.value['plainPassword[first]'];
-        this.user.plainPassword.second = this.form.value['plainPassword[second]'];
+        let newUser = new NewUserModel();
 
-        this.register(this.user);
+        newUser.username = this.form.value.username;
+        newUser.plainPassword.first = this.form.value.plainPassword.first;
+        newUser.plainPassword.second = this.form.value.plainPassword.second;
+
+        this.register(newUser);
     }
 
     private register(user: NewUserModel) {
@@ -62,18 +66,20 @@ export class RegistrationFormComponent extends AbstractFormComponent {
                     this.onRegister.emit(user);
                 },
                 (response: Response) => {
-                    if (undefined === this.errors.errors) {
-                        this.errors.errors = [];
-                    }
+                    let errors;
 
                     switch (response.status) {
                         case 400:
-                            this.setErrors(response.json().errors);
-                            return;
+                            errors = response.json().errors;
+                            break;
 
                         default:
-                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                            errors = {
+                                errors: [`${response.statusText ? response.statusText : 'Unknown Error'}.`]
+                            };
                     }
+
+                    this.setFormErrors(errors);
                 }
             );
     }

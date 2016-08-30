@@ -2,58 +2,41 @@
     <md-card>
         <md-card-title>Регистрация</md-card-title>
         <md-card-content>
-            <div class="form-group"
-                 [class.has-error]="!isControlValid('username')">
+            <div class="form-group" [class.has-error]="!isValid(form.controls.username)">
                 <md-input type="text" placeholder="Имя пользователя" formControlName="username"
-                          [disabled]="pending"></md-input>
-                <md-input-error *ngIf="hasControlError('username', 'required')">
-                    Введите имя пользователя
-                </md-input-error>
-                <md-input-error *ngIf="hasControlError('username', 'minlength')">
-                    Имя пользователя должно быть не менее {{ getControlError('username', 'minlength').requiredLength }} символов
-                </md-input-error>
-                <md-input-error *ngFor="let error of getControlErrors('username')">
-                    {{ error }}
+                          [disabled]="isDisabled(form.controls.username)"></md-input>
+                <md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">
+                    {{ error.key }}
                 </md-input-error>
             </div>
-            <div class="form-group"
-                 [class.has-error]="!isControlValid('plainPassword[first]')">
-                <md-input type="password" placeholder="Пароль" formControlName="plainPassword[first]"
-                          [disabled]="pending"></md-input>
-                <md-input-error *ngIf="hasControlError('plainPassword[first]', 'required')">
-                    Введите пароль
-                </md-input-error>
-                <md-input-error *ngIf="hasControlError('plainPassword[first]', 'minlength')">
-                    Пароль должен быть не менее {{ getControlError('plainPassword[first]', 'minlength').requiredLength }} символов
-                </md-input-error>
-                <md-input-error *ngFor="let error of getControlErrors('plainPassword[first]')">
-                    {{ error }}
-                </md-input-error>
+            <div class="form-group" formGroupName="plainPassword">
+                <div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.first)">
+                    <md-input type="password" placeholder="Пароль" formControlName="first"
+                              [disabled]="isDisabled(form.controls.plainPassword.controls.first)"></md-input>
+                    <md-input-error
+                            *ngFor="let error of getErrors(form.controls.plainPassword.controls.first) | iterable">
+                        {{ error.key }}
+                    </md-input-error>
+                </div>
+                <div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.second)">
+                    <md-input type="password" placeholder="Пароль ещё раз" formControlName="second"
+                              [disabled]="isDisabled(form.controls.plainPassword.controls.second)"></md-input>
+                    <md-input-error
+                            *ngFor="let error of getErrors(form.controls.plainPassword.controls.second) | iterable">
+                        {{ error.key }}
+                    </md-input-error>
+                </div>
             </div>
-            <div class="form-group"
-                 [class.has-error]="!isControlValid('plainPassword[second]')">
-                <md-input type="password" placeholder="Пароль ещё раз" formControlName="plainPassword[second]"
-                          [disabled]="pending"></md-input>
-                <md-input-error *ngIf="hasControlError('plainPassword[second]', 'required')">
-                    Подтвердите пароль
-                </md-input-error>
-                <md-input-error *ngIf="hasControlError('plainPassword[second]', 'equalTo')">
-                    Пароли не совпадают
-                </md-input-error>
-                <md-input-error *ngFor="let error of getControlErrors('plainPassword[second]')">
-                    {{ error }}
-                </md-input-error>
-            </div>
-            <md-form-error class="form-error" *ngIf="errors.errors?.length">
+            <md-form-error class="form-error" *ngIf="hasError(form)">
                 <md-icon>error</md-icon>
                 <ul>
-                    <li class="error-text" *ngFor="let error of errors.errors">{{ error }}</li>
+                    <li class="error-text" *ngFor="let error of getErrors(form) | iterable">{{ error.key }}</li>
                 </ul>
             </md-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <md-spinner *ngIf="pending"></md-spinner>
-            <button type="submit" md-button color="primary" [disabled]="!form.valid || pending" align="end">
+            <button type="submit" md-button color="primary" [disabled]="isDisabled(form)" align="end">
                 ЗАРЕГИСТРИРОВАТЬСЯ
             </button>
         </md-card-actions>

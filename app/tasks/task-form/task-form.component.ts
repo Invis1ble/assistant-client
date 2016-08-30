@@ -29,8 +29,6 @@ export class TaskFormComponent extends AbstractFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        super.ngOnInit();
-
         this.form = this.formBuilder.group({
             title: [this.task.title, Validators.required],
             description: [this.task.description],
@@ -73,18 +71,20 @@ export class TaskFormComponent extends AbstractFormComponent implements OnInit {
                     this.onSaved.emit(task);
                 },
                 (response: Response) => {
-                    if (undefined === this.errors.errors) {
-                        this.errors.errors = [];
-                    }
+                    let errors;
 
                     switch (response.status) {
                         case 400:
-                            this.setErrors(response.json().errors);
-                            return;
+                            errors = response.json().errors;
+                            break;
 
                         default:
-                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                            errors = {
+                                errors: [`${response.statusText ? response.statusText : 'Unknown Error'}.`]
+                            };
                     }
+
+                    this.setFormErrors(errors);
                 }
             );
     }

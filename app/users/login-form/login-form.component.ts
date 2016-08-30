@@ -33,7 +33,7 @@ export class LoginFormComponent extends AbstractFormComponent {
         });
     }
 
-    protected logIn(user: UserModel) {
+    private logIn(user: UserModel) {
         this.tokenService.getToken(user)
             .finally(() => {
                 this.onResponse();
@@ -43,22 +43,27 @@ export class LoginFormComponent extends AbstractFormComponent {
                     this.onLoggedIn.emit(jwt);
                 },
                 (response: Response) => {
-                    if (undefined === this.errors.errors) {
-                        this.errors.errors = [];
-                    }
+                    let errors;
 
                     switch (response.status) {
                         case 400:
-                            this.setErrors(response.json().errors);
-                            return;
+                            errors = response.json().errors;
+                            break;
 
                         case 401:
-                            this.errors.errors.push('Неверное имя пользователя или пароль.');
-                            return;
+                            errors = {
+                                errors: ['Неверное имя пользователя или пароль.']
+                            };
+
+                            break;
 
                         default:
-                            this.errors.errors.push(`${response.statusText ? response.statusText : 'Unknown Error'}.`);
+                            errors = {
+                                errors: [`${response.statusText ? response.statusText : 'Unknown Error'}.`]
+                            };
                     }
+
+                    this.setFormErrors(errors);
                 }
             );
     }

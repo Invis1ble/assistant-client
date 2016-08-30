@@ -29,6 +29,7 @@ import { PeriodService } from './tasks/shared/period.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 import { DurationPipe } from './duration.pipe';
+import { IterablePipe } from './shared/pipes/iterable.pipe';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { DurationPipe } from './duration.pipe';
         SecurityComponent,
         RegistrationComponent,
         TaskListComponent,
-        DurationPipe
+        DurationPipe,
+        IterablePipe
     ],
     providers: [
         AuthGuard,
