@@ -14,6 +14,7 @@ import { MdInputModule } from '@angular2-material/input';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 
 import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
+import { AppValidatorsModule } from './shared/app-validators/app-validators.module';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SecurityComponent } from './users/security/security.component';
@@ -42,6 +43,7 @@ import { DurationPipe } from './duration.pipe';
         MdInputModule,
         MdIconModule,
         MdProgressCircleModule,
+        AppValidatorsModule,
         routing
     ],
     declarations: [

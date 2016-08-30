@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
-import { AppValidators } from '../../shared/app-validators';
 import { AbstractFormComponent } from '../../shared/abstract-form.component';
+import { AppValidators } from '../../shared/app-validators/app-validators';
 import { NewUserModel } from '../shared/new-user.model';
 import { UserModel } from '../shared/user.model';
 import { UserService } from '../shared/user.service';
