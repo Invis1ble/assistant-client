@@ -14,8 +14,8 @@ export abstract class AbstractFormComponent {
         this.setSubmitted();
     }
 
-    protected getErrors(control: AbstractControl): Array<Object> {
-        return control.errors || [];
+    protected getErrors(control: AbstractControl): Object {
+        return control.errors || {};
     }
 
     protected hasError(control: AbstractControl, errorCode?: string): boolean {
