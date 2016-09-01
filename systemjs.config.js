@@ -1,68 +1,67 @@
 /**
- * System configuration for the Assistant application
+ * System configuration for the Assistant Client application
  */
-(function(global) {
-    // map tells the System loader where to look for things
-    var map = {
-        '@angular':                   'node_modules/@angular',
-        '@angular2-material':         'node_modules/@angular2-material',
-        'moment':                     'node_modules/moment',
-        'angular2-jwt':               'node_modules/angular2-jwt',
-        'app':                        'app',
-        'rxjs':                       'node_modules/rxjs'
-    };
-    // packages tells the System loader how to load when no filename and/or no extension
-    var packages = {
-        'angular2-jwt':               { main: 'angular2-jwt.js',  defaultExtension: 'js' },
-        'app':                        { main: 'main.js',  defaultExtension: 'js' },
-        'moment':                     { main: 'moment.js', defaultExtension: 'js' },
-        'rxjs':                       { defaultExtension: 'js' }
-    };
-    var ngPackageNames = [
-        'common',
-        'compiler',
-        'core',
-        'forms',
-        'http',
-        'platform-browser',
-        'platform-browser-dynamic',
-        'router',
-        'router-deprecated',
-        'upgrade'
-    ];
-    var materialPackages = [
-        'core',
-        'button',
-        'card',
-        'toolbar',
-        'icon',
-        'input',
-        'progress-circle',
-        'menu'
-    ];
+(function (global) {
+    System.config({
+        paths: {
+            // paths serve as alias
+            'npm:': 'node_modules/'
+        },
+        // map tells the System loader where to look for things
+        map: {
+            // our app is within the app folder
+            app: 'app',
 
-    // Individual files (~300 requests):
-    function packIndex(pkgName) {
-        packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
-    }
-    // Bundled (~40 requests):
-    function packUmd(pkgName) {
-        packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
-    }
-    // Most environments should use UMD; some (Karma) need the individual index files
-    var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
-    // Add package entries for angular packages
-    ngPackageNames.forEach(setPackageConfig);
+            // angular bundles
+            '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
+            '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
+            '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
+            '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
+            '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+            '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
+            '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
+            '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
-    materialPackages.forEach(function (pkg) {
-        packages['@angular2-material/' + pkg] = {
-            main: pkg + '.js'
-        };
+            // angular testing umd bundles
+            '@angular/core/testing': 'npm:@angular/core/bundles/core-testing.umd.js',
+            '@angular/common/testing': 'npm:@angular/common/bundles/common-testing.umd.js',
+            '@angular/compiler/testing': 'npm:@angular/compiler/bundles/compiler-testing.umd.js',
+            '@angular/platform-browser/testing': 'npm:@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+            '@angular/platform-browser-dynamic/testing': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+            '@angular/http/testing': 'npm:@angular/http/bundles/http-testing.umd.js',
+            '@angular/router/testing': 'npm:@angular/router/bundles/router-testing.umd.js',
+            '@angular/forms/testing': 'npm:@angular/forms/bundles/forms-testing.umd.js',
+
+            // angular2 material
+            '@angular2-material/core': 'npm:@angular2-material/core/core.js',
+            '@angular2-material/button': 'npm:@angular2-material/button/button.js',
+            '@angular2-material/card': 'npm:@angular2-material/card/card.js',
+            '@angular2-material/toolbar': 'npm:@angular2-material/toolbar/toolbar.js',
+            '@angular2-material/icon': 'npm:@angular2-material/icon/icon.js',
+            '@angular2-material/input': 'npm:@angular2-material/input/input.js',
+            '@angular2-material/progress-circle': 'npm:@angular2-material/progress-circle/progress-circle.js',
+            '@angular2-material/menu': 'npm:@angular2-material/menu/menu.js',
+
+            // other libraries
+            'rxjs': 'npm:rxjs',
+        },
+        // packages tells the System loader how to load when no filename and/or no extension
+        packages: {
+            app: {
+                main: './main.js',
+                defaultExtension: 'js'
+            },
+            rxjs: {
+                defaultExtension: 'js'
+            },
+            moment: {
+                main: 'moment.js',
+                defaultExtension: 'js'
+            },
+            'angular2-jwt': {
+                main: 'angular2-jwt.js',
+                defaultExtension: 'js'
+            }
+        }
     });
-
-    var config = {
-        map: map,
-        packages: packages
-    };
-    System.config(config);
 })(this);
