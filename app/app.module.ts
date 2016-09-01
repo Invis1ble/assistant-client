@@ -18,7 +18,11 @@ import { AppValidatorsModule } from './shared/app-validators/app-validators.modu
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SecurityComponent } from './users/security/security.component';
+import { LoginFormComponent } from './users/login-form/login-form.component';
 import { RegistrationComponent } from './users/registration/registration.component';
+import { RegistrationFormComponent } from './users/registration-form/registration-form.component';
+import { TaskFormComponent } from './tasks/task-form/task-form.component';
+import { TaskListItemComponent } from './tasks/task-list-item/task-list-item.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
@@ -50,8 +54,12 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
     declarations: [
         AppComponent,
         SecurityComponent,
+        LoginFormComponent,
         RegistrationComponent,
+        RegistrationFormComponent,
+        TaskFormComponent,
         TaskListComponent,
+        TaskListItemComponent,
         DurationPipe,
         IterablePipe
     ],

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../shared/auth.service';
-import { TaskFormComponent } from '../task-form/task-form.component';
-import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
 import { TaskModel } from '../shared/task.model';
 import { UserModel } from '../../users/shared/user.model';
 
@@ -11,11 +9,7 @@ import { UserModel } from '../../users/shared/user.model';
     templateUrl: 'app/tasks/task-list/task-list.component.html',
     styleUrls: [
         'app/tasks/task-list/task-list.component.css'
-    ],
-    directives: [
-        TaskFormComponent,
-        TaskListItemComponent
-    ],
+    ]
 })
 export class TaskListComponent implements OnInit {
     private showingTaskForm = false;
