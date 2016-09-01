@@ -26,6 +26,7 @@ import { AnonymousGuard } from './shared/anonymous-guard.service';
 import { UserService } from './users/shared/user.service';
 import { TaskService } from './tasks/shared/task.service';
 import { PeriodService } from './tasks/shared/period.service';
+import { JwtService } from './users/shared/jwt.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 import { DurationPipe } from './shared/pipes/duration.pipe';
@@ -59,6 +60,7 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
         AuthGuard,
         AuthService,
         AnonymousGuard,
+        JwtService,
         UserService,
         TaskService,
         PeriodService,

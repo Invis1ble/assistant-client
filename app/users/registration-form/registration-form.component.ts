@@ -6,8 +6,8 @@ import 'rxjs/add/operator/finally';
 import { AbstractFormComponent } from '../../shared/abstract-form.component';
 import { AppValidators } from '../../shared/app-validators/app-validators';
 import { NewUserModel } from '../shared/new-user.model';
-import { UserModel } from '../shared/user.model';
 import { UserService } from '../shared/user.service';
+import { JwtModel } from '../shared/jwt.model';
 
 @Component({
     selector: 'assistant-registration-form',
@@ -17,7 +17,7 @@ import { UserService } from '../shared/user.service';
     ]
 })
 export class RegistrationFormComponent extends AbstractFormComponent {
-    @Output() onRegister = new EventEmitter<UserModel>();
+    @Output() onRegister = new EventEmitter<JwtModel>();
     private user = new NewUserModel();
 
     constructor(
@@ -62,8 +62,8 @@ export class RegistrationFormComponent extends AbstractFormComponent {
                 this.onResponse();
             })
             .subscribe(
-                (user: UserModel) => {
-                    this.onRegister.emit(user);
+                (jwt: JwtModel) => {
+                    this.onRegister.emit(jwt);
                 },
                 (response: Response) => {
                     let errors;

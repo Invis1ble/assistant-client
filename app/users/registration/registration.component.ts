@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../../shared/auth.service';
+import { JwtModel } from '../shared/jwt.model';
 import { RegistrationFormComponent } from '../registration-form/registration-form.component';
 
 @Component({
@@ -15,22 +17,21 @@ import { RegistrationFormComponent } from '../registration-form/registration-for
 })
 export class RegistrationComponent {
     constructor(
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {
 
     }
 
-    onRegister() {
-        console.log('onRegister');
+    onRegister(jwt: JwtModel): void {
+        let requestedUrl = this.authService.getRequestedUrl();
 
-        // let requestedUrl = this.authService.getRequestedUrl();
-        //
-        // this.authService.setLoggedIn(jwt);
-        //
-        // if (undefined === requestedUrl) {
-        //     requestedUrl = '';
-        // }
-        //
-        // this.router.navigate([ requestedUrl ]);
+        this.authService.setLoggedIn(jwt);
+
+        if (undefined === requestedUrl) {
+            requestedUrl = '';
+        }
+
+        this.router.navigate([ requestedUrl ]);
     }
 }

@@ -9,13 +9,14 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
-import 'rxjs/add/operator/do';
-
 import { APP_CONFIG, AppConfig } from '../../app-config';
 import { AbstractService } from '../../shared/abstract.service';
 import { TaskService } from '../../tasks/shared/task.service';
 import { UserModel } from './user.model';
 import { NewUserModel } from './new-user.model';
+import { JwtModel } from './jwt.model';
+import { JwtService } from './jwt.service';
+import { CredentialsModel } from './credentials.model';
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -23,7 +24,8 @@ export class UserService extends AbstractService {
         private authHttp: AuthHttp,
         @Inject(APP_CONFIG) private config: AppConfig,
         private http: Http,
-        private taskService: TaskService
+        private taskService: TaskService,
+        private jwtService: JwtService
     ) {
         super();
     }
@@ -36,11 +38,17 @@ export class UserService extends AbstractService {
             .catch(this.handleError);
     }
 
-    registerUser(user: NewUserModel): Observable<UserModel> {
+    registerUser(user: NewUserModel): Observable<JwtModel> {
         return this.http
             .post(this.config.apiEndpoint.href.replace('/{id}', ''), user)
-            .map(this.extractLocation)
-            .mergeMap((url) => this.getUser(url))
+            .mergeMap((): Observable<JwtModel> => {
+                let credentials = new CredentialsModel();
+
+                credentials.username = user.username;
+                credentials.password = user.plainPassword.first;
+
+                return this.jwtService.getToken(credentials);
+            })
             .catch(this.handleError);
     }
 

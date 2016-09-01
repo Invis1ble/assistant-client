@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { AbstractService } from '../../shared/abstract.service';
 import { JwtModel } from './jwt.model';
-import { UserModel } from './user.model';
+import { CredentialsModel } from './credentials.model';
 
 @Injectable()
 export class JwtService extends AbstractService {
@@ -16,16 +16,13 @@ export class JwtService extends AbstractService {
         super();
     }
 
-    getToken(user: UserModel): Observable<JwtModel> {
+    getToken(credentials: CredentialsModel): Observable<JwtModel> {
         let headers = new Headers({
             'Content-Type': 'application/json'
         });
 
         return this.http
-            .post('http://assistant/app_dev.php/api/tokens', {
-                username: user.username,
-                password: user.plainPassword
-            }, {
+            .post('http://assistant/app_dev.php/api/tokens', credentials, {
                 headers: headers
             })
             .map(this.extractData)

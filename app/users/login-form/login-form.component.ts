@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import 'rxjs/add/operator/finally';
 
 import { AbstractFormComponent } from '../../shared/abstract-form.component';
-import { UserModel } from '../shared/user.model';
+import { CredentialsModel } from '../shared/credentials.model';
 import { JwtModel } from '../shared/jwt.model';
 import { JwtService } from '../shared/jwt.service';
 
@@ -13,28 +13,26 @@ import { JwtService } from '../shared/jwt.service';
     templateUrl: 'app/users/login-form/login-form.component.html',
     styleUrls: [
         'app/users/login-form/login-form.component.css'
-    ],
-    providers: [
-        JwtService
     ]
 })
 export class LoginFormComponent extends AbstractFormComponent {
+    private credentials = new CredentialsModel();
     @Output() onLoggedIn = new EventEmitter<JwtModel>();
 
     constructor(
-        private tokenService: JwtService,
+        private jwtService: JwtService,
         private formBuilder: FormBuilder
     ) {
         super();
 
         this.form = formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required]
+            username: [this.credentials.username, Validators.required],
+            password: [this.credentials.password, Validators.required]
         });
     }
 
-    private logIn(user: UserModel) {
-        this.tokenService.getToken(user)
+    private logIn(credentials: CredentialsModel) {
+        this.jwtService.getToken(credentials)
             .finally(() => {
                 this.onResponse();
             })
@@ -71,11 +69,11 @@ export class LoginFormComponent extends AbstractFormComponent {
     protected onSubmit() {
         super.onSubmit();
 
-        let user = new UserModel();
+        let credentials = new CredentialsModel();
 
-        user.username = this.form.value.username;
-        user.plainPassword = this.form.value.password;
+        credentials.username = this.form.value.username;
+        credentials.password = this.form.value.password;
 
-        this.logIn(user);
+        this.logIn(credentials);
     }
 }
