@@ -1,8 +1,8 @@
 import { AbstractControl, NG_VALIDATORS, Validator, ValidatorFn } from '@angular/forms';
 import { Directive, Input, OnChanges, SimpleChanges, forwardRef } from '@angular/core';
-import { isPresent } from '@angular/forms/src/facade/lang';
 
 import { AppValidators } from '../app-validators';
+import { isPresent } from '../../facade/lang';
 
 export const EQUAL_TO_VALIDATOR: any = {
     provide: NG_VALIDATORS,

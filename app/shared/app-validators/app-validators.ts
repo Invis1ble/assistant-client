@@ -1,6 +1,7 @@
 import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
-import { isPresent } from '@angular/forms/src/facade/lang';
+
 import { EqualToValidator } from './directives/equal-to';
+import { isPresent } from '../facade/lang';
 
 export class AppValidators {
     /**

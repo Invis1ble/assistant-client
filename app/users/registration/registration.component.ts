@@ -3,16 +3,12 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../shared/auth.service';
 import { JwtModel } from '../shared/jwt.model';
-import { RegistrationFormComponent } from '../registration-form/registration-form.component';
 
 @Component({
     selector: 'assistant-registration.primary-component-layout',
     templateUrl: 'app/users/registration/registration.component.html',
     styleUrls: [
         'app/users/registration/registration.component.css'
-    ],
-    directives: [
-        RegistrationFormComponent
     ]
 })
 export class RegistrationComponent {

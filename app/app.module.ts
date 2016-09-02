@@ -8,17 +8,23 @@ import { provideAuth } from 'angular2-jwt/angular2-jwt';
 import { MdButtonModule } from '@angular2-material/button';
 import { MdCardModule } from '@angular2-material/card';
 import { MdMenuModule } from '@angular2-material/menu';
-import { MdIconModule } from '@angular2-material/icon';
+import { MdIconModule, MdIconRegistry } from '@angular2-material/icon'; // TODO: remove MdIconRegistry
+import { OVERLAY_PROVIDERS } from '@angular2-material/core'; // TODO: remove OVERLAY_PROVIDERS
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdInputModule } from '@angular2-material/input';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 
 import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
 import { AppValidatorsModule } from './shared/app-validators/app-validators.module';
+import { AppFormModule } from './shared/app-form/app-form.module';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SecurityComponent } from './users/security/security.component';
+import { LoginFormComponent } from './users/login-form/login-form.component';
 import { RegistrationComponent } from './users/registration/registration.component';
+import { RegistrationFormComponent } from './users/registration-form/registration-form.component';
+import { TaskFormComponent } from './tasks/task-form/task-form.component';
+import { TaskListItemComponent } from './tasks/task-list-item/task-list-item.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
@@ -46,13 +52,18 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
         MdIconModule,
         MdProgressCircleModule,
         AppValidatorsModule,
+        AppFormModule,
         routing
     ],
     declarations: [
         AppComponent,
         SecurityComponent,
+        LoginFormComponent,
         RegistrationComponent,
+        RegistrationFormComponent,
+        TaskFormComponent,
         TaskListComponent,
+        TaskListItemComponent,
         DurationPipe,
         IterablePipe
     ],
@@ -64,6 +75,8 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
         UserService,
         TaskService,
         PeriodService,
+        MdIconRegistry,
+        OVERLAY_PROVIDERS,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter

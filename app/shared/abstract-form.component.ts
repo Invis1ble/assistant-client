@@ -1,8 +1,7 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 import { FormErrors } from './form-errors';
-import { isPresent } from '@angular/core/src/facade/lang';
-import isIterable = core.isIterable;
+import { isPresent } from './facade/lang';
 
 export abstract class AbstractFormComponent {
     protected form: FormGroup;
