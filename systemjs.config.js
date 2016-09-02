@@ -33,14 +33,14 @@
             '@angular/forms/testing': 'npm:@angular/forms/bundles/forms-testing.umd.js',
 
             // angular2 material
-            '@angular2-material/core': 'npm:@angular2-material/core',
-            '@angular2-material/button': 'npm:@angular2-material/button',
-            '@angular2-material/card': 'npm:@angular2-material/card',
-            '@angular2-material/toolbar': 'npm:@angular2-material/toolbar',
-            '@angular2-material/icon': 'npm:@angular2-material/icon',
-            '@angular2-material/input': 'npm:@angular2-material/input',
-            '@angular2-material/progress-circle': 'npm:@angular2-material/progress-circle',
-            '@angular2-material/menu': 'npm:@angular2-material/menu',
+            '@angular2-material/core': 'npm:@angular2-material/core/core.umd.js',
+            '@angular2-material/button': 'npm:@angular2-material/button/button.umd.js',
+            '@angular2-material/card': 'npm:@angular2-material/card/card.umd.js',
+            '@angular2-material/toolbar': 'npm:@angular2-material/toolbar/toolbar.umd.js',
+            '@angular2-material/icon': 'npm:@angular2-material/icon/icon.umd.js',
+            '@angular2-material/input': 'npm:@angular2-material/input/input.umd.js',
+            '@angular2-material/progress-circle': 'npm:@angular2-material/progress-circle/progress-circle.umd.js',
+            '@angular2-material/menu': 'npm:@angular2-material/menu/menu.umd.js',
 
             // other libraries
             'moment': 'npm:moment',
@@ -58,38 +58,6 @@
             },
             moment: {
                 main: 'moment.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/core': {
-                main: 'core.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/button': {
-                main: 'button.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/card': {
-                main: 'card.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/toolbar': {
-                main: 'toolbar.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/icon': {
-                main: 'icon.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/input': {
-                main: 'input.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/progress-circle': {
-                main: 'progress-circle.js',
-                defaultExtension: 'js'
-            },
-            '@angular2-material/menu': {
-                main: 'menu.js',
                 defaultExtension: 'js'
             },
             'angular2-jwt': {
