@@ -11,7 +11,6 @@ import { MdMenuModule } from '@angular2-material/menu';
 import { MdIconModule, MdIconRegistry } from '@angular2-material/icon'; // TODO: remove MdIconRegistry
 import { OVERLAY_PROVIDERS } from '@angular2-material/core'; // TODO: remove OVERLAY_PROVIDERS
 import { MdToolbarModule } from '@angular2-material/toolbar';
-import { MdInputModule } from '@angular2-material/input';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 
 import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
@@ -36,7 +35,6 @@ import { JwtService } from './users/shared/jwt.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 import { DurationPipe } from './shared/pipes/duration.pipe';
-import { IterablePipe } from './shared/pipes/iterable.pipe';
 
 @NgModule({
     imports: [
@@ -48,7 +46,6 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
         MdCardModule,
         MdMenuModule,
         MdButtonModule,
-        MdInputModule,
         MdIconModule,
         MdProgressCircleModule,
         AppValidatorsModule,
@@ -64,8 +61,7 @@ import { IterablePipe } from './shared/pipes/iterable.pipe';
         TaskFormComponent,
         TaskListComponent,
         TaskListItemComponent,
-        DurationPipe,
-        IterablePipe
+        DurationPipe
     ],
     providers: [
         AuthGuard,

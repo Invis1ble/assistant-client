@@ -3,36 +3,31 @@
         <md-card-title>Регистрация</md-card-title>
         <md-card-content>
             <div class="form-group" [class.has-error]="!isValid(form.controls.username)">
-                <md-input type="text" placeholder="Имя пользователя" formControlName="username"
-                          [disabled]="isDisabled(form.controls.username)"></md-input>
-                <md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">
-                    {{ error.key }}
-                </md-input-error>
+                <!--<md-input type="text" placeholder="Имя пользователя" formControlName="username"-->
+                          <!--[disabled]="isDisabled(form.controls.username)"></md-input>-->
+                <!--&lt;!&ndash;<md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ error.key }}&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-input-error>&ndash;&gt;-->
             </div>
             <div class="form-group" formGroupName="plainPassword">
-                <div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.first)">
-                    <md-input type="password" placeholder="Пароль" formControlName="first"
-                              [disabled]="isDisabled(form.controls.plainPassword.controls.first)"></md-input>
-                    <md-input-error
-                            *ngFor="let error of getErrors(form.controls.plainPassword.controls.first) | iterable">
-                        {{ error.key }}
-                    </md-input-error>
-                </div>
-                <div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.second)">
-                    <md-input type="password" placeholder="Пароль ещё раз" formControlName="second"
-                              [disabled]="isDisabled(form.controls.plainPassword.controls.second)"></md-input>
-                    <md-input-error
-                            *ngFor="let error of getErrors(form.controls.plainPassword.controls.second) | iterable">
-                        {{ error.key }}
-                    </md-input-error>
-                </div>
+                <!--<div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.first)">-->
+                    <!--<md-input type="password" placeholder="Пароль" formControlName="first"-->
+                              <!--[disabled]="isDisabled(form.controls.plainPassword.controls.first)"></md-input>-->
+                    <!--&lt;!&ndash;<md-input-error&ndash;&gt;-->
+                            <!--&lt;!&ndash;*ngFor="let error of getErrors(form.controls.plainPassword.controls.first) | iterable">&ndash;&gt;-->
+                        <!--&lt;!&ndash;{{ error.key }}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-input-error>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="form-group" [class.has-error]="!isValid(form.controls.plainPassword.controls.second)">-->
+                    <!--<md-input type="password" placeholder="Пароль ещё раз" formControlName="second"-->
+                              <!--[disabled]="isDisabled(form.controls.plainPassword.controls.second)"></md-input>-->
+                    <!--&lt;!&ndash;<md-input-error&ndash;&gt;-->
+                            <!--&lt;!&ndash;*ngFor="let error of getErrors(form.controls.plainPassword.controls.second) | iterable">&ndash;&gt;-->
+                        <!--&lt;!&ndash;{{ error.key }}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-input-error>&ndash;&gt;-->
+                <!--</div>-->
             </div>
-            <md-form-error class="form-error" *ngIf="hasError(form)">
-                <md-icon>error</md-icon>
-                <ul>
-                    <li class="error-text" *ngFor="let error of getErrors(form) | iterable">{{ error.key }}</li>
-                </ul>
-            </md-form-error>
+            <app-form-error [form]="form"></app-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <md-spinner *ngIf="pending"></md-spinner>

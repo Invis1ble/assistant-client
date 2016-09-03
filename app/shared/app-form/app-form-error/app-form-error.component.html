@@ -1,0 +1,6 @@
+<template [ngIf]="form.errors">
+    <md-icon>error</md-icon>
+    <ul>
+        <li *ngFor="let error of form.errors | iterable">{{ error.key }}</li>
+    </ul>
+</template>

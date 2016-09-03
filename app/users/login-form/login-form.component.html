@@ -2,27 +2,16 @@
     <md-card>
         <md-card-title>Авторизация</md-card-title>
         <md-card-content>
-            <div class="form-group"
-                 [class.has-error]="!isValid(form.controls.username)">
-                <md-input type="text" placeholder="Имя пользователя" formControlName="username"
-                          [disabled]="isDisabled(form.controls.username)"></md-input>
-                <md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">
-                    {{ error.key }}
-                </md-input-error>
-            </div>
-            <div class="form-group" [class.has-error]="!isValid(form.controls.password)">
-                <md-input type="password" placeholder="Пароль" formControlName="password"
-                          [disabled]="isDisabled(form.controls.password)"></md-input>
-                <md-input-error *ngFor="let error of getErrors(form.controls.password) | iterable">
-                    {{ error.key }}
-                </md-input-error>
-            </div>
-            <md-form-error class="form-error" *ngIf="hasError(form)">
-                <md-icon>error</md-icon>
-                <ul>
-                    <li class="error-text" *ngFor="let error of getErrors(form) | iterable">{{ error.key }}</li>
-                </ul>
-            </md-form-error>
+            <!--<div class="form-group"-->
+                 <!--[class.has-error]="!isValid(form.controls.username)">-->
+                <!--<md-input type="text" placeholder="Имя пользователя" formControlName="username"-->
+                          <!--[disabled]="isDisabled(form.controls.username)"></md-input>-->
+                <!--&lt;!&ndash;<md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ error.key }}&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-input-error>&ndash;&gt;-->
+            <!--</div>-->
+            <app-form-group [control]="form.controls.password" name="password" type="password" placeholder="Пароль"></app-form-group>
+            <app-form-error [form]="form"></app-form-error>
         </md-card-content>
         <md-card-actions align="end">
             <a routerLink="/register" align="start" md-button color="primary">РЕГИСТРАЦИЯ</a>

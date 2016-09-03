@@ -27,33 +27,6 @@ md-toolbar.md-primary a {
     color: #f44336;
 }
 
-:host >>> .form-error {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    color: #f44336;
-}
-
-:host >>> .form-error .material-icons {
-    font-size: 45px;
-    margin-right: 10px;
-}
-
-:host >>> .form-error md-icon {
-    width: auto;
-    height: auto;
-}
-
-:host >>> .form-error ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-:host >>> .form-error .error-text + .error-text {
-    margin-top: 20px;
-}
-
 :host >>> md-card-actions md-spinner {
     width: 24px;
     height: 24px;
