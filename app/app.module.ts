@@ -8,8 +8,7 @@ import { provideAuth } from 'angular2-jwt/angular2-jwt';
 import { MdButtonModule } from '@angular2-material/button';
 import { MdCardModule } from '@angular2-material/card';
 import { MdMenuModule } from '@angular2-material/menu';
-import { MdIconModule, MdIconRegistry } from '@angular2-material/icon'; // TODO: remove MdIconRegistry
-import { OVERLAY_PROVIDERS } from '@angular2-material/core'; // TODO: remove OVERLAY_PROVIDERS
+import { MdIconModule } from '@angular2-material/icon';
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 
@@ -42,12 +41,12 @@ import { DurationPipe } from './shared/pipes/duration.pipe';
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        MdToolbarModule,
-        MdCardModule,
-        MdMenuModule,
-        MdButtonModule,
-        MdIconModule,
-        MdProgressCircleModule,
+        MdToolbarModule.forRoot(),
+        MdCardModule.forRoot(),
+        MdMenuModule.forRoot(),
+        MdButtonModule.forRoot(),
+        MdIconModule.forRoot(),
+        MdProgressCircleModule.forRoot(),
         AppValidatorsModule,
         AppFormModule,
         routing
@@ -71,8 +70,6 @@ import { DurationPipe } from './shared/pipes/duration.pipe';
         UserService,
         TaskService,
         PeriodService,
-        MdIconRegistry,
-        OVERLAY_PROVIDERS,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
