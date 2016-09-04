@@ -9,24 +9,6 @@ md-toolbar.md-primary a {
     flex-direction: column;
 }
 
-:host >>> .form-group + .form-group {
-    margin-top: 20px;
-}
-
-:host >>> .form-group.has-error md-input >>> .md-input-underline .md-input-ripple {
-    /* md-warn color */
-    background-color: #f44336;
-}
-
-:host >>> .form-group:not(.has-error) md-input-error {
-    display: none;
-}
-
-:host >>> .form-group.has-error md-input-error {
-    display: block;
-    color: #f44336;
-}
-
 :host >>> md-card-actions md-spinner {
     width: 24px;
     height: 24px;

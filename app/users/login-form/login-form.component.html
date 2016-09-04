@@ -2,15 +2,20 @@
     <md-card>
         <md-card-title>Авторизация</md-card-title>
         <md-card-content>
-            <!--<div class="form-group"-->
-                 <!--[class.has-error]="!isValid(form.controls.username)">-->
-                <!--<md-input type="text" placeholder="Имя пользователя" formControlName="username"-->
-                          <!--[disabled]="isDisabled(form.controls.username)"></md-input>-->
-                <!--&lt;!&ndash;<md-input-error *ngFor="let error of getErrors(form.controls.username) | iterable">&ndash;&gt;-->
-                    <!--&lt;!&ndash;{{ error.key }}&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-input-error>&ndash;&gt;-->
-            <!--</div>-->
-            <app-form-group [control]="form.controls.password" name="password" type="password" placeholder="Пароль"></app-form-group>
+            <app-form-group [control]="form.controls.username"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="username"
+                            type="text"
+                            placeholder="Имя пользователя">
+            </app-form-group>
+            <app-form-group [control]="form.controls.password"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="password"
+                            type="password"
+                            placeholder="Пароль">
+            </app-form-group>
             <app-form-error [form]="form"></app-form-error>
         </md-card-content>
         <md-card-actions align="end">

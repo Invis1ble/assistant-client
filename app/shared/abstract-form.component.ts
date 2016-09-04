@@ -13,18 +13,6 @@ export abstract class AbstractFormComponent {
         this.setSubmitted();
     }
 
-    protected getErrors(control: AbstractControl): Object {
-        return control.errors || {};
-    }
-
-    protected hasError(control: AbstractControl, errorCode?: string): boolean {
-        if (isPresent(errorCode)) {
-            return control.hasError(errorCode);
-        }
-
-        return null !== control.errors;
-    }
-
     protected isDisabled(control: AbstractControl): boolean {
         return this.pending || (control.root === control &&
             Object.values(this.form.controls).some((control: AbstractControl): boolean => control.invalid ));
@@ -32,10 +20,6 @@ export abstract class AbstractFormComponent {
 
     protected isSubmitted(): boolean {
         return this.submitted;
-    }
-
-    protected isValid(control: AbstractControl): boolean {
-        return control.valid || (control.pristine && !this.isSubmitted());
     }
 
     protected lockForm(): void {

@@ -1,5 +1,34 @@
-<md-input type="{{ type }}" placeholder="{{ placeholder }}" formControlName="{{ name }}" [disabled]="pending">
+<md-input aria-target
+          [aria-label]="ariaLabel"
+          [aria-labelledby]="ariaLabelledBy"
+          [aria-disabled]="ariaDisabled"
+          [aria-required]="ariaRequired"
+          [aria-invalid]="ariaInvalid"
+          [autocomplete]="autocomplete"
+          [autocorrect]="autocorrect"
+          [autocapitalize]="autocapitalize"
+          [autofocus]="autofocus"
+          [disabled]="disabled || pending"
+          [id]="id"
+          [list]="list"
+          [max]="max"
+          [maxlength]="maxlength"
+          [min]="min"
+          [minlength]="minlength"
+          [readonly]="readonly"
+          [required]="required"
+          [spellcheck]="spellcheck"
+          [step]="step"
+          [tabindex]="tabindex"
+          [type]="type"
+          [name]="name"
+          [placeholder]="placeholder"
+          [(ngModel)]="value"
+          [align]="align"
+          [dividerColor]="dividerColor"
+          [floatingPlaceholder]="floatingPlaceholder"
+          [hintLabel]="hintLabel">
 </md-input>
-<ul *ngIf="control.errors">
+<ul *ngIf="control.errors" class="error-list">
     <li *ngFor="let error of control.errors | iterable">{{ error.key }}</li>
 </ul>
