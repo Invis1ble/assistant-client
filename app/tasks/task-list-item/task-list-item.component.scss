@@ -1,0 +1,43 @@
+.toggle-run[md-raised-button] {
+    padding-left: 22px;
+    padding-right: 22px;
+    font-size: 0;
+    line-height: 46px;
+    min-width: 300px;
+}
+
+button {
+    .total-time-spent {
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    .revenue {
+        font-size: 14px;
+        padding: 2px 7px;
+        background-color: #0e9600;
+        border-radius: 2px;
+        box-shadow: inset 0 1px 0 rgba(0, 0, 0, .2);
+        margin-left: 14px;
+        vertical-align: middle;
+    }
+
+    &.toggle-run {
+        .material-icons {
+            font-size: 36px;
+            margin-left: 10px;
+        }
+
+        md-icon {
+            width: 36px;
+            height: 36px;
+            vertical-align: middle;
+        }
+    }
+
+    &.more {
+        float: right;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+}

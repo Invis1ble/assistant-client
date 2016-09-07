@@ -1,0 +1,26 @@
+:host {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    color: #f44336;
+
+    .material-icons {
+        font-size: 45px;
+        margin-right: 10px;
+    }
+
+    md-icon {
+        width: auto;
+        height: auto;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li + li {
+        margin-top: 20px;
+    }
+}

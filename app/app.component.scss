@@ -1,0 +1,18 @@
+md-toolbar.md-primary a {
+    color: #fff;
+    text-decoration: none;
+}
+
+:host {
+    >>> .primary-component-layout {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    >>> md-card-actions md-spinner {
+        width: 24px;
+        height: 24px;
+        align-self: center;
+    }
+}
