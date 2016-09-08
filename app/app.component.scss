@@ -4,13 +4,13 @@ md-toolbar.md-primary a {
 }
 
 :host {
-    >>> .primary-component-layout {
+    /deep/ .primary-component-layout {
         display: flex;
         height: 100%;
         flex-direction: column;
     }
 
-    >>> md-card-actions md-spinner {
+    /deep/ md-card-actions md-spinner {
         width: 24px;
         height: 24px;
         align-self: center;

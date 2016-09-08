@@ -5,17 +5,12 @@
     md-input {
         width: 100%;
 
-        >>> .md-input-prefix {
+        /deep/ .md-input-prefix {
             width: 1px;
         }
 
         [md-prefix] {
             margin-right: .3em;
-        }
-
-        >>> .md-input-underline .md-input-ripple {
-            /* md-warn color */
-            background-color: #f44336;
         }
     }
 
@@ -29,8 +24,15 @@
         padding: 0;
     }
 
-    &.has-error .error-list {
-        display: block;
-        color: #f44336;
+    &.has-error {
+        md-input /deep/ .md-input-underline .md-input-ripple {
+            /* md-warn color */
+            background-color: #f44336;
+        }
+
+        .error-list {
+            display: block;
+            color: #f44336;
+        }
     }
 }
