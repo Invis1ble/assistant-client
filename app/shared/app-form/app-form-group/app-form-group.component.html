@@ -28,6 +28,7 @@
           [dividerColor]="dividerColor"
           [floatingPlaceholder]="floatingPlaceholder"
           [hintLabel]="hintLabel">
+    <ng-content></ng-content>
 </md-input>
 <ul *ngIf="control.errors" class="error-list">
     <li *ngFor="let error of control.errors | iterable">{{ error.key }}</li>
