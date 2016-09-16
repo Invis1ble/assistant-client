@@ -7,6 +7,7 @@ import { AbstractFormComponent } from '../../shared/abstract-form.component';
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
 import { UserModel } from '../../users/shared/user.model';
+import { UrlGenerator } from '../../shared/url-generator.service';
 
 @Component({
     selector: 'assistant-task-form',
@@ -23,7 +24,8 @@ export class TaskFormComponent extends AbstractFormComponent implements OnInit {
 
     constructor(
         private taskService: TaskService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private urlGenerator: UrlGenerator
     ) {
         super();
     }
@@ -57,9 +59,9 @@ export class TaskFormComponent extends AbstractFormComponent implements OnInit {
         let url;
 
         if (task.id) {
-            url = this.user.tasks.getUrl(task);
+            url = this.urlGenerator.generate(this.user.tasks.getLink(task), {id: task.id});
         } else {
-            url = this.user.tasks.getUrl();
+            url = this.urlGenerator.generate(this.user.tasks.getLink());
         }
 
         this.taskService.saveTask(task, url)

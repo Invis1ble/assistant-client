@@ -34,6 +34,7 @@ import { JwtService } from './users/shared/jwt.service';
 import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 import { DurationPipe } from './shared/pipes/duration.pipe';
+import { UrlGenerator } from './shared/url-generator.service';
 
 @NgModule({
     imports: [
@@ -70,10 +71,10 @@ import { DurationPipe } from './shared/pipes/duration.pipe';
         UserService,
         TaskService,
         PeriodService,
+        UrlGenerator,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter
-            // tokenGetter: () => JSON.parse(localStorage.getItem(TASK_DI_CONFIG.jwtName)).token,
             tokenGetter: () => {
                 let jwt = localStorage.getItem(TASK_DI_CONFIG.jwtName);
 

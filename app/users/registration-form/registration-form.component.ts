@@ -57,7 +57,7 @@ export class RegistrationFormComponent extends AbstractFormComponent {
     }
 
     private register(user: NewUserModel) {
-        this.userService.registerUser(user)
+        this.userService.registerUser(user, this.userService.getUrl(user))
             .finally(() => {
                 this.onResponse();
             })

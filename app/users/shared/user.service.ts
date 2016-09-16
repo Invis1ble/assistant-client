@@ -1,5 +1,5 @@
 import { AuthHttp } from 'angular2-jwt';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/observable/from';
@@ -9,7 +9,6 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toArray';
 
-import { APP_CONFIG, AppConfig } from '../../app-config';
 import { AbstractService } from '../../shared/abstract.service';
 import { TaskService } from '../../tasks/shared/task.service';
 import { UserModel } from './user.model';
@@ -17,43 +16,44 @@ import { NewUserModel } from './new-user.model';
 import { JwtModel } from './jwt.model';
 import { JwtService } from './jwt.service';
 import { CredentialsModel } from './credentials.model';
+import { UrlGenerator } from '../../shared/url-generator.service';
+import { UserTaskCollection } from '../../tasks/shared/user-task.collection';
+import { isPresent } from '../../shared/facade/lang';
 
 @Injectable()
 export class UserService extends AbstractService {
+    private endpoint = '/api/users';
+
     constructor(
         private authHttp: AuthHttp,
-        @Inject(APP_CONFIG) private config: AppConfig,
         private http: Http,
         private taskService: TaskService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private urlGenerator: UrlGenerator
     ) {
         super();
     }
 
     getUser(url: string): Observable<UserModel> {
-        return this.authHttp.get(url)
-            .map(this.extractData)
+        return this.get(url)
             .switchMap((data) => this.hydrateData([data]))
-            .map((data) => data[0])
-            .catch(this.handleError);
+            .map((data) => data[0]);
     }
 
-    registerUser(user: NewUserModel): Observable<JwtModel> {
-        return this.http
-            .post(this.config.apiEndpoint.href.replace('/{id}', ''), user)
-            .mergeMap((): Observable<JwtModel> => {
-                let credentials = new CredentialsModel();
-
-                credentials.username = user.username;
-                credentials.password = user.plainPassword.first;
-
-                return this.jwtService.getToken(credentials);
-            })
-            .catch(this.handleError);
+    registerUser(user: NewUserModel, url: string): Observable<JwtModel> {
+        return this.post(user, url);
     }
 
-    saveUser(user: UserModel): Observable<UserModel> {
-        return this.patch(user, this.config.apiEndpoint.href.replace('/{id}', ''));
+    saveUser(user: UserModel, url: string): Observable<UserModel> {
+        return this.patch(user, url);
+    }
+
+    getUrl(user: {id?: string}): string {
+        if (isPresent(user.id)) {
+            return this.urlGenerator.generate({href: `${this.endpoint}/{id}`, templated: true}, {id: user.id});
+        }
+
+        return this.urlGenerator.generate({href: this.endpoint});
     }
 
     private createModel(data: UserModel) {
@@ -71,7 +71,7 @@ export class UserService extends AbstractService {
         return userModel;
     }
 
-    private extractData(response: Response) {
+    private extractData(response: Response): any {
         return response.json();
     }
 
@@ -79,12 +79,12 @@ export class UserService extends AbstractService {
         return response.headers.get('Location');
     }
 
-    private hydrateData(dataset: any[]) {
+    private hydrateData(dataset: any[]): Observable<UserModel[]> {
         return Observable.from(dataset)
             .mergeMap((data: any) => {
                 return this.taskService
-                    .getTasks(data._links.tasks.href)
-                    .map((tasks) => {
+                    .getTasks(this.urlGenerator.generate(data._links.tasks))
+                    .map((tasks: UserTaskCollection) => {
                         data.tasks = tasks;
                         return data;
                     });
@@ -93,13 +93,33 @@ export class UserService extends AbstractService {
             .toArray();
     }
 
+    private get(url: string): Observable<any> {
+        return this.authHttp.get(url)
+            .catch(this.handleError)
+            .map(this.extractData);
+    }
+
+    private post(user: NewUserModel, url: string): Observable<JwtModel> {
+        return this.http
+            .post(url, user)
+            .catch(this.handleError)
+            .mergeMap((): Observable<JwtModel> => {
+                let credentials = new CredentialsModel();
+
+                credentials.username = user.username;
+                credentials.password = user.plainPassword.first;
+
+                return this.jwtService.getToken(credentials, this.jwtService.getUrl());
+            });
+    }
+
     private patch(user: UserModel, url: string): Observable<UserModel> {
         return this.authHttp
             .patch(url, JSON.stringify({
                 username: user.username
             }))
+            .catch(this.handleError)
             .map(this.extractLocation)
-            .mergeMap((url) => this.getUser(url))
-            .catch(this.handleError);
+            .mergeMap((url: string) => this.getUser(url));
     }
 }

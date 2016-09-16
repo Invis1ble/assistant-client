@@ -9,7 +9,6 @@ import 'rxjs/add/operator/switchMap';
 import { AbstractService } from '../../shared/abstract.service';
 import { PeriodModel } from './period.model';
 import { TaskPeriodCollection } from './task-period.collection';
-import { AbstractModelCollectionLinks } from './abstract-model-collection.links';
 
 @Injectable()
 export class PeriodService extends AbstractService {
@@ -20,17 +19,13 @@ export class PeriodService extends AbstractService {
     }
 
     getPeriod(url: string): Observable<PeriodModel> {
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .map(this.createModel)
-            .catch(this.handleError);
+        return this.get(url)
+            .map(this.createModel);
     }
     
     getPeriods(url: string): Observable<TaskPeriodCollection> {
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
-            .catch(this.handleError);
+        return this.get(url)
+            .switchMap((data) => this.hydrateData(data.entities), this.createCollection);
     }
 
     savePeriod(period: PeriodModel, url: string): Observable<PeriodModel> {
@@ -41,7 +36,7 @@ export class PeriodService extends AbstractService {
         return this.post(period, url);
     }
 
-    private createCollection(data: any, periods: PeriodModel[]) {
+    private createCollection(data: any, periods: PeriodModel[]): TaskPeriodCollection {
         let taskPeriodCollection = new TaskPeriodCollection(periods);
 
         taskPeriodCollection.setLinks(data._links);
@@ -49,7 +44,7 @@ export class PeriodService extends AbstractService {
         return taskPeriodCollection;
     }
 
-    private createModel(data: any) {
+    private createModel(data: any): PeriodModel {
         let finishedAt;
 
         if (null === data.finishedAt) {
@@ -65,7 +60,7 @@ export class PeriodService extends AbstractService {
         );
     }
 
-    private extractData(response: Response) {
+    private extractData(response: Response): any {
         return response.json();
     }
 
@@ -73,10 +68,16 @@ export class PeriodService extends AbstractService {
         return response.headers.get('Location');
     }
 
-    private hydrateData(dataset: any[]) {
+    private hydrateData(dataset: any[]): Observable<PeriodModel[]> {
         return Observable.from(dataset)
             .map(this.createModel)
             .toArray();
+    }
+
+    private get(url): Observable<any> {
+        return this.authHttp.get(url)
+            .catch(this.handleError)
+            .map(this.extractData);
     }
 
     private post(period: PeriodModel, url: string): Observable<PeriodModel> {
@@ -84,9 +85,9 @@ export class PeriodService extends AbstractService {
             .post(url, JSON.stringify({
                 startedAt: Math.round(period.startedAt / 1000)
             }))
+            .catch(this.handleError)
             .map(this.extractLocation)
-            .mergeMap((url) => this.getPeriod(url))
-            .catch(this.handleError);
+            .mergeMap((url) => this.getPeriod(url));
     }
 
     private patch(period: PeriodModel, url: string): Observable<PeriodModel> {
@@ -94,8 +95,8 @@ export class PeriodService extends AbstractService {
             .patch(url, JSON.stringify({
                 finishedAt: Math.round(period.finishedAt / 1000)
             }))
+            .catch(this.handleError)
             .map(this.extractLocation)
-            .mergeMap((url) => this.getPeriod(url))
-            .catch(this.handleError);
+            .mergeMap((url) => this.getPeriod(url));
     }
 }

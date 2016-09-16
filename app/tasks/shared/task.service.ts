@@ -14,29 +14,27 @@ import { PeriodModel } from './period.model';
 import { PeriodService } from './period.service';
 import { TaskModel } from './task.model';
 import { UserTaskCollection } from './user-task.collection';
+import { UrlGenerator } from '../../shared/url-generator.service';
 
 @Injectable()
 export class TaskService extends AbstractService {
     constructor(
         private authHttp: AuthHttp,
-        private periodService: PeriodService
+        private periodService: PeriodService,
+        private urlGenerator: UrlGenerator
     ) {
         super();
     }
 
     getTask(url: string): Observable<TaskModel> {
-        return this.authHttp.get(url)
-            .map(this.extractData)
+        return this.get(url)
             .switchMap((data) => this.hydrateData([data]))
-            .map((data) => data[0])
-            .catch(this.handleError);
+            .map((data) => data[0]);
     }
     
     getTasks(url: string): Observable<UserTaskCollection> {
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .switchMap((data) => this.hydrateData(data.entities), this.createCollection)
-            .catch(this.handleError);
+        return this.get(url)
+            .switchMap((data) => this.hydrateData(data.entities), this.createCollection);
     }
 
     saveTask(task: TaskModel, url: string): Observable<TaskModel> {
@@ -53,20 +51,22 @@ export class TaskService extends AbstractService {
 
             period.finishedAt = Date.now();
             
-            return this.periodService.savePeriod(period, task.periods.getUrl(period))
+            return this.periodService
+                .savePeriod(period, this.urlGenerator.generate(task.periods.getLink(period), {id: period.id}))
                 .map((period: PeriodModel) => {
                     return task;
                 });
         }
         
-        return this.periodService.savePeriod(new PeriodModel(null, Date.now(), null), task.periods.getUrl())
+        return this.periodService
+            .savePeriod(new PeriodModel(null, Date.now(), null), this.urlGenerator.generate(task.periods.getLink()))
             .map((period: PeriodModel) => {
                 task.periods.add(period);
                 return task;
             });
     }
 
-    private createCollection(data: any, tasks: TaskModel[]) {
+    private createCollection(data: any, tasks: TaskModel[]): UserTaskCollection {
         let userTaskCollection = new UserTaskCollection(tasks);
 
         userTaskCollection.setLinks(data._links);
@@ -74,7 +74,7 @@ export class TaskService extends AbstractService {
         return userTaskCollection;
     }
 
-    private createModel(data: any) {
+    private createModel(data: any): TaskModel {
         let taskModel = new TaskModel();
 
         taskModel.id = data.id;
@@ -87,7 +87,7 @@ export class TaskService extends AbstractService {
         return taskModel;
     }
 
-    private extractData(response: Response) {
+    private extractData(response: Response): any {
         return response.json();
     }
 
@@ -95,11 +95,11 @@ export class TaskService extends AbstractService {
         return response.headers.get('Location');
     }
 
-    private hydrateData(dataset: any[]) {
+    private hydrateData(dataset: any[]): Observable<TaskModel[]> {
         return Observable.from(dataset)
             .mergeMap((data: any) => {
                 return this.periodService
-                    .getPeriods(data._links.periods.href)
+                    .getPeriods(this.urlGenerator.generate(data._links.periods))
                     .map((periods) => {
                         data.periods = periods;
                         return data;
@@ -109,6 +109,12 @@ export class TaskService extends AbstractService {
             .toArray();
     }
 
+    private get(url): Observable<any> {
+        return this.authHttp.get(url)
+            .catch(this.handleError)
+            .map(this.extractData);
+    }
+
     private patch(task: TaskModel, url: string): Observable<TaskModel> {
         return this.authHttp
             .patch(url, JSON.stringify({
@@ -116,9 +122,9 @@ export class TaskService extends AbstractService {
                 description: task.description,
                 rate: task.rate
             }))
+            .catch(this.handleError)
             .map(this.extractLocation)
-            .mergeMap((url) => this.getTask(url))
-            .catch(this.handleError);
+            .mergeMap((url) => this.getTask(url));
     }
 
     private post(task: TaskModel, url: string): Observable<TaskModel> {
@@ -128,8 +134,8 @@ export class TaskService extends AbstractService {
                 description: task.description,
                 rate: task.rate
             }))
+            .catch(this.handleError)
             .map(this.extractLocation)
-            .mergeMap((url) => this.getTask(url))
-            .catch(this.handleError);
+            .mergeMap((url) => this.getTask(url));
     }
 }

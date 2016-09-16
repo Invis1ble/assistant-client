@@ -9,8 +9,7 @@ export interface AppConfig {
 
 export const TASK_DI_CONFIG: AppConfig = {
     apiEndpoint: {
-        href: 'http://assistant/app_dev.php/api/users/{id}',
-        templated: true
+        href: 'https://assistant'
     },
     jwtName: 'jwt'
 };

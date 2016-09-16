@@ -32,7 +32,7 @@ export class LoginFormComponent extends AbstractFormComponent {
     }
 
     private logIn(credentials: CredentialsModel) {
-        this.jwtService.getToken(credentials)
+        this.jwtService.getToken(credentials, this.jwtService.getUrl())
             .finally(() => {
                 this.onResponse();
             })

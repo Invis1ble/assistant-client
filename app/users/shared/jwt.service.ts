@@ -7,27 +7,25 @@ import 'rxjs/add/operator/map';
 import { AbstractService } from '../../shared/abstract.service';
 import { JwtModel } from './jwt.model';
 import { CredentialsModel } from './credentials.model';
+import { UrlGenerator } from '../../shared/url-generator.service';
 
 @Injectable()
 export class JwtService extends AbstractService {
+    private endpoint = '/api/tokens';
+
     constructor(
-        private http: Http
+        private http: Http,
+        private urlGenerator: UrlGenerator
     ) {
         super();
     }
 
-    getToken(credentials: CredentialsModel): Observable<JwtModel> {
-        let headers = new Headers({
-            'Content-Type': 'application/json'
-        });
+    getToken(credentials: CredentialsModel, url: string): Observable<JwtModel> {
+        return this.post(credentials, url);
+    }
 
-        return this.http
-            .post('http://assistant/app_dev.php/api/tokens', credentials, {
-                headers: headers
-            })
-            .map(this.extractData)
-            .map(this.createModel)
-            .catch(this.handleError);
+    getUrl(credentials?: CredentialsModel): string {
+        return this.urlGenerator.generate({href: this.endpoint});
     }
 
     private createModel(data: any) {
@@ -41,5 +39,19 @@ export class JwtService extends AbstractService {
 
     private extractData(response: Response) {
         return response.json();
+    }
+
+    private post(credentials: CredentialsModel, url: string): Observable<JwtModel> {
+        let headers = new Headers({
+            'Content-Type': 'application/json'
+        });
+
+        return this.http
+            .post(url, credentials, {
+                headers: headers
+            })
+            .catch(this.handleError)
+            .map(this.extractData)
+            .map(this.createModel);
     }
 }

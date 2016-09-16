@@ -1,5 +1,7 @@
 import { AbstractModelCollectionLinks } from './abstract-model-collection.links';
 import { AbstractModel } from './abstract.model';
+import { Link } from './link';
+import { isPresent } from '../../shared/facade/lang';
 
 export abstract class AbstractModelCollection implements Iterable<AbstractModel> {
     protected links: AbstractModelCollectionLinks;
@@ -22,15 +24,15 @@ export abstract class AbstractModelCollection implements Iterable<AbstractModel>
         return this.items;
     }
 
-    getUrl(model?: AbstractModel): string {
-        if (undefined === model) {
-            return this.links.self.href;
+    getLink(model?: AbstractModel): Link {
+        if (isPresent(model)) {
+            return this.links.entity;
         }
 
-        return this.links.entity.href.replace('{id}', model.id);
+        return this.links.self;
     }
 
-    setLinks(links: any): void {
+    setLinks(links: AbstractModelCollectionLinks): void {
         this.links = links;
     }
 
