@@ -30,7 +30,8 @@ const materialComponents: string[] = [
     'icon',
     'input',
     'progress-circle',
-    'menu'
+    'menu',
+    'sidenav'
 ];
 
 const packages: any = {

@@ -1,3 +1,18 @@
+md-toolbar {
+    &.md-primary a {
+        color: #fff;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .btn-sidenav-toggle + .app-title {
+        margin-left: 20px;
+    }
+}
+
+
 md-toolbar.md-primary a {
     color: #fff;
     text-decoration: none;

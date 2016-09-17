@@ -11,6 +11,7 @@ import { MdMenuModule } from '@angular2-material/menu';
 import { MdIconModule } from '@angular2-material/icon';
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
+import { MdSidenavModule } from '@angular2-material/sidenav';
 
 import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
 import { AppValidatorsModule } from './shared/app-validators/app-validators.module';
@@ -48,6 +49,7 @@ import { UrlGenerator } from './shared/url-generator.service';
         MdButtonModule.forRoot(),
         MdIconModule.forRoot(),
         MdProgressCircleModule.forRoot(),
+        MdSidenavModule.forRoot(),
         AppValidatorsModule,
         AppFormModule,
         routing
