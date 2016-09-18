@@ -1,0 +1,28 @@
+:host {
+    display: block;
+    min-width: 200px;
+}
+
+header {
+    height: 100px;
+    background-color: darkgreen;
+
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: #fff;
+
+    md-icon.avatar {
+        $size: 48px;
+
+        width: $size;
+        height: $size;
+        font-size: $size;
+    }
+
+    .username {
+        margin-left: 8px;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        font-size: 16px;
+    }
+}

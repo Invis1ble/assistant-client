@@ -31,7 +31,8 @@ const materialComponents: string[] = [
     'input',
     'progress-circle',
     'menu',
-    'sidenav'
+    'sidenav',
+    'list'
 ];
 
 const packages: any = {

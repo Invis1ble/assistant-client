@@ -1,8 +1,8 @@
-md-toolbar {
-    &.md-primary a {
-        color: #fff;
-    }
+md-toolbar.md-primary a {
+    color: #fff;
+}
 
+.app-toolbar {
     a {
         text-decoration: none;
     }
@@ -10,12 +10,6 @@ md-toolbar {
     .btn-sidenav-toggle + .app-title {
         margin-left: 20px;
     }
-}
-
-
-md-toolbar.md-primary a {
-    color: #fff;
-    text-decoration: none;
 }
 
 :host {

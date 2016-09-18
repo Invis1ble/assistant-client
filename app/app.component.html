@@ -1,4 +1,4 @@
-<md-toolbar color="primary">
+<md-toolbar color="primary" class="app-toolbar">
     <button md-icon-button class="btn-sidenav-toggle" (click)="sidenav.toggle()">
         <md-icon>menu</md-icon>
     </button>
@@ -7,7 +7,7 @@
 
 <md-sidenav-layout>
     <md-sidenav #sidenav>
-
+        <assistant-sidenav></assistant-sidenav>
     </md-sidenav>
 
     <router-outlet></router-outlet>
