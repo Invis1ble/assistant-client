@@ -8,7 +8,7 @@ import { provideAuth } from 'angular2-jwt/angular2-jwt';
 import { MdButtonModule } from '@angular2-material/button';
 import { MdCardModule } from '@angular2-material/card';
 import { MdMenuModule } from '@angular2-material/menu';
-import { MdIconModule } from '@angular2-material/icon';
+import { MdIconModule, MdIconRegistry } from '@angular2-material/icon';
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 import { MdSidenavModule } from '@angular2-material/sidenav';
@@ -21,6 +21,7 @@ import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SidenavComponent } from './shared/sidenav/sidenav.component';
 import { SecurityComponent } from './users/security/security.component';
+import { LogoutComponent } from './users/logout/logout.component';
 import { LoginFormComponent } from './users/login-form/login-form.component';
 import { RegistrationComponent } from './users/registration/registration.component';
 import { RegistrationFormComponent } from './users/registration-form/registration-form.component';
@@ -61,6 +62,7 @@ import { UrlGenerator } from './shared/url-generator.service';
         AppComponent,
         SidenavComponent,
         SecurityComponent,
+        LogoutComponent,
         LoginFormComponent,
         RegistrationComponent,
         RegistrationFormComponent,
@@ -100,5 +102,9 @@ import { UrlGenerator } from './shared/url-generator.service';
     ]
 })
 export class AppModule {
-
+    constructor(
+        private mdIconRegistry: MdIconRegistry
+    ) {
+        mdIconRegistry.setDefaultFontSetClass('mdi');
+    }
 }

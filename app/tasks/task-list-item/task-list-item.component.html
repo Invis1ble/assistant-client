@@ -1,7 +1,7 @@
 <md-card>
     <md-card-title>
         <button class="more" md-icon-button [md-menu-trigger-for]="menu">
-            <md-icon>more_vert</md-icon>
+            <md-icon fontIcon="mdi-dots-vertical" class="mdi-24px"></md-icon>
         </button>
         <md-menu x-position="before" #menu="mdMenu">
             <button md-menu-item (click)="editTask()">Редактировать</button>
@@ -17,7 +17,7 @@
         <button class="toggle-run" md-raised-button [color]="task.isActive ? 'accent' : 'warn'" (click)="toggleRun()">
             <span class="total-time-spent">{{ totalTimeSpent | duration }}</span>
             <span class="revenue">${{ revenue }}</span>
-            <md-icon>{{ task.isActive ? 'pause' : 'play_arrow' }}</md-icon>
+            <md-icon fontIcon="mdi-{{ task.isActive ? 'pause' : 'play' }}" class="icon"></md-icon>
         </button>
     </div>
 </md-card>

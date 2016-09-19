@@ -1,7 +1,16 @@
 <header>
-    <md-icon class="avatar">person</md-icon>
+    <md-icon fontIcon="mdi-account" class="avatar"></md-icon>
     <div class="username">Alice</div>
 </header>
-<md-list>
-    <md-list-item *ngFor="let item of items">{{ item.title }}</md-list-item>
-</md-list>
+
+<md-nav-list>
+    <template ngFor let-section let-last="last" [ngForOf]="sections">
+        <h3 *ngIf="section.title" md-subheader>{{ section.title }}</h3>
+        <a md-list-item routerLink="{{ item.routerLink }}" routerLinkActive="active" class="item"
+           *ngFor="let item of section.items">
+            <md-icon *ngIf="item.icon" class="item-icon" fontIcon="{{ item.icon }}" md-list-icon></md-icon>
+            {{ item.title }}
+        </a>
+        <md-divider *ngIf="!last"></md-divider>
+    </template>
+</md-nav-list>

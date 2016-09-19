@@ -22,7 +22,11 @@ export class JwtLocalStorage implements JwtStorage {
         return JSON.parse(jwt);
     }
 
-    setToken(jwt: JwtModel) {
+    setToken(jwt: JwtModel): void {
         localStorage.setItem(this.config.jwtName, JSON.stringify(jwt));
+    }
+
+    removeToken(): void {
+        localStorage.removeItem(this.config.jwtName);
     }
 }

@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { SecurityComponent } from './users/security/security.component';
+import { LogoutComponent } from './users/logout/logout.component';
 import { RegistrationComponent } from './users/registration/registration.component';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AnonymousGuard } from './shared/anonymous-guard.service';
@@ -21,6 +22,11 @@ const appRoutes: Routes = [
         path: 'register',
         component: RegistrationComponent,
         canActivate: [ AnonymousGuard ]
+    },
+    {
+        path: 'logout',
+        component: LogoutComponent,
+        canActivate: [ AuthGuard ]
     },
     {
         path: 'tasks',

@@ -23,15 +23,20 @@ button {
     }
 
     &.toggle-run {
-        .material-icons {
-            font-size: 36px;
-            margin-left: 10px;
-        }
+        $icon-size: 36px;
 
         md-icon {
-            width: 36px;
-            height: 36px;
+            width: $icon-size;
+            height: $icon-size;
             vertical-align: middle;
+        }
+
+        .mdi {
+            font-size: $icon-size;
+        }
+
+        .icon {
+            margin-left: 10px;
         }
     }
 

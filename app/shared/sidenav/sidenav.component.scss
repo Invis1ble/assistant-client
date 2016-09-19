@@ -1,11 +1,12 @@
 :host {
     display: block;
-    min-width: 200px;
+    min-width: 250px;
 }
 
 header {
     height: 100px;
-    background-color: darkgreen;
+    background-image: url(app/shared/sidenav/header-background.svg);
+    background-size: cover;
 
     display: flex;
     align-items: center;
@@ -23,6 +24,23 @@ header {
     .username {
         margin-left: 8px;
         font-family: Roboto, "Helvetica Neue", sans-serif;
-        font-size: 16px;
+        font-size: 18px;
     }
+}
+
+md-nav-list [md-subheader] {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a[md-list-item].item {
+    &.active {
+        /deep/ .md-list-item {
+            color: #009688;
+            background: rgba(0, 0, 0, .04);
+        }
+    }
+}
+
+.item-icon.mdi {
+    font-size: 24px;
 }
