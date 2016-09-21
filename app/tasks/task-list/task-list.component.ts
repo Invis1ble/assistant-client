@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/auth.service';
 import { TaskModel } from '../shared/task.model';
 import { UserModel } from '../../users/shared/user.model';
+import { SecurityEventBusService } from '../../shared/security/security-event-bus.service';
 
 @Component({
     selector: 'assistant-task-list',
@@ -17,7 +18,8 @@ export class TaskListComponent implements OnInit {
     task: TaskModel;
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private securityEventBus: SecurityEventBusService
     ) {
 
     }
@@ -30,7 +32,10 @@ export class TaskListComponent implements OnInit {
     getUser() {
         this.authService.getUser()
             .subscribe(
-                (user: UserModel) => this.user = user,
+                (user: UserModel) => {
+                    this.user = user;
+                    this.securityEventBus.userLoggedIn$.emit(user);
+                },
                 this.handleError
             );
     }

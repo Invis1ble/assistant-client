@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from "rxjs/Rx";
+import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/observable/interval';
 import * as moment from 'moment';
 

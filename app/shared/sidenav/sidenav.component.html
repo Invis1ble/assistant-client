@@ -1,16 +1,21 @@
 <header>
-    <md-icon fontIcon="mdi-account" class="avatar"></md-icon>
-    <div class="username">Alice</div>
+    <md-icon fontIcon="mdi-{{ user ? 'account' : 'ghost' }}" class="avatar"></md-icon>
+    <div class="username">{{ user ? user.username : 'Гость' }}</div>
+    <button *ngIf="user" md-icon-button (click)="logout()">
+        <md-icon fontIcon="mdi-logout"></md-icon>
+    </button>
 </header>
 
 <md-nav-list>
     <template ngFor let-section let-last="last" [ngForOf]="sections">
-        <h3 *ngIf="section.title" md-subheader>{{ section.title }}</h3>
-        <a md-list-item routerLink="{{ item.routerLink }}" routerLinkActive="active" class="item"
-           *ngFor="let item of section.items">
-            <md-icon *ngIf="item.icon" class="item-icon" fontIcon="{{ item.icon }}" md-list-icon></md-icon>
-            {{ item.title }}
-        </a>
-        <md-divider *ngIf="!last"></md-divider>
+        <template [ngIf]="section.items.length">
+            <h3 *ngIf="section.title" md-subheader>{{ section.title }}</h3>
+            <a md-list-item routerLink="{{ item.routerLink }}" routerLinkActive="active" class="item"
+               *ngFor="let item of section.items">
+                <md-icon *ngIf="item.icon" fontIcon="{{ item.icon }}" md-list-icon></md-icon>
+                {{ item.title }}
+            </a>
+            <md-divider *ngIf="!last"></md-divider>
+        </template>
     </template>
 </md-nav-list>

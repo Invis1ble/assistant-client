@@ -13,3 +13,10 @@ assistant-app {
     height: 100%;
     flex-direction: column;
 }
+
+md-icon {
+    &.mdi-set,
+    &.mdi {
+        font-size: 24px;
+    }
+}

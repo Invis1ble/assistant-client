@@ -31,3 +31,13 @@ md-toolbar.md-primary a {
         }
     }
 }
+
+md-sidenav-layout {
+    // cutting content fix
+    height: 100%;
+
+    // Floating Action Button fix (static position)
+    /deep/ .md-sidenav-content {
+        transform: initial !important;
+    }
+}

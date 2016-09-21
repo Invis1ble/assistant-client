@@ -21,7 +21,6 @@ import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { SidenavComponent } from './shared/sidenav/sidenav.component';
 import { SecurityComponent } from './users/security/security.component';
-import { LogoutComponent } from './users/logout/logout.component';
 import { LoginFormComponent } from './users/login-form/login-form.component';
 import { RegistrationComponent } from './users/registration/registration.component';
 import { RegistrationFormComponent } from './users/registration-form/registration-form.component';
@@ -39,6 +38,7 @@ import { JwtStorage } from './users/shared/jwt-storage';
 import { JwtLocalStorage } from './users/shared/jwt-local-storage';
 import { DurationPipe } from './shared/pipes/duration.pipe';
 import { UrlGenerator } from './shared/url-generator.service';
+import { SecurityEventBusService } from './shared/security/security-event-bus.service';
 
 @NgModule({
     imports: [
@@ -62,7 +62,6 @@ import { UrlGenerator } from './shared/url-generator.service';
         AppComponent,
         SidenavComponent,
         SecurityComponent,
-        LogoutComponent,
         LoginFormComponent,
         RegistrationComponent,
         RegistrationFormComponent,
@@ -80,6 +79,7 @@ import { UrlGenerator } from './shared/url-generator.service';
         TaskService,
         PeriodService,
         UrlGenerator,
+        SecurityEventBusService,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter

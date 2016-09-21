@@ -25,22 +25,22 @@ header {
         margin-left: 8px;
         font-family: Roboto, "Helvetica Neue", sans-serif;
         font-size: 18px;
+        flex-grow: 10;
     }
+}
+
+[md-menu-item] md-icon {
+    $padding: 4px;
+
+    padding: $padding;
+    margin-left: -$padding;
 }
 
 md-nav-list [md-subheader] {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-a[md-list-item].item {
-    &.active {
-        /deep/ .md-list-item {
-            color: #009688;
-            background: rgba(0, 0, 0, .04);
-        }
-    }
-}
-
-.item-icon.mdi {
-    font-size: 24px;
+a[md-list-item].item.active /deep/ .md-list-item {
+    color: #009688;
+    background: rgba(0, 0, 0, .04);
 }
