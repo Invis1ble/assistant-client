@@ -28,7 +28,10 @@
           [dividerColor]="dividerColor"
           [floatingPlaceholder]="floatingPlaceholder"
           [hintLabel]="hintLabel">
-    <ng-content></ng-content>
+    <ng-content select="[md-prefix]" ngProjectAs="[md-prefix]"></ng-content>
+    <ng-content select="md-placeholder" ngProjectAs="md-placeholder"></ng-content>
+    <ng-content select="[md-suffix]" ngProjectAs="[md-suffix]"></ng-content>
+    <ng-content select="md-hint" ngProjectAs="md-hint"></ng-content>
 </md-input>
 <ul *ngIf="control.errors" class="error-list">
     <li *ngFor="let error of control.errors | iterable">{{ error.key }}</li>

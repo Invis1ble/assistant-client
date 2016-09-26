@@ -9,7 +9,7 @@
             width: 1px;
         }
 
-        [md-prefix] {
+        /deep/ [md-prefix] {
             margin-right: .3em;
         }
     }
