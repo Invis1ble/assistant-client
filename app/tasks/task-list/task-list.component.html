@@ -13,5 +13,6 @@
 <assistant-task-list-item class="task-list-item-layout"
                           *ngFor="let task of user.tasks"
                           (onTaskEdit)="onTaskEdit($event)"
+                          (onTaskDeleted)="onTaskDeleted($event)"
                           [task]="task">
 </assistant-task-list-item>

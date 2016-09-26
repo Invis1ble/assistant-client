@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/observable/interval';
 import * as moment from 'moment';
@@ -17,6 +18,7 @@ import { TaskService } from '../shared/task.service';
 export class TaskListItemComponent implements OnInit {
     @Input() task: TaskModel;
     @Output() onTaskEdit = new EventEmitter<TaskModel>();
+    @Output() onTaskDeleted = new EventEmitter<TaskModel>();
     revenue: string;
     totalTimeSpent: moment.Duration;
 
@@ -33,8 +35,19 @@ export class TaskListItemComponent implements OnInit {
         this.onTaskEdit.emit(this.task);
     }
 
-    deleteTask() {
+    deleteTask(): void {
+        // TODO: move to @angular2-material/dialog
+        if (!confirm('Вы уверены?')) {
+            return;
+        }
 
+        this.taskService.deleteTask(this.task)
+            .subscribe(
+                (task: TaskModel) => {
+                    this.onTaskDeleted.emit(task);
+                },
+                this.handleError
+            );
     }
 
     ngOnInit() {
@@ -77,5 +90,9 @@ export class TaskListItemComponent implements OnInit {
 
     private setTotalTimeSpent() {
         this.totalTimeSpent = moment.duration(this.task.totalTimeSpent);
+    }
+
+    private handleError(): void {
+
     }
 }

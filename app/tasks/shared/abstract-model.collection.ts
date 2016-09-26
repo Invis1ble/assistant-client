@@ -13,11 +13,19 @@ export abstract class AbstractModelCollection implements Iterable<AbstractModel>
     }
 
     add(item: AbstractModel): void {
-        this.items.push(item);
+        this.getItems().push(item);
+    }
+
+    delete(item: AbstractModel): AbstractModelCollection {
+        this.items = this.getItems().filter((_item: AbstractModel): boolean => {
+            return item.id !== _item.id;
+        });
+
+        return this;
     }
 
     getItem(index: number): AbstractModel {
-        return this.items[index];
+        return this.getItems()[index];
     }
 
     getItems(): AbstractModel[] {
@@ -40,7 +48,7 @@ export abstract class AbstractModelCollection implements Iterable<AbstractModel>
 
     [Symbol.iterator](): Iterator<AbstractModel> {
         let pointer = 0;
-        let items = this.items;
+        let items = this.getItems();
 
         return {
             next(): IteratorResult<AbstractModel> {

@@ -15,9 +15,12 @@ import { PeriodService } from './period.service';
 import { TaskModel } from './task.model';
 import { UserTaskCollection } from './user-task.collection';
 import { UrlGenerator } from '../../shared/url-generator.service';
+import { isPresent } from '../../shared/facade/lang';
 
 @Injectable()
 export class TaskService extends AbstractService {
+    private endpoint = '/api/tasks';
+
     constructor(
         private authHttp: AuthHttp,
         private periodService: PeriodService,
@@ -43,6 +46,11 @@ export class TaskService extends AbstractService {
         }
 
         return this.post(task, url);
+    }
+
+    deleteTask(task: TaskModel): Observable<TaskModel> {
+        return this.delete(this.getUrl(task))
+            .map(() => task);
     }
 
     toggleRun(task: TaskModel): Observable<TaskModel> {
@@ -109,6 +117,14 @@ export class TaskService extends AbstractService {
             .toArray();
     }
 
+    getUrl(task: {id?: string}): string {
+        if (isPresent(task.id)) {
+            return this.urlGenerator.generate({href: `${this.endpoint}/{id}`, templated: true}, {id: task.id});
+        }
+
+        return this.urlGenerator.generate({href: this.endpoint});
+    }
+
     private get(url): Observable<any> {
         return this.authHttp.get(url)
             .catch(this.handleError)
@@ -137,5 +153,11 @@ export class TaskService extends AbstractService {
             .catch(this.handleError)
             .map(this.extractLocation)
             .mergeMap((url) => this.getTask(url));
+    }
+
+    private delete(url: string): Observable<Response> {
+        return this.authHttp
+            .delete(url)
+            .catch(this.handleError);
     }
 }

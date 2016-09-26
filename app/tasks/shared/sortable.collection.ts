@@ -16,8 +16,16 @@ export abstract class AbstractSortableCollection extends AbstractModelCollection
         this.sort();
     }
 
+    delete(item: AbstractModel): AbstractSortableCollection {
+        super.delete(item);
+
+        this.sort();
+
+        return this;
+    }
+
     getLatest(): AbstractModel {
-        return this.items[0];
+        return this.getItems()[0];
     }
 
     abstract sort(): void;

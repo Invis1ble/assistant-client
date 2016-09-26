@@ -57,6 +57,10 @@ export class TaskListComponent implements OnInit {
         this.showTaskForm();
     }
 
+    onTaskDeleted(task: TaskModel): void {
+        this.user.tasks.delete(task);
+    }
+
     onTaskSaved(task: TaskModel) {
         this.user.tasks.update(task);
         this.hideTaskForm();
