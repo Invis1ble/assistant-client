@@ -4,7 +4,6 @@ const paths: any = {
 
 const map: any = {
     '@angular': `npm:@angular`,
-    '@angular2-material': `npm:@angular2-material`,
     'rxjs': 'npm:rxjs',
     'angular2-jwt': 'npm:angular2-jwt',
     'moment': 'npm:moment',
@@ -20,19 +19,6 @@ const angularBundles: string[] = [
     'http',
     'router',
     'forms'
-];
-
-const materialComponents: string[] = [
-    'core',
-    'button',
-    'card',
-    'toolbar',
-    'icon',
-    'input',
-    'progress-circle',
-    'menu',
-    'sidenav',
-    'list'
 ];
 
 const packages: any = {
@@ -56,11 +42,9 @@ angularBundles.forEach((name) => {
     };
 });
 
-materialComponents.forEach((name) => {
-    packages[`@angular2-material/${name}`] = {
-        main: `${name}.umd.js`
-    };
-});
+packages['@angular/material'] = {
+    main: 'material.umd.js'
+};
 
 declare var System: any;
 

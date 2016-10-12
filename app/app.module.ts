@@ -3,16 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { provideAuth } from 'angular2-jwt/angular2-jwt';
+import {
+    MdIconRegistry,
+    MdToolbarModule,
+    MdCardModule,
+    MdMenuModule,
+    MdButtonModule,
+    MdIconModule,
+    MdProgressCircleModule,
+    MdSidenavModule,
+    MdListModule
+} from '@angular/material';
 
-import { MdButtonModule } from '@angular2-material/button';
-import { MdCardModule } from '@angular2-material/card';
-import { MdMenuModule } from '@angular2-material/menu';
-import { MdIconModule, MdIconRegistry } from '@angular2-material/icon';
-import { MdToolbarModule } from '@angular2-material/toolbar';
-import { MdProgressCircleModule } from '@angular2-material/progress-circle';
-import { MdSidenavModule } from '@angular2-material/sidenav';
-import { MdListModule } from '@angular2-material/list';
+import { provideAuth } from 'angular2-jwt/angular2-jwt';
 
 import { TASK_DI_CONFIG, APP_CONFIG } from './app-config';
 import { AppValidatorsModule } from './shared/app-validators/app-validators.module';
@@ -94,17 +97,15 @@ import { SecurityEventBusService } from './shared/security/security-event-bus.se
             },
             tokenName: TASK_DI_CONFIG.jwtName,
         }),
-        { provide: APP_CONFIG, useValue: TASK_DI_CONFIG },
-        { provide: JwtStorage, useClass: JwtLocalStorage }
+        {provide: APP_CONFIG, useValue: TASK_DI_CONFIG},
+        {provide: JwtStorage, useClass: JwtLocalStorage}
     ],
     bootstrap: [
         AppComponent
     ]
 })
 export class AppModule {
-    constructor(
-        private mdIconRegistry: MdIconRegistry
-    ) {
+    constructor(private mdIconRegistry: MdIconRegistry) {
         mdIconRegistry.setDefaultFontSetClass('mdi');
     }
 }
