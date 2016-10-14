@@ -39,8 +39,3 @@ header {
 md-nav-list [md-subheader] {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-a[md-list-item].item.active /deep/ .md-list-item {
-    color: #009688;
-    background: rgba(0, 0, 0, .04);
-}

@@ -1,0 +1,10 @@
+@include md-core();
+
+// Include all theme styles for the components.
+@include angular-material-theme($theme);
+
+// Active list item
+a[md-list-item].item.active /deep/ .md-list-item {
+    color: md-color($primary);
+    background: md-color(map-get($theme, background), 'hover');
+}

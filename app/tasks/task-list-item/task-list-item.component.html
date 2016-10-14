@@ -14,7 +14,7 @@
         <p>{{ task.description }}</p>
     </md-card-content>
     <div>
-        <button class="toggle-run" md-raised-button [color]="task.isActive ? 'accent' : 'warn'" (click)="toggleRun()">
+        <button class="toggle-run" md-raised-button [class.active]="task.isActive" (click)="toggleRun()">
             <span class="total-time-spent">{{ totalTimeSpent | duration }}</span>
             <span class="revenue">${{ revenue }}</span>
             <md-icon fontIcon="mdi-{{ task.isActive ? 'pause' : 'play' }}" class="icon"></md-icon>

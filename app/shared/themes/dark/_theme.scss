@@ -1,0 +1,23 @@
+@import "../../../../node_modules/@angular/material/core/theming/all-theme";
+
+$md-dark-theme-foreground-base: #ccc;
+
+$md-dark-theme-foreground: (
+    base:            $md-dark-theme-foreground-base,
+    divider:         rgba($md-dark-theme-foreground-base, 0.12),
+    dividers:        rgba($md-dark-theme-foreground-base, 0.12),
+    disabled:        rgba($md-dark-theme-foreground-base, 0.3),
+    disabled-button: rgba($md-dark-theme-foreground-base, 0.3),
+    disabled-text:   rgba($md-dark-theme-foreground-base, 0.3),
+    hint-text:       rgba($md-dark-theme-foreground-base, 0.3),
+    secondary-text:  rgba($md-dark-theme-foreground-base, 0.7),
+    icon:            $md-dark-theme-foreground-base,
+    icons:           $md-dark-theme-foreground-base,
+    text:            $md-dark-theme-foreground-base
+);
+
+// Define a theme.
+$primary: md-palette($md-amber, 700, 500, 900);
+$accent:  md-palette($md-deep-purple, A200, A100, A400);
+
+$theme: md-dark-theme($primary, $accent);
