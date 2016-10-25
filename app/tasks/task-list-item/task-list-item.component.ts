@@ -1,12 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Response } from '@angular/http';
+import { MdSnackBar } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/observable/interval';
 import * as moment from 'moment';
 
 import { TaskModel } from '../shared/task.model';
 import { TaskService } from '../shared/task.service';
+import { AbstractComponent } from '../../shared/abstract.component';
 
 @Component({
     selector: 'assistant-task-list-item',
@@ -15,7 +17,7 @@ import { TaskService } from '../shared/task.service';
         'app/tasks/task-list-item/task-list-item.component.css'
     ]
 })
-export class TaskListItemComponent implements OnInit {
+export class TaskListItemComponent extends AbstractComponent implements OnInit {
     @Input() task: TaskModel;
     @Output() onTaskEdit = new EventEmitter<TaskModel>();
     @Output() onTaskDeleted = new EventEmitter<TaskModel>();
@@ -26,9 +28,11 @@ export class TaskListItemComponent implements OnInit {
     private timerSubscription: Subscription;
     
     constructor(
+        snackBar: MdSnackBar,
+        viewContainerRef: ViewContainerRef,
         private taskService: TaskService
     ) {
-        
+        super(snackBar, viewContainerRef);
     }
 
     editTask() {
@@ -46,7 +50,9 @@ export class TaskListItemComponent implements OnInit {
                 (task: TaskModel) => {
                     this.onTaskDeleted.emit(task);
                 },
-                this.handleError
+                (response: Response): void => {
+                    this.handleError(response);
+                }
             );
     }
 
@@ -62,18 +68,23 @@ export class TaskListItemComponent implements OnInit {
     toggleRun() {
         this.taskService
             .toggleRun(this.task)
-            .subscribe((task: TaskModel) => {
-                if (task.isActive) {
-                    this.activateRecalculation();
-                } else {
-                    this.deactivateRecalculation();
+            .subscribe(
+                (task: TaskModel) => {
+                    if (task.isActive) {
+                        this.activateRecalculation();
+                    } else {
+                        this.deactivateRecalculation();
+                    }
+                },
+                (response: Response): void => {
+                    this.handleError(response);
                 }
-            });
+            );
     }
 
     private activateRecalculation() {
         this.timerSubscription = this.timer.subscribe(
-            (i) => {
+            () => {
                 this.setTotalTimeSpent();
                 this.setRevenue();
             }
@@ -90,9 +101,5 @@ export class TaskListItemComponent implements OnInit {
 
     private setTotalTimeSpent() {
         this.totalTimeSpent = moment.duration(this.task.totalTimeSpent);
-    }
-
-    private handleError(): void {
-
     }
 }

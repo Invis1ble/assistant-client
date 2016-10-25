@@ -12,7 +12,8 @@ import {
     MdIconModule,
     MdProgressCircleModule,
     MdSidenavModule,
-    MdListModule
+    MdListModule,
+    MdSnackBarModule
 } from '@angular/material';
 
 import { provideAuth } from 'angular2-jwt/angular2-jwt';
@@ -57,6 +58,7 @@ import { SecurityEventBusService } from './shared/security/security-event-bus.se
         MdProgressCircleModule.forRoot(),
         MdSidenavModule.forRoot(),
         MdListModule.forRoot(),
+        MdSnackBarModule.forRoot(),
         AppValidatorsModule,
         AppFormModule,
         routing
