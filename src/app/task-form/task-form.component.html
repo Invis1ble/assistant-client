@@ -1,0 +1,37 @@
+<form *ngIf="form" class="task-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <md-card>
+        <md-card-title>{{ task.id ? 'Редактирование задачи' : 'Новая задача' }}</md-card-title>
+        <md-card-content>
+            <app-form-group [control]="form.controls.title"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="title"
+                            type="text"
+                            placeholder="Заголовок">
+            </app-form-group>
+            <app-form-group [control]="form.controls.description"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="description"
+                            type="text"
+                            placeholder="Описание">
+            </app-form-group>
+            <app-form-group [control]="form.controls.rate"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="rate"
+                            type="number"
+                            min="5.00"
+                            step="0.01"
+                            placeholder="Рейт">
+                <span md-prefix>$</span>
+            </app-form-group>
+            <app-form-error [form]="form"></app-form-error>
+        </md-card-content>
+        <md-card-actions align="end">
+            <md-spinner *ngIf="pending"></md-spinner>
+            <button type="button" md-button color="primary" (click)="cancel()">ОТМЕНА</button>
+            <button type="submit" md-button color="primary" [disabled]="isDisabled(form)">СОХРАНИТЬ</button>
+        </md-card-actions>
+    </md-card>
+</form>

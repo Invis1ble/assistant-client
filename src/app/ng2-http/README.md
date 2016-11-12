@@ -1,0 +1,1 @@
+This module fixes a weird bug https://github.com/hboylan/ng2-http/issues/1

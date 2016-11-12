@@ -1,0 +1,42 @@
+:host {
+    /deep/ .primary-component-layout {
+        display: flex;
+        height: 100%;
+    }
+
+    /deep/ md-card-actions {
+        md-spinner {
+            width: 24px;
+            height: 24px;
+            align-self: center;
+        }
+
+        &[align="end"] [align="start"] {
+            margin-right: auto;
+        }
+    }
+}
+
+md-toolbar a {
+    color: currentColor;
+}
+
+.app-toolbar {
+    a {
+        text-decoration: none;
+    }
+
+    .btn-sidenav-toggle + .app-title {
+        margin-left: 20px;
+    }
+}
+
+md-sidenav-layout {
+    // cutting content fix
+    height: 100%;
+
+    // Floating Action Button fix (static position)
+    /deep/ .md-sidenav-content {
+        transform: initial !important;
+    }
+}
