@@ -5,9 +5,12 @@ import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/mergeMap';
 import * as moment from 'moment';
 
 import { AbstractComponent } from '../shared/abstract-component';
+import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
 import { Task } from './task';
 import { TaskService } from './task.service';
 import { isPresent } from '../facade/lang';
@@ -32,7 +35,8 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
 
     constructor(
         snackBar: MdSnackBar,
-        private taskService: TaskService
+        private taskService: TaskService,
+        private confirmDialog: ConfirmDialogService
     ) {
         super(snackBar);
     }
@@ -66,19 +70,19 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
     }
 
     deleteTask(): void {
-        // TODO: move to @angular2-material/dialog
-        if (!confirm('Вы уверены?')) {
-            return;
-        }
-
-        this.taskService.deleteTask(this.task).subscribe(
-            (task: Task) => {
-                this.onTaskDeleted.emit(task);
-            },
-            (response: Response): void => {
-                this.handleError(response);
-            }
-        );
+        this.confirmDialog.confirm('Подтверждение', 'Вы уверены, что хотите удалить задачу?')
+            .filter((confirmed: boolean) => confirmed)
+            .mergeMap((): Observable<Task> => {
+                return this.taskService.deleteTask(this.task);
+            })
+            .subscribe(
+                (task: Task) => {
+                    this.onTaskDeleted.emit(task);
+                },
+                (response: Response): void => {
+                    this.handleError(response);
+                }
+            );
     }
 
     private activateRecalculation() {

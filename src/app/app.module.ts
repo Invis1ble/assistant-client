@@ -18,6 +18,7 @@ import {
 import { AppComponent } from './app.component';
 import { CONFIG } from './config/config-token';
 import { CONFIG_DEV } from './config/config.dev';
+import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
 import { JwtLocalStorageService } from './security/jwt/jwt-local-storage.service';
 import { JwtStorage } from './security/jwt/jwt-storage';
 import { FormModule } from './form/form.module';
@@ -41,6 +42,7 @@ import { TaskFormComponent } from './task-form/task-form.component';
     ],
     imports: [
         BrowserModule,
+        ConfirmDialogModule,
         FormModule,
         FormsModule,
         MdButtonModule.forRoot(),

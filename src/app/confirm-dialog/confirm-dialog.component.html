@@ -1,0 +1,6 @@
+<div class="title">{{ title }}</div>
+<div class="content" *ngIf="content">{{ content }}</div>
+<div class="actions" align="end">
+    <button md-button type="button" color="primary" (click)="cancel()">ОТМЕНА</button>
+    <button md-button type="button" color="primary" (click)="confirm()">ПРИНЯТЬ</button>
+</div>
