@@ -1,4 +1,3 @@
-import { ViewContainerRef } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
@@ -7,8 +6,7 @@ import { isPresent } from '../facade/lang';
 
 export abstract class AbstractComponent {
     constructor(
-        private snackBar: MdSnackBar,
-        private viewContainerRef: ViewContainerRef
+        private snackBar: MdSnackBar
     ) {
 
     }
@@ -32,6 +30,6 @@ export abstract class AbstractComponent {
             actionLabel = 'OK';
         }
 
-        this.snackBar.open(message, actionLabel, new MdSnackBarConfig(this.viewContainerRef));
+        this.snackBar.open(message, actionLabel, new MdSnackBarConfig());
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { MdSnackBar } from '@angular/material';
@@ -31,13 +31,12 @@ export class TaskListComponent extends AbstractComponent implements OnInit {
 
     constructor(
         snackBar: MdSnackBar,
-        viewContainerRef: ViewContainerRef,
         private authService: AuthService,
         private taskService: TaskService,
         private taskPeriodService: TaskPeriodService,
         private securityEventBus: SecurityEventBusService
     ) {
-        super(snackBar, viewContainerRef);
+        super(snackBar);
     }
 
     ngOnInit() {

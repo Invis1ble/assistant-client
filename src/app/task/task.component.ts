@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { MdSnackBar } from '@angular/material';
@@ -32,10 +32,9 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
 
     constructor(
         snackBar: MdSnackBar,
-        viewContainerRef: ViewContainerRef,
         private taskService: TaskService
     ) {
-        super(snackBar, viewContainerRef);
+        super(snackBar);
     }
 
     ngOnInit(): void {
