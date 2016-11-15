@@ -73,7 +73,7 @@ export class TaskListComponent extends AbstractComponent implements OnInit {
     }
 
     addNewTask(): void {
-        this.task = new Task(null, '', '', 20, null, null);
+        this.task = new Task(null, '', '', 20, null, new TaskPeriodCollection());
     }
 
     onTaskEdit(task: Task): void {
