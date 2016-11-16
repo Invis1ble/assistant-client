@@ -1,4 +1,9 @@
 :host {
+    .title,
+    .description {
+        word-wrap: break-word;
+    }
+
     .toggle-run[md-raised-button] {
         padding-left: 22px;
         padding-right: 22px;

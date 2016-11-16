@@ -1,5 +1,5 @@
 <md-card>
-    <md-card-title>
+    <md-card-title class="title">
         <button class="more" md-icon-button [md-menu-trigger-for]="menu">
             <md-icon fontIcon="mdi-dots-vertical"></md-icon>
         </button>
@@ -11,7 +11,7 @@
         {{ task.title }}
     </md-card-title>
     <md-card-content *ngIf="task.description">
-        <p>{{ task.description }}</p>
+        <p class="description">{{ task.description }}</p>
     </md-card-content>
     <div>
         <button class="toggle-run" md-raised-button [class.active]="task.isActive()" (click)="toggleRun()">
