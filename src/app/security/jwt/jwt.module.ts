@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 
-import { provideAuth } from 'angular2-jwt';
+import { JwtHelper, provideAuth } from 'angular2-jwt';
 
 import { CONFIG_DEV } from '../../config/config.dev';
-import { JwtHydratorService } from './jwt-hydrator.service';
+import { JwtResponseBodyToJwtTransformer } from './jwt-response-body-to-jwt.transformer';
 import { JwtService } from './jwt.service';
+import { JwtToRefreshTokenRequestBodyTransformer } from './jwt-to-refresh-token-request-body.transformer';
 import { RestModule } from '../../rest/rest.module';
 
 @NgModule({
@@ -12,8 +13,10 @@ import { RestModule } from '../../rest/rest.module';
         RestModule
     ],
     providers: [
-        JwtHydratorService,
+        JwtHelper,
+        JwtResponseBodyToJwtTransformer,
         JwtService,
+        JwtToRefreshTokenRequestBodyTransformer,
         provideAuth({
             globalHeaders: [{'Content-Type': 'application/json'}],
             // TODO: use JwtLocalStorage.prototype.getToken as tokenGetter

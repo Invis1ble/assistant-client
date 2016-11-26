@@ -1,11 +1,13 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { User } from '../user/user';
 
 @Injectable()
 export class SecurityEventBusService {
 
-    userLoggedIn$ = new EventEmitter<User>();
-    userLoggedOut$ = new EventEmitter();
+    userLoggedIn$ = new ReplaySubject<User>(1);
+    userLoggedOut$ = new ReplaySubject(1);
 
 }

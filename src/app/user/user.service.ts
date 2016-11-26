@@ -4,6 +4,8 @@ import { Inject, Injectable } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import { Body, DefaultHeaders, GET, POST, Path, Produces } from '../ng2-http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 
 import { CONFIG } from '../config/config-token';
 import { Config } from '../config/config';

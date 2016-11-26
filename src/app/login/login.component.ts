@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 import { AbstractForm } from '../form/abstract-form';
 import { AuthService } from '../security/auth.service';
 import { Credentials } from '../security/credentials';
-import { Jwt } from '../security/jwt/jwt';
-import { JwtService } from '../security/jwt/jwt.service';
 
 @Component({
     selector: 'app-login.primary-component-layout',
@@ -18,15 +16,14 @@ export class LoginComponent extends AbstractForm {
 
     constructor(
         formBuilder: FormBuilder,
-        private authService: AuthService,
-        private router: Router,
-        private jwtService: JwtService
+        private auth: AuthService,
+        private router: Router
     ) {
         super();
 
         this.form = formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required]
+            username: ['alice', Validators.required],
+            password: ['111111', Validators.required]
         });
     }
 
@@ -37,15 +34,13 @@ export class LoginComponent extends AbstractForm {
     }
 
     logIn(credentials: Credentials): void {
-        this.jwtService.createJwt(credentials)
+        this.auth.login(credentials)
             .finally(() => {
                 this.onResponse();
             })
             .subscribe(
-                (jwt: Jwt) => {
-                    let requestedUrl = this.authService.getRequestedUrl();
-
-                    this.authService.setLoggedIn(jwt);
+                () => {
+                    let requestedUrl = this.auth.getRequestedUrl();
 
                     if (undefined === requestedUrl) {
                         requestedUrl = '';

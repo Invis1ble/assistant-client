@@ -1,9 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
-
-import { JwtStorage } from '../security/jwt/jwt-storage';
+import { AuthService } from '../security/auth.service';
 import { SecurityEventBusService } from '../security/security-event-bus.service';
 import { SidenavItem } from './sidenav-item';
 import { SidenavSection } from './sidenav-section';
@@ -15,35 +13,31 @@ import { isPresent } from '../facade/lang';
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnDestroy {
+export class SidenavComponent {
 
     user: User;
     sections: SidenavSection[] = [];
 
-    private userLoggedInSubscription: Subscription;
-    private userLoggedOutSubscription: Subscription;
-
     constructor(
-        private securityEventBus: SecurityEventBusService,
-        private jwtStorage: JwtStorage,
+        securityEventBus: SecurityEventBusService,
+        private auth: AuthService,
         private router: Router
     ) {
-        this.userLoggedInSubscription = this.securityEventBus.userLoggedIn$
-            .subscribe((user: User) => {
-                this.onUserLoggedIn(user);
-            });
+        securityEventBus.userLoggedIn$.subscribe((user: User) => {
+            console.log('SidenavComponent.constructor() securityEventBus.userLoggedIn$ onNext');
 
-        this.userLoggedOutSubscription = this.securityEventBus.userLoggedOut$
-            .subscribe(() => {
-                this.onUserLoggedOut();
-            });
+            this.onUserLoggedIn(user);
+        });
+
+        securityEventBus.userLoggedOut$.subscribe(() => {
+            this.onUserLoggedOut();
+        });
 
         this.syncSections();
     }
 
     logout() {
-        this.jwtStorage.removeToken();
-        this.securityEventBus.userLoggedOut$.emit();
+        this.auth.logout();
     }
 
     private syncSections(): void {
@@ -78,8 +72,4 @@ export class SidenavComponent implements OnDestroy {
         this.router.navigate(['login']);
     }
 
-    ngOnDestroy(): void {
-        this.userLoggedInSubscription.unsubscribe();
-        this.userLoggedOutSubscription.unsubscribe();
-    }
 }

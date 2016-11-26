@@ -14,6 +14,10 @@ export class JwtLocalStorageService implements JwtStorage {
 
     }
 
+    hasToken(): boolean {
+        return localStorage.getItem(this.config.jwtName) !== null;
+    }
+
     getToken(): Jwt | null {
         const jwt = localStorage.getItem(this.config.jwtName);
 

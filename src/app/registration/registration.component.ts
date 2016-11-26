@@ -69,7 +69,7 @@ export class RegistrationComponent extends AbstractForm {
                 (jwt: Jwt) => {
                     let requestedUrl = this.authService.getRequestedUrl();
 
-                    this.authService.setLoggedIn(jwt);
+                    this.authService.setAuthenticated(jwt);
 
                     if (undefined === requestedUrl) {
                         requestedUrl = '';
