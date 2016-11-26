@@ -22,8 +22,8 @@ export class LoginComponent extends AbstractForm {
         super();
 
         this.form = formBuilder.group({
-            username: ['alice', Validators.required],
-            password: ['111111', Validators.required]
+            username: ['', Validators.required],
+            password: ['', Validators.required]
         });
     }
 
