@@ -1,10 +1,10 @@
-import { AssistantPage } from './app.po';
+import { AssistantClientPage } from './app.po';
 
-describe('assistant App', function() {
-  let page: AssistantPage;
+describe('assistant-client App', function() {
+  let page: AssistantClientPage;
 
   beforeEach(() => {
-    page = new AssistantPage();
+    page = new AssistantClientPage();
   });
 
   it('should display message saying app works', () => {
