@@ -122,8 +122,6 @@ export class AuthService {
     private refreshJwt(): Observable<Jwt> {
         return this.jwtService.refreshJwt(this.jwtStorage.getToken())
             .do((jwt: Jwt) => {
-                console.log(this.jwtHelper.decodeToken(jwt.token));
-
                 this.setAuthenticated(jwt);
             });
     }
@@ -135,8 +133,6 @@ export class AuthService {
 
         return this.userService.getUserById(this.jwtStorage.getToken().data.id)
             .do((user: User) => {
-                console.log('Emitting user');
-
                 this.securityEventBus.userLoggedIn$.next(user);
             });
     }

@@ -24,8 +24,6 @@ export class SidenavComponent {
         private router: Router
     ) {
         securityEventBus.userLoggedIn$.subscribe((user: User) => {
-            console.log('SidenavComponent.constructor() securityEventBus.userLoggedIn$ onNext');
-
             this.onUserLoggedIn(user);
         });
 

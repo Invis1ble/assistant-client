@@ -13,8 +13,6 @@ export class AppComponent {
     constructor(
         auth: AuthService
     ) {
-        console.info('AppComponent.constructor()');
-
         auth.autologin();
     }
 }

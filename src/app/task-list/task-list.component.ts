@@ -38,16 +38,10 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
         private taskPeriodService: TaskPeriodService
     ) {
         super(snackBar);
-
-        console.info('TaskListComponent.constructor()');
     }
 
     ngOnInit() {
-        console.info('TaskListComponent.ngOnInit()');
-
         this.userLoggedInSubscription = this.securityEventBus.userLoggedIn$.subscribe((user: User) => {
-            console.log('TaskListComponent.ngOnInit() securityEventBus.userLoggedIn$ onNext');
-
             this.user = user;
 
             this.taskService.getUserTasks(user)
@@ -96,8 +90,6 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     }
 
     ngOnDestroy(): void {
-        console.info('TaskListComponent.ngOnDestroy()');
-
         this.userLoggedInSubscription.unsubscribe();
     }
 
