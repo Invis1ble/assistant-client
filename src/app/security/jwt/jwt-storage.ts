@@ -1,10 +1,10 @@
-import { Jwt } from './jwt';
+import { JwtModel } from './jwt.model';
 
 export abstract class JwtStorage {
 
     abstract hasToken(): boolean;
-    abstract getToken(): Jwt | null;
-    abstract setToken(jwt: Jwt): void;
+    abstract getToken(): JwtModel | null;
+    abstract setToken(jwt: JwtModel): void;
     abstract removeToken(): void;
 
 }

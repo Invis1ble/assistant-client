@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 
 import { CONFIG } from '../../config/config-token';
 import { Config } from '../../config/config';
-import { Jwt } from './jwt';
+import { JwtModel } from './jwt.model';
 import { JwtStorage } from './jwt-storage';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class JwtLocalStorageService implements JwtStorage {
         return localStorage.getItem(this.config.jwtName) !== null;
     }
 
-    getToken(): Jwt | null {
+    getToken(): JwtModel | null {
         const jwt = localStorage.getItem(this.config.jwtName);
 
         if (null === jwt) {
@@ -28,7 +28,7 @@ export class JwtLocalStorageService implements JwtStorage {
         return JSON.parse(jwt);
     }
 
-    setToken(jwt: Jwt): void {
+    setToken(jwt: JwtModel): void {
         return localStorage.setItem(this.config.jwtName, JSON.stringify(jwt));
     }
 

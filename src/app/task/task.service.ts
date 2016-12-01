@@ -8,17 +8,18 @@ import 'rxjs/add/operator/map';
 
 import { CONFIG } from '../config/config-token';
 import { Config } from '../config/config';
+import { PeriodModel } from './period/period.model';
+import { PeriodService } from './period/period.service';
 import { RestService } from '../rest/rest.service';
-import { Task } from './task';
-import { TaskCollection } from './task-collection';
-import { TaskCollectionHydratorService } from './task-collection-hydrator.service';
-import { TaskCollectionRaw } from './task-collection-raw';
-import { TaskHydratorService } from './task-hydrator.service';
-import { TaskPeriod } from './task-period/task-period';
-import { TaskPeriodService } from './task-period/task-period.service';
+import { TaskModel } from './task.model';
+import { TaskCollection } from './task.collection';
+import { TaskCollectionResponseBody } from './task-collection.response-body';
+import { TaskCollectionResponseBodyToTaskCollectionTransformer } from './task-collection-response-body-to-task-collection.transformer';
+import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
 import { TaskRequestBody } from './task.request-body';
 import { TaskResponseBody } from './task.response-body';
-import { User } from '../user/user';
+import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
+import { UserModel } from '../user/user.model';
 import { isPresent } from '../facade/lang';
 
 @Injectable()
@@ -31,28 +32,29 @@ export class TaskService extends RestService {
     constructor(
         http: AuthHttp,
         @Inject(CONFIG) config: Config,
-        private taskHydrator: TaskHydratorService,
-        private taskCollectionHydrator: TaskCollectionHydratorService,
-        private periodService: TaskPeriodService
+        private responseToModelTransformer: TaskResponseBodyToTaskModelTransformer,
+        private modelToRequestTransformer: TaskModelToTaskRequestBodyTransformer,
+        private responseToCollectionTransformer: TaskCollectionResponseBodyToTaskCollectionTransformer,
+        private periodService: PeriodService
     ) {
         super(http, config);
     }
 
-    getTaskById(id: string): Observable<Task> {
+    getTaskById(id: string): Observable<TaskModel> {
         return this.getTaskByIdRaw(id)
             .map((data: TaskResponseBody) => {
-                return this.taskHydrator.hydrate(data);
+                return this.responseToModelTransformer.transform(data);
             });
     }
 
-    getUserTasks(user: User): Observable<TaskCollection> {
+    getUserTasks(user: UserModel): Observable<TaskCollection> {
         return this.getUserTasksRaw(user.id)
-            .map((data: TaskCollectionRaw): TaskCollection => {
-                return this.taskCollectionHydrator.hydrate(data);
+            .map((data: TaskCollectionResponseBody): TaskCollection => {
+                return this.responseToCollectionTransformer.transform(data);
             });
     }
 
-    saveTask(user: User, task: Task): Observable<Task> {
+    saveTask(user: UserModel, task: TaskModel): Observable<TaskModel> {
         if (isPresent(task.id)) {
             return this.updateTask(task);
         }
@@ -60,8 +62,8 @@ export class TaskService extends RestService {
         return this.createUserTask(user, task);
     }
 
-    createUserTask(user: User, task: Task): Observable<Task> {
-        return this.createUserTaskRaw(user.id, this.taskHydrator.dehydrate(task))
+    createUserTask(user: UserModel, task: TaskModel): Observable<TaskModel> {
+        return this.createUserTaskRaw(user.id, this.modelToRequestTransformer.transform(task))
             .mergeMap((response: Response) => {
                 const segments = response.headers.get('Location').split('/');
 
@@ -69,33 +71,33 @@ export class TaskService extends RestService {
             });
     }
 
-    updateTask(task: Task): Observable<Task> {
-        return this.updateTaskRaw(task.id, this.taskHydrator.dehydrate(task))
+    updateTask(task: TaskModel): Observable<TaskModel> {
+        return this.updateTaskRaw(task.id, this.modelToRequestTransformer.transform(task))
             .mergeMap((response: Response) => {
                 return this.getTaskById(task.id);
             });
     }
 
-    toggleRun(task: Task): Observable<Task> {
+    toggleRun(task: TaskModel): Observable<TaskModel> {
         if (task.isActive()) {
             const period = task.periods.getLatest();
 
             period.finishedAt = new Date();
 
             return this.periodService.saveTaskPeriod(task, period)
-                .map((period: TaskPeriod) => {
+                .map((period: PeriodModel) => {
                     return task;
                 });
         }
 
-        return this.periodService.saveTaskPeriod(task, new TaskPeriod(null, new Date(), null))
-            .map((period: TaskPeriod) => {
+        return this.periodService.saveTaskPeriod(task, new PeriodModel(null, new Date(), null))
+            .map((period: PeriodModel) => {
                 task.periods.add(period);
                 return task;
             });
     }
 
-    deleteTask(task: Task): Observable<Task> {
+    deleteTask(task: TaskModel): Observable<TaskModel> {
         return this.deleteTaskByIdRaw(task.id)
             .map(() => task);
     }
@@ -107,8 +109,8 @@ export class TaskService extends RestService {
     }
 
     @GET('/users/{id}/tasks')
-    @Produces<TaskCollectionRaw>()
-    private getUserTasksRaw(@Path('id') id: string): Observable<TaskCollectionRaw> {
+    @Produces<TaskCollectionResponseBody>()
+    private getUserTasksRaw(@Path('id') id: string): Observable<TaskCollectionResponseBody> {
         return null;
     }
 

@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { MdCardModule, MdIconModule, MdMenuModule } from '@angular/material';
 
 import { DurationPipe } from '../shared/duration.pipe';
-import { TaskCollectionHydratorService } from './task-collection-hydrator.service';
+import { PeriodCollectionResponseBodyToPeriodCollectionTransformer } from './period/period-collection-response-body-to-period-collection.transformer';
+import { PeriodModelToPeriodRequestBodyTransformer } from './period/period-model-to-period-request-body.transformer';
+import { PeriodResponseBodyToPeriodModelTransformer } from './period/period-response-body-to-period-model.transformer';
+import { PeriodService } from './period/period.service';
 import { TaskComponent } from './task.component';
-import { TaskHydratorService } from './task-hydrator.service';
-import { TaskPeriodCollectionHydratorService } from './task-period/task-period-collection-hydrator.service';
-import { TaskPeriodHydratorService } from './task-period/task-period-hydrator.service';
-import { TaskPeriodService } from './task-period/task-period.service';
+import { TaskCollectionResponseBodyToTaskCollectionTransformer } from './task-collection-response-body-to-task-collection.transformer';
+import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
+import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
 import { TaskService } from './task.service';
 
 @NgModule({
@@ -20,11 +22,13 @@ import { TaskService } from './task.service';
         MdMenuModule
     ],
     providers: [
-        TaskCollectionHydratorService,
-        TaskHydratorService,
-        TaskPeriodCollectionHydratorService,
-        TaskPeriodHydratorService,
-        TaskPeriodService,
+        PeriodCollectionResponseBodyToPeriodCollectionTransformer,
+        PeriodModelToPeriodRequestBodyTransformer,
+        PeriodResponseBodyToPeriodModelTransformer,
+        PeriodService,
+        TaskCollectionResponseBodyToTaskCollectionTransformer,
+        TaskModelToTaskRequestBodyTransformer,
+        TaskResponseBodyToTaskModelTransformer,
         TaskService
     ],
     declarations: [

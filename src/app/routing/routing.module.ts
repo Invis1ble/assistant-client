@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AnonymousGuardService } from './anonymous-guard.service';
-import { AuthGuardService } from './auth-guard.service';
+import { AnonymousGuard } from './anonymous.guard';
+import { AuthGuard } from './auth.guard';
 import { LoginComponent } from '../login/login.component';
 import { RegistrationComponent } from '../registration/registration.component';
 import { TaskListComponent } from '../task-list/task-list.component';
@@ -16,17 +16,17 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        canActivate: [ AnonymousGuardService ]
+        canActivate: [ AnonymousGuard ]
     },
     {
         path: 'register',
         component: RegistrationComponent,
-        canActivate: [ AnonymousGuardService ]
+        canActivate: [ AnonymousGuard ]
     },
     {
         path: 'tasks',
         component: TaskListComponent,
-        canActivate: [ AuthGuardService ]
+        canActivate: [ AuthGuard ]
     }
 ];
 
@@ -38,8 +38,8 @@ const routes: Routes = [
         RouterModule
     ],
     providers: [
-        AnonymousGuardService,
-        AuthGuardService
+        AnonymousGuard,
+        AuthGuard
     ]
 })
 export class RoutingModule {

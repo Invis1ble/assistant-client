@@ -11,11 +11,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 import { Credentials } from './credentials';
-import { Jwt } from './jwt/jwt';
+import { JwtModel } from './jwt/jwt.model';
 import { JwtService } from './jwt/jwt.service';
 import { JwtStorage } from './jwt/jwt-storage';
-import { SecurityEventBusService } from './security-event-bus.service';
-import { User } from '../user/user';
+import { SecurityEventBus } from './security.event-bus';
+import { UserModel } from '../user/user.model';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -30,25 +30,25 @@ export class AuthService {
         private jwtService: JwtService,
         private jwtStorage: JwtStorage,
         private userService: UserService,
-        private securityEventBus: SecurityEventBusService
+        private securityEventBus: SecurityEventBus
     ) {
 
     }
 
-    login(credentials: Credentials): Observable<User> {
+    login(credentials: Credentials): Observable<UserModel> {
         return this.jwtService.createJwt(credentials)
-            .do((jwt: Jwt) => {
+            .do((jwt: JwtModel) => {
                 this.setAuthenticated(jwt);
                 this.scheduleTokenRefresh();
             })
-            .mergeMap((): Observable<User> => {
+            .mergeMap((): Observable<UserModel> => {
                 return this.getUser();
             });
     }
 
     autologin(): void {
         this.getUser()
-            .filter((user: User | null): boolean => null !== user)
+            .filter((user: UserModel | null): boolean => null !== user)
             .subscribe(() => {
                 this.startupTokenRefresh();
             });
@@ -74,7 +74,7 @@ export class AuthService {
         return !this.jwtHelper.isTokenExpired(jwt.token);
     }
 
-    setAuthenticated(jwt: Jwt): void {
+    setAuthenticated(jwt: JwtModel): void {
         return this.jwtStorage.setToken(jwt);
     }
 
@@ -91,7 +91,7 @@ export class AuthService {
                     new Date(0).setUTCSeconds(decodedToken.exp) - new Date(0).setUTCSeconds(decodedToken.iat)
                 );
             })
-            .mergeMap((): Observable<Jwt> => {
+            .mergeMap((): Observable<JwtModel> => {
                 return this.refreshJwt();
             })
             .subscribe();
@@ -111,7 +111,7 @@ export class AuthService {
 
                 return Observable.timer(exp.valueOf() - new Date().valueOf());
             })
-            .mergeMap((): Observable<Jwt> => {
+            .mergeMap((): Observable<JwtModel> => {
                 return this.refreshJwt();
             })
             .subscribe(() => {
@@ -119,20 +119,20 @@ export class AuthService {
             });
     }
 
-    private refreshJwt(): Observable<Jwt> {
+    private refreshJwt(): Observable<JwtModel> {
         return this.jwtService.refreshJwt(this.jwtStorage.getToken())
-            .do((jwt: Jwt) => {
+            .do((jwt: JwtModel) => {
                 this.setAuthenticated(jwt);
             });
     }
 
-    private getUser(): Observable<User | null> {
+    private getUser(): Observable<UserModel | null> {
         if (!this.isAuthenticated()) {
             return Observable.of(null);
         }
 
         return this.userService.getUserById(this.jwtStorage.getToken().data.id)
-            .do((user: User) => {
+            .do((user: UserModel) => {
                 this.securityEventBus.userLoggedIn$.next(user);
             });
     }

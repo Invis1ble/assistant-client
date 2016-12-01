@@ -11,7 +11,7 @@ import * as moment from 'moment';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
-import { Task } from './task';
+import { TaskModel } from './task.model';
 import { TaskService } from './task.service';
 import { isPresent } from '../facade/lang';
 
@@ -22,10 +22,10 @@ import { isPresent } from '../facade/lang';
 })
 export class TaskComponent extends AbstractComponent implements OnInit, OnDestroy {
 
-    @Output() onTaskEdit = new EventEmitter<Task>();
-    @Output() onTaskDeleted = new EventEmitter<Task>();
+    @Output() onTaskEdit = new EventEmitter<TaskModel>();
+    @Output() onTaskDeleted = new EventEmitter<TaskModel>();
 
-    @Input() task: Task;
+    @Input() task: TaskModel;
 
     revenue: string;
     totalTimeSpent: moment.Duration;
@@ -52,7 +52,7 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
 
     toggleRun(): void {
         this.taskService.toggleRun(this.task).subscribe(
-            (task: Task) => {
+            (task: TaskModel) => {
                 if (task.isActive()) {
                     this.activateRecalculation();
                 } else {
@@ -72,11 +72,11 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
     deleteTask(): void {
         this.confirmDialog.confirm('Подтверждение', 'Вы уверены, что хотите удалить задачу?')
             .filter((confirmed: boolean) => confirmed)
-            .mergeMap((): Observable<Task> => {
+            .mergeMap((): Observable<TaskModel> => {
                 return this.taskService.deleteTask(this.task);
             })
             .subscribe(
-                (task: Task) => {
+                (task: TaskModel) => {
                     this.onTaskDeleted.emit(task);
                 },
                 (response: Response): void => {

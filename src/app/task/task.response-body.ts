@@ -1,4 +1,4 @@
-import { TaskPeriodCollectionRaw } from './task-period/task-period-collection-raw';
+import { PeriodCollectionResponseBody } from './period/period-collection.response-body';
 
 export type TaskResponseBody = {
 
@@ -7,6 +7,6 @@ export type TaskResponseBody = {
     description: string;
     rate: number;
     createdAt: number;
-    periods?: TaskPeriodCollectionRaw;
+    periods?: PeriodCollectionResponseBody;
 
 }

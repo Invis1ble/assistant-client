@@ -10,13 +10,13 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
 
 import { AbstractComponent } from '../shared/abstract-component';
-import { SecurityEventBusService } from '../security/security-event-bus.service';
-import { Task } from '../task/task';
-import { TaskCollection } from '../task/task-collection';
-import { TaskPeriodCollection } from '../task/task-period/task-period-collection';
-import { TaskPeriodService } from '../task/task-period/task-period.service';
+import { SecurityEventBus } from '../security/security.event-bus';
+import { TaskModel } from '../task/task.model';
+import { TaskCollection } from '../task/task.collection';
+import { PeriodCollection } from '../task/period/period.collection';
+import { PeriodService } from '../task/period/period.service';
 import { TaskService } from '../task/task.service';
-import { User } from '../user/user';
+import { UserModel } from '../user/user.model';
 
 @Component({
     selector: 'app-task-list',
@@ -26,30 +26,30 @@ import { User } from '../user/user';
 export class TaskListComponent extends AbstractComponent implements OnInit, OnDestroy {
 
     tasks: TaskCollection;
-    task: Task;
-    user: User;
+    task: TaskModel;
+    user: UserModel;
 
     private userLoggedInSubscription: Subscription;
 
     constructor(
         snackBar: MdSnackBar,
-        private securityEventBus: SecurityEventBusService,
+        private securityEventBus: SecurityEventBus,
         private taskService: TaskService,
-        private taskPeriodService: TaskPeriodService
+        private periodService: PeriodService
     ) {
         super(snackBar);
     }
 
     ngOnInit() {
-        this.userLoggedInSubscription = this.securityEventBus.userLoggedIn$.subscribe((user: User) => {
+        this.userLoggedInSubscription = this.securityEventBus.userLoggedIn$.subscribe((user: UserModel) => {
             this.user = user;
 
             this.taskService.getUserTasks(user)
                 .mergeMap((tasks: TaskCollection): Observable<TaskCollection> => {
                     return Observable.from(tasks.getItems())
-                        .mergeMap((task: Task): Observable<Task> => {
-                            return this.taskPeriodService.getTaskPeriods(task)
-                                .do((periods: TaskPeriodCollection) => task.periods = periods)
+                        .mergeMap((task: TaskModel): Observable<TaskModel> => {
+                            return this.periodService.getTaskPeriods(task)
+                                .do((periods: PeriodCollection) => task.periods = periods)
                                 .map(() => task)
                         })
                         .toArray()
@@ -71,20 +71,20 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     }
 
     addNewTask(): void {
-        this.task = new Task(null, '', '', 20, null, new TaskPeriodCollection());
+        this.task = new TaskModel(null, '', '', 20, null, new PeriodCollection());
     }
 
-    onTaskEdit(task: Task): void {
+    onTaskEdit(task: TaskModel): void {
         this.task = task;
     }
 
-    onTaskSaved(task: Task): void {
+    onTaskSaved(task: TaskModel): void {
         this.tasks.update(task);
         this.task = null;
         this.showMessage('Задача успешно сохранена.');
     }
 
-    onTaskDeleted(task: Task): void {
+    onTaskDeleted(task: TaskModel): void {
         this.tasks.delete(task);
         this.showMessage('Задача успешно удалена.');
     }

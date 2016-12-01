@@ -9,9 +9,9 @@ import 'rxjs/add/operator/switchMap';
 import { AbstractForm } from '../form/abstract-form';
 import { AuthService } from '../security/auth.service';
 import { Credentials } from '../security/credentials';
-import { Jwt } from '../security/jwt/jwt';
+import { JwtModel } from '../security/jwt/jwt.model';
 import { JwtService } from '../security/jwt/jwt.service';
-import { NewUser } from '../user/new-user';
+import { NewUserModel } from '../user/new-user.model';
 import { UserService } from '../user/user.service';
 
 @Component({
@@ -51,13 +51,13 @@ export class RegistrationComponent extends AbstractForm {
     onSubmit() {
         super.onSubmit();
 
-        this.register(new NewUser(this.form.value.username, {
+        this.register(new NewUserModel(this.form.value.username, {
             first: this.form.value.plainPassword.first,
             second: this.form.value.plainPassword.second
         }));
     }
 
-    private register(user: NewUser) {
+    private register(user: NewUserModel) {
         this.userService.registerUser(user)
             .switchMap(() => {
                 return this.jwtService.createJwt(new Credentials(user.username, user.plainPassword.first));
@@ -66,7 +66,7 @@ export class RegistrationComponent extends AbstractForm {
                 this.onResponse();
             })
             .subscribe(
-                (jwt: Jwt) => {
+                (jwt: JwtModel) => {
                     let requestedUrl = this.authService.getRequestedUrl();
 
                     this.authService.setAuthenticated(jwt);

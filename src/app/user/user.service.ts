@@ -9,11 +9,11 @@ import 'rxjs/add/observable/of';
 
 import { CONFIG } from '../config/config-token';
 import { Config } from '../config/config';
-import { NewUser } from './new-user';
+import { NewUserModel } from './new-user.model';
 import { RestService } from '../rest/rest.service';
-import { User } from './user';
-import { UserHydratorService } from './user-hydrator.service';
-import { UserRaw } from './user-raw';
+import { UserModel } from './user.model';
+import { UserResponseBody } from './user.response-body';
+import { UserResponseBodyToUserModelTransformer } from './user-response-body-to-user-model.transformer';
 
 @Injectable()
 @DefaultHeaders({
@@ -25,30 +25,30 @@ export class UserService extends RestService {
     constructor(
         http: AuthHttp,
         @Inject(CONFIG) config: Config,
-        private userHydrator: UserHydratorService
+        private responseToModelTransformer: UserResponseBodyToUserModelTransformer
     ) {
         super(http, config);
     }
 
-    getUserById(id: string): Observable<User> {
+    getUserById(id: string): Observable<UserModel> {
         return this.getUserRaw(id)
-            .map((data: UserRaw): User => {
-                return this.userHydrator.hydrate(data);
+            .map((data: UserResponseBody): UserModel => {
+                return this.responseToModelTransformer.transform(data);
             });
     }
 
-    registerUser(user: NewUser): Observable<Response> {
+    registerUser(user: NewUserModel): Observable<Response> {
         return this.registerUserRaw(user);
     }
 
     @POST('/users')
-    private registerUserRaw(@Body user: NewUser): Observable<Response> {
+    private registerUserRaw(@Body user: NewUserModel): Observable<Response> {
         return null;
     }
 
     @GET('/users/{id}')
-    @Produces<UserRaw>()
-    private getUserRaw(@Path('id') id: string): Observable<UserRaw> {
+    @Produces<UserResponseBody>()
+    private getUserRaw(@Path('id') id: string): Observable<UserResponseBody> {
         return null;
     }
 

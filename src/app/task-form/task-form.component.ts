@@ -5,9 +5,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/finally';
 
 import { AbstractForm } from '../form/abstract-form';
-import { Task } from '../task/task';
+import { TaskModel } from '../task/task.model';
 import { TaskService } from '../task/task.service';
-import { User } from '../user/user';
+import { UserModel } from '../user/user.model';
 import { Response } from '@angular/http';
 
 @Component({
@@ -17,11 +17,11 @@ import { Response } from '@angular/http';
 })
 export class TaskFormComponent extends AbstractForm implements OnInit {
 
-    @Output() onSaved = new EventEmitter<Task>();
+    @Output() onSaved = new EventEmitter<TaskModel>();
     @Output() onCanceled = new EventEmitter();
 
-    @Input() user: User;
-    @Input() task: Task;
+    @Input() user: UserModel;
+    @Input() task: TaskModel;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -41,7 +41,7 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
     onSubmit(): void {
         super.onSubmit();
 
-        this.saveTask(new Task(
+        this.saveTask(new TaskModel(
             this.task.id,
             this.form.value.title,
             this.form.value.description,
@@ -55,14 +55,14 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
         this.onCanceled.emit();
     }
 
-    private saveTask(task: Task): void {
+    private saveTask(task: TaskModel): void {
         this.taskService.saveTask(this.user, task)
             .do((task) => task.periods = this.task.periods)
             .finally(() => {
                 this.onResponse();
             })
             .subscribe(
-                (task: Task) => {
+                (task: TaskModel) => {
                     this.onSaved.emit(task);
                 },
                 (response: Response) => {

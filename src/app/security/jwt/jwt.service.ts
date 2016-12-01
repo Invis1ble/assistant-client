@@ -7,10 +7,10 @@ import { Observable } from 'rxjs/Observable';
 import { CONFIG } from '../../config/config-token';
 import { Config } from '../../config/config';
 import { Credentials } from '../credentials';
-import { Jwt } from './jwt';
+import { JwtModel } from './jwt.model';
 import { JwtResponseBody } from './jwt.response-body';
-import { JwtResponseBodyToJwtTransformer } from './jwt-response-body-to-jwt.transformer';
-import { JwtToRefreshTokenRequestBodyTransformer } from './jwt-to-refresh-token-request-body.transformer';
+import { JwtResponseBodyToJwtModelTransformer } from './jwt-response-body-to-jwt-model.transformer';
+import { JwtModelToRefreshTokenRequestBodyTransformer } from './jwt-model-to-refresh-token-request-body.transformer';
 import { RefreshTokenRequestBody } from './refresh-token.request-body';
 import { RefreshTokenResponseBody } from './refresh-token.response-body';
 import { RestService } from '../../rest/rest.service';
@@ -25,20 +25,20 @@ export class JwtService extends RestService {
     constructor(
         http: Http,
         @Inject(CONFIG) config: Config,
-        private jwtResponseBodyToJwtTransformer: JwtResponseBodyToJwtTransformer,
-        private jwtToRefreshTokenRequestBodyTransformer: JwtToRefreshTokenRequestBodyTransformer
+        private jwtResponseBodyToJwtTransformer: JwtResponseBodyToJwtModelTransformer,
+        private jwtToRefreshTokenRequestBodyTransformer: JwtModelToRefreshTokenRequestBodyTransformer
     ) {
         super(http, config);
     }
 
-    createJwt(credentials: Credentials): Observable<Jwt> {
+    createJwt(credentials: Credentials): Observable<JwtModel> {
         return this.createJwtRaw(credentials)
-            .map((data: JwtResponseBody): Jwt => {
+            .map((data: JwtResponseBody): JwtModel => {
                 return this.jwtResponseBodyToJwtTransformer.transform(data);
             });
     }
 
-    refreshJwt(jwt: Jwt): Observable<Jwt> {
+    refreshJwt(jwt: JwtModel): Observable<JwtModel> {
         return this.createRefreshToken(this.jwtToRefreshTokenRequestBodyTransformer.transform(jwt))
             .map((data: RefreshTokenResponseBody) => {
                 jwt.refreshToken = data.refresh_token;

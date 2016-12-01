@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AuthService } from './auth.service';
 import { JwtModule } from './jwt/jwt.module';
-import { SecurityEventBusService } from './security-event-bus.service';
+import { SecurityEventBus } from './security.event-bus';
 
 @NgModule({
     imports: [
@@ -10,7 +10,7 @@ import { SecurityEventBusService } from './security-event-bus.service';
     ],
     providers: [
         AuthService,
-        SecurityEventBusService
+        SecurityEventBus
     ],
     exports: [
         JwtModule

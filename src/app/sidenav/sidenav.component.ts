@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../security/auth.service';
-import { SecurityEventBusService } from '../security/security-event-bus.service';
+import { SecurityEventBus } from '../security/security.event-bus';
 import { SidenavItem } from './sidenav-item';
 import { SidenavSection } from './sidenav-section';
-import { User } from '../user/user';
+import { UserModel } from '../user/user.model';
 import { isPresent } from '../facade/lang';
 
 @Component({
@@ -15,15 +15,15 @@ import { isPresent } from '../facade/lang';
 })
 export class SidenavComponent {
 
-    user: User;
+    user: UserModel;
     sections: SidenavSection[] = [];
 
     constructor(
-        securityEventBus: SecurityEventBusService,
+        securityEventBus: SecurityEventBus,
         private auth: AuthService,
         private router: Router
     ) {
-        securityEventBus.userLoggedIn$.subscribe((user: User) => {
+        securityEventBus.userLoggedIn$.subscribe((user: UserModel) => {
             this.onUserLoggedIn(user);
         });
 
@@ -59,7 +59,7 @@ export class SidenavComponent {
         }
     }
 
-    private onUserLoggedIn(user: User): void {
+    private onUserLoggedIn(user: UserModel): void {
         this.user = user;
         this.syncSections();
     }

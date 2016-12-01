@@ -1,0 +1,22 @@
+import { Injectable } from '@angular/core';
+
+import { TaskCollection } from './task.collection';
+import { TaskCollectionResponseBody } from './task-collection.response-body';
+import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
+
+@Injectable()
+export class TaskCollectionResponseBodyToTaskCollectionTransformer {
+
+    constructor(
+        private responseToModelTransformer: TaskResponseBodyToTaskModelTransformer
+    ) {
+
+    }
+
+    transform(data: TaskCollectionResponseBody): TaskCollection {
+        return new TaskCollection(
+            data.entities.map(this.responseToModelTransformer.transform, this.responseToModelTransformer)
+        );
+    }
+
+}

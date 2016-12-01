@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { RestModule } from '../rest/rest.module';
-import { UserHydratorService } from './user-hydrator.service';
+import { UserResponseBodyToUserModelTransformer } from './user-response-body-to-user-model.transformer';
 import { UserService } from './user.service';
 
 @NgModule({
@@ -9,7 +9,7 @@ import { UserService } from './user.service';
         RestModule
     ],
     providers: [
-        UserHydratorService,
+        UserResponseBodyToUserModelTransformer,
         UserService
     ]
 })

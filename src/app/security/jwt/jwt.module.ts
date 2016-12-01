@@ -5,10 +5,10 @@ import { AuthConfig, AuthHttp, JwtHelper } from 'angular2-jwt';
 
 import { CONFIG } from '../../config/config-token';
 import { Config } from '../../config/config';
-import { JwtResponseBodyToJwtTransformer } from './jwt-response-body-to-jwt.transformer';
+import { JwtResponseBodyToJwtModelTransformer } from './jwt-response-body-to-jwt-model.transformer';
 import { JwtService } from './jwt.service';
 import { JwtStorage } from './jwt-storage';
-import { JwtToRefreshTokenRequestBodyTransformer } from './jwt-to-refresh-token-request-body.transformer';
+import { JwtModelToRefreshTokenRequestBodyTransformer } from './jwt-model-to-refresh-token-request-body.transformer';
 import { RestModule } from '../../rest/rest.module';
 
 @NgModule({
@@ -17,9 +17,9 @@ import { RestModule } from '../../rest/rest.module';
     ],
     providers: [
         JwtHelper,
-        JwtResponseBodyToJwtTransformer,
+        JwtResponseBodyToJwtModelTransformer,
         JwtService,
-        JwtToRefreshTokenRequestBodyTransformer,
+        JwtModelToRefreshTokenRequestBodyTransformer,
         {
             provide: AuthHttp,
             useFactory: (http: Http, config: Config, jwtStorage: JwtStorage) => {
