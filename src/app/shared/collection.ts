@@ -32,9 +32,13 @@ export class Collection<T extends IdAware> implements Iterable<T> {
         this.items = items;
     }
 
+    merge(collection: Collection<T>): this {
+        return new (this.constructor as typeof Collection)(this.getItems().concat(collection.getItems())) as this;
+    }
+
     [Symbol.iterator](): Iterator<T> {
         let pointer = 0;
-        let items = this.getItems();
+        const items = this.getItems();
 
         return {
             next(): IteratorResult<T> {
@@ -43,12 +47,12 @@ export class Collection<T extends IdAware> implements Iterable<T> {
                         done: false,
                         value: items[pointer ++]
                     };
-                } else {
-                    return {
-                        done: true,
-                        value: undefined
-                    };
                 }
+
+                return {
+                    done: true,
+                    value: undefined
+                };
             }
         };
     }

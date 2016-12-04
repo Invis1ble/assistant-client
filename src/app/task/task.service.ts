@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { AuthHttp } from 'angular2-jwt';
-import { Body, DELETE, DefaultHeaders, GET, PATCH, POST, Path, Produces } from '../ng2-http';
+import { Body, DELETE, DefaultHeaders, GET, PATCH, POST, Path, Produces, Query } from '../ng2-http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -47,8 +47,8 @@ export class TaskService extends RestService {
             });
     }
 
-    getUserTasks(user: UserModel): Observable<TaskCollection> {
-        return this.getUserTasksRaw(user.id)
+    getUserTasks(user: UserModel, limit: number, offset?: number): Observable<TaskCollection> {
+        return this.getUserTasksRaw(user.id, limit, offset)
             .map((data: TaskCollectionResponseBody): TaskCollection => {
                 return this.responseToCollectionTransformer.transform(data);
             });
@@ -110,7 +110,11 @@ export class TaskService extends RestService {
 
     @GET('/users/{id}/tasks')
     @Produces<TaskCollectionResponseBody>()
-    private getUserTasksRaw(@Path('id') id: string): Observable<TaskCollectionResponseBody> {
+    private getUserTasksRaw(
+        @Path('id') id: string,
+        @Query('limit') limit: number,
+        @Query('offset') offset?: number
+    ): Observable<TaskCollectionResponseBody> {
         return null;
     }
 

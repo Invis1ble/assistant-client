@@ -1,4 +1,19 @@
 :host {
+    &.primary-component-layout {
+        flex-direction: column;
+
+        > .spinner {
+            margin: auto;
+        }
+
+        > .task-layout + .spinner {
+            + .spinner,
+            + .btn-load-more {
+                margin-top: 12px;
+            }
+        }
+    }
+
     .task-form-layout {
         display: block;
         margin: 20px;
@@ -6,7 +21,15 @@
 
     .task-layout {
         display: block;
-        margin: 20px;
+        margin: 12px 24px;
+
+        &.first {
+            margin-top: 24px;
+        }
+
+        &.last {
+            margin-bottom: 24px;
+        }
     }
 
     .btn-add-task {
@@ -14,5 +37,16 @@
         z-index: 1;
         bottom: 24px;
         right: 24px;
+    }
+
+    .btn-load-more {
+        text-transform: uppercase;
+    }
+
+    > .spinner {
+        $size: 36px;
+
+        width: $size;
+        height: $size;
     }
 }

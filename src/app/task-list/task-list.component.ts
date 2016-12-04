@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
 
@@ -19,17 +20,21 @@ import { TaskService } from '../task/task.service';
 import { UserModel } from '../user/user.model';
 
 @Component({
-    selector: 'app-task-list',
+    selector: 'app-task-list.primary-component-layout',
     templateUrl: './task-list.component.html',
     styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent extends AbstractComponent implements OnInit, OnDestroy {
 
-    tasks: TaskCollection;
+    tasks: TaskCollection = new TaskCollection();
     task: TaskModel;
     user: UserModel;
 
     private userLoggedInSubscription: Subscription;
+
+    private limit: number = 10;
+    private pending: boolean;
+    private loaded: boolean = false;
 
     constructor(
         snackBar: MdSnackBar,
@@ -43,26 +48,7 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     ngOnInit() {
         this.userLoggedInSubscription = this.securityEventBus.userLoggedIn$.subscribe((user: UserModel) => {
             this.user = user;
-
-            this.taskService.getUserTasks(user)
-                .mergeMap((tasks: TaskCollection): Observable<TaskCollection> => {
-                    return Observable.from(tasks.getItems())
-                        .mergeMap((task: TaskModel): Observable<TaskModel> => {
-                            return this.periodService.getTaskPeriods(task)
-                                .do((periods: PeriodCollection) => task.periods = periods)
-                                .map(() => task)
-                        })
-                        .toArray()
-                        .map(() => tasks);
-                })
-                .subscribe(
-                    (tasks: TaskCollection) => {
-                        this.tasks = tasks;
-                    },
-                    (response: Response): void => {
-                        this.handleError(response);
-                    }
-                );
+            this.loadUserTasks(user, this.limit);
         });
     }
 
@@ -89,8 +75,43 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
         this.showMessage('Задача успешно удалена.');
     }
 
+    loadMoreTasks(): void {
+        this.loadUserTasks(this.user, this.limit, this.tasks.getItems().length);
+    }
+
     ngOnDestroy(): void {
         this.userLoggedInSubscription.unsubscribe();
+    }
+
+    private loadUserTasks(user: UserModel, limit: number, offset?: number): void {
+        this.pending = true;
+
+        this.taskService.getUserTasks(user, limit, offset)
+            .finally(() => this.pending = false)
+            .mergeMap((tasks: TaskCollection): Observable<TaskCollection> => {
+                return Observable.from(tasks.getItems())
+                    .mergeMap((task: TaskModel): Observable<TaskModel> => {
+                        return this.periodService.getTaskPeriods(task)
+                            .do((periods: PeriodCollection) => task.periods = periods)
+                            .map(() => task)
+                    })
+                    .toArray()
+                    .map(() => tasks);
+            })
+            .subscribe(
+                (tasks: TaskCollection) => {
+                    if (!tasks.getItems().length) {
+                        this.loaded = true;
+
+                        return;
+                    }
+
+                    this.tasks = tasks.merge(this.tasks);
+                },
+                (response: Response): void => {
+                    this.handleError(response);
+                }
+            );
     }
 
 }
