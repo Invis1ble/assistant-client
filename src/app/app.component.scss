@@ -3,18 +3,6 @@
         display: flex;
         min-height: 100%;
     }
-
-    /deep/ md-card-actions {
-        md-spinner {
-            width: 24px;
-            height: 24px;
-            align-self: center;
-        }
-
-        &[align="end"] [align="start"] {
-            margin-right: auto;
-        }
-    }
 }
 
 md-toolbar a {

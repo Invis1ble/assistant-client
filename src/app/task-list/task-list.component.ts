@@ -1,23 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
 
-import { MdSnackBar } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
 
 import { AbstractComponent } from '../shared/abstract-component';
+import { PeriodCollection } from '../task/period/period.collection';
+import { PeriodService } from '../task/period/period.service';
 import { SecurityEventBus } from '../security/security.event-bus';
 import { TaskModel } from '../task/task.model';
 import { TaskCollection } from '../task/task.collection';
-import { PeriodCollection } from '../task/period/period.collection';
-import { PeriodService } from '../task/period/period.service';
+import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskService } from '../task/task.service';
 import { UserModel } from '../user/user.model';
+import { isPresent } from '../facade/lang';
 
 @Component({
     selector: 'app-task-list.primary-component-layout',
@@ -27,7 +30,6 @@ import { UserModel } from '../user/user.model';
 export class TaskListComponent extends AbstractComponent implements OnInit, OnDestroy {
 
     tasks: TaskCollection = new TaskCollection();
-    task: TaskModel;
     user: UserModel;
 
     private userLoggedInSubscription: Subscription;
@@ -40,7 +42,8 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
         snackBar: MdSnackBar,
         private securityEventBus: SecurityEventBus,
         private taskService: TaskService,
-        private periodService: PeriodService
+        private periodService: PeriodService,
+        private dialog: MdDialog
     ) {
         super(snackBar);
     }
@@ -52,21 +55,25 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
         });
     }
 
-    onFormCanceled(): void {
-        this.task = null;
+    showTaskForm(task?: TaskModel): void {
+        if (!isPresent(task)) {
+            task = new TaskModel(null, '', '', 20, null, new PeriodCollection());
+        }
+
+        const dialogRef = this.dialog.open(TaskFormComponent);
+
+        dialogRef.componentInstance.user = this.user;
+        dialogRef.componentInstance.task = task;
+
+        dialogRef.afterClosed()
+            .filter((result?: TaskModel): boolean => isPresent(result))
+            .subscribe((task: TaskModel) => {
+                this.onTaskSaved(task);
+            });
     }
 
-    addNewTask(): void {
-        this.task = new TaskModel(null, '', '', 20, null, new PeriodCollection());
-    }
-
-    onTaskEdit(task: TaskModel): void {
-        this.task = task;
-    }
-
-    onTaskSaved(task: TaskModel): void {
+    private onTaskSaved(task: TaskModel): void {
         this.tasks.update(task);
-        this.task = null;
         this.showMessage('Задача успешно сохранена.');
     }
 

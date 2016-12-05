@@ -22,3 +22,16 @@ md-icon {
         font-size: 24px;
     }
 }
+
+md-card-actions,
+form .actions {
+    md-spinner {
+        width: 24px;
+        height: 24px;
+        align-self: center;
+    }
+
+    &[align="end"] [align="start"] {
+        margin-right: auto;
+    }
+}

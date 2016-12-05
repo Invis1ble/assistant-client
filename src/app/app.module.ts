@@ -28,17 +28,16 @@ import { RoutingModule } from './routing/routing.module';
 import { SecurityModule } from './security/security.module';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { UserModule } from './user/user.module';
+import { TaskFormModule } from './task-form/task-form.module';
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskModule } from './task/task.module';
-import { TaskFormComponent } from './task-form/task-form.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         RegistrationComponent,
-        TaskListComponent,
-        TaskFormComponent
+        TaskListComponent
     ],
     imports: [
         BrowserModule,
@@ -57,6 +56,7 @@ import { TaskFormComponent } from './task-form/task-form.component';
         RoutingModule,
         SecurityModule,
         SidenavModule,
+        TaskFormModule,
         TaskModule,
         UserModule
     ],

@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Response } from '@angular/http';
 
+import { MdDialogRef } from '@angular/material';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/finally';
 
@@ -8,7 +10,6 @@ import { AbstractForm } from '../form/abstract-form';
 import { TaskModel } from '../task/task.model';
 import { TaskService } from '../task/task.service';
 import { UserModel } from '../user/user.model';
-import { Response } from '@angular/http';
 
 @Component({
     selector: 'app-task-form',
@@ -17,15 +18,13 @@ import { Response } from '@angular/http';
 })
 export class TaskFormComponent extends AbstractForm implements OnInit {
 
-    @Output() onSaved = new EventEmitter<TaskModel>();
-    @Output() onCanceled = new EventEmitter();
-
     @Input() user: UserModel;
     @Input() task: TaskModel;
 
     constructor(
         private formBuilder: FormBuilder,
-        private taskService: TaskService
+        private taskService: TaskService,
+        private dialogRef: MdDialogRef<TaskFormComponent>
     ) {
         super();
     }
@@ -52,7 +51,7 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
     }
 
     cancel(): void {
-        this.onCanceled.emit();
+        this.dialogRef.close();
     }
 
     private saveTask(task: TaskModel): void {
@@ -63,7 +62,7 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
             })
             .subscribe(
                 (task: TaskModel) => {
-                    this.onSaved.emit(task);
+                    this.dialogRef.close(task);
                 },
                 (response: Response) => {
                     let errors;

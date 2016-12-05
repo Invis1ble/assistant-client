@@ -1,21 +1,13 @@
-<button class="btn-add-task" md-fab color="primary" (click)="addNewTask()" *ngIf="!task">
+<button class="btn-add-task" md-fab color="primary" (click)="showTaskForm()" *ngIf="!task">
     <md-icon fontIcon="mdi-playlist-plus"></md-icon>
 </button>
-
-<app-task-form class="task-form-layout"
-               *ngIf="task && user"
-               (onSaved)="onTaskSaved($event)"
-               (onCanceled)="onFormCanceled($event)"
-               [user]="user"
-               [task]="task">
-</app-task-form>
 
 <app-task class="task-layout"
           [class.first]="isFirst"
           [class.last]="isLast"
           [task]="task"
           *ngFor="let task of tasks; let isFirst = first; let isLast = last"
-          (onTaskEdit)="onTaskEdit($event)"
+          (onTaskEdit)="showTaskForm($event)"
           (onTaskDeleted)="onTaskDeleted($event)">
 </app-task>
 
