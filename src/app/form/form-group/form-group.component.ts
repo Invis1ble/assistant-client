@@ -9,6 +9,8 @@ const FORM_GROUP_CONTROL_VALUE_ACCESSOR: any = {
     multi: true
 };
 
+let nextUniqueId = 0;
+
 @Component({
     selector: 'app-form-group',
     templateUrl: './form-group.component.html',
@@ -45,7 +47,7 @@ export class FormGroupComponent implements ControlValueAccessor {
     @Input() autocapitalize: string;
     @Input() autofocus: boolean = false;
     @Input() disabled: boolean = false;
-    @Input() id: string = null;
+    @Input() id: string = `md-input-${++ nextUniqueId}`;
     @Input() list: string = null;
     @Input() max: string | number = null;
     @Input() maxlength: number = null;
