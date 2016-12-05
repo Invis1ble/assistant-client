@@ -2,9 +2,12 @@
     display: block;
     margin-bottom: 20px;
 
-    md-input {
+    md-input,
+    md-textarea {
         width: 100%;
+    }
 
+    md-input {
         /deep/ .md-input-prefix {
             width: 1px;
         }

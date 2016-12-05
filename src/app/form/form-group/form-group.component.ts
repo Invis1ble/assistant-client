@@ -60,6 +60,11 @@ export class FormGroupComponent implements ControlValueAccessor {
     @Input() type: string = 'text';
     @Input() name: string = null;
 
+    // textarea-specific
+    @Input() rows: number = null;
+    @Input() cols: number = null;
+    @Input() wrap: 'soft' | 'hard' = null;
+
     @Input() set value(value: any) {
         if (value !== this.encapsulatedValue) {
             this.encapsulatedValue = value;
