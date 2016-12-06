@@ -29,8 +29,8 @@
         <app-form-error [form]="form"></app-form-error>
     </div>
     <div class="actions" align="end">
+        <button type="button" md-button color="primary" (click)="cancel()" [disabled]="pending">ОТМЕНА</button>
         <md-spinner *ngIf="pending"></md-spinner>
-        <button type="button" md-button color="primary" (click)="cancel()">ОТМЕНА</button>
         <button type="submit" md-button color="primary" [disabled]="isDisabled(form)">СОХРАНИТЬ</button>
     </div>
 </form>

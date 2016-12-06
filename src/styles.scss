@@ -1,5 +1,6 @@
 @import "~mdi/css/materialdesignicons.css";
-@import "_theme";
+@import "theme";
+@import "mixins";
 
 html,
 body {
@@ -23,15 +24,7 @@ md-icon {
     }
 }
 
-md-card-actions,
+// modal
 form .actions {
-    md-spinner {
-        width: 24px;
-        height: 24px;
-        align-self: center;
-    }
-
-    &[align="end"] [align="start"] {
-        margin-right: auto;
-    }
+    @include actions();
 }
