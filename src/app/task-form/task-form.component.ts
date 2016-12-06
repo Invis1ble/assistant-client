@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Response } from '@angular/http';
 
+import { CustomValidators } from 'ng2-validation';
 import { MdDialogRef } from '@angular/material';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/finally';
@@ -33,7 +34,11 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
         this.form = this.formBuilder.group({
             title: [this.task.title, Validators.required],
             description: [this.task.description],
-            rate: [this.task.rate, Validators.required]
+            rate: [this.task.rate, [
+                Validators.required,
+                CustomValidators.number,
+                CustomValidators.min(5)
+            ]]
         });
     }
 

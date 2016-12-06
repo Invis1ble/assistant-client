@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { CustomValidators } from 'ng2-validation';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/switchMap';
 
@@ -30,19 +31,21 @@ export class RegistrationComponent extends AbstractForm {
     ) {
         super();
 
+        const password = new FormControl('', [
+            Validators.required,
+            Validators.minLength(6)
+        ]);
+
         this.form = formBuilder.group({
             username: ['', [
                 Validators.required,
                 Validators.minLength(2)
             ]],
             plainPassword: formBuilder.group({
-                first: ['', [
-                    Validators.required,
-                    Validators.minLength(6)
-                ]],
+                first: password,
                 second: ['', [
                     Validators.required,
-                    // AppValidators.equalTo('plainPassword.first')
+                    CustomValidators.equalTo(password)
                 ]]
             })
         });
