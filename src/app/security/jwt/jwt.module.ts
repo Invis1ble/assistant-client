@@ -9,12 +9,8 @@ import { JwtResponseBodyToJwtModelTransformer } from './jwt-response-body-to-jwt
 import { JwtService } from './jwt.service';
 import { JwtStorage } from './jwt-storage';
 import { JwtModelToRefreshTokenRequestBodyTransformer } from './jwt-model-to-refresh-token-request-body.transformer';
-import { RestModule } from '../../rest/rest.module';
 
 @NgModule({
-    imports: [
-        RestModule
-    ],
     providers: [
         JwtHelper,
         JwtResponseBodyToJwtModelTransformer,

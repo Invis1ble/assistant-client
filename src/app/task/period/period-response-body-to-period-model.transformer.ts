@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { Transformer } from 'ng2-rest-service';
+
 import { PeriodModel } from './period.model';
 import { PeriodResponseBody } from './period.response-body';
 
 @Injectable()
-export class PeriodResponseBodyToPeriodModelTransformer {
+export class PeriodResponseBodyToPeriodModelTransformer implements Transformer<PeriodResponseBody, PeriodModel> {
 
     transform(data: PeriodResponseBody): PeriodModel {
         let finishedAt;
