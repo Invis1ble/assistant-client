@@ -7,6 +7,9 @@ import { Config } from '../config/config';
 @Resource({
     baseUrl(): string {
         return this.config.apiEndpoint;
+    },
+    headers: {
+        'Accept': 'application/json'
     }
 })
 export abstract class PreconfiguredRestService extends RestService {

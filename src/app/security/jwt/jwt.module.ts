@@ -20,7 +20,6 @@ import { JwtStorage } from './jwt-storage';
             provide: AuthHttp,
             useFactory: (http: Http, config: Config, jwtStorage: JwtStorage) => {
                 return new AuthHttp(new AuthConfig({
-                    globalHeaders: [{'Content-Type': 'application/json'}],
                     tokenGetter() {
                         return jwtStorage.getToken().token;
                     },
