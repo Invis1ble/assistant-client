@@ -72,12 +72,12 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
     deleteTask(): void {
         this.confirmDialog.confirm('Подтверждение', 'Вы уверены, что хотите удалить задачу?')
             .filter((confirmed: boolean) => confirmed)
-            .mergeMap((): Observable<TaskModel> => {
+            .mergeMap((): Observable<Response> => {
                 return this.taskService.deleteTask(this.task);
             })
             .subscribe(
-                (task: TaskModel) => {
-                    this.onTaskDeleted.emit(task);
+                (response: Response) => {
+                    this.onTaskDeleted.emit(this.task);
                 },
                 (response: Response): void => {
                     this.handleError(response);

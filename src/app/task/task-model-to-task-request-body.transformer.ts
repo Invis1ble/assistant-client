@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { Transformer } from 'ng2-rest-service';
+
 import { TaskModel } from './task.model';
 import { TaskRequestBody } from './task.request-body';
 
 @Injectable()
-export class TaskModelToTaskRequestBodyTransformer {
+export class TaskModelToTaskRequestBodyTransformer implements Transformer<TaskModel, TaskRequestBody> {
 
     transform(task: TaskModel): TaskRequestBody {
         return {
