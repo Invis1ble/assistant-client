@@ -1,0 +1,37 @@
+<form class="registration-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <md-card>
+        <md-card-title>Регистрация</md-card-title>
+        <md-card-content>
+            <app-form-group [control]="form.controls.username"
+                            [pending]="pending"
+                            [submitted]="submitted"
+                            formControlName="username"
+                            type="text"
+                            placeholder="Имя пользователя">
+            </app-form-group>
+            <div class="form-group" formGroupName="plainPassword">
+                <app-form-group [control]="form.controls.plainPassword.controls.first"
+                                [pending]="pending"
+                                [submitted]="submitted"
+                                formControlName="first"
+                                type="password"
+                                placeholder="Пароль">
+                </app-form-group>
+                <app-form-group [control]="form.controls.plainPassword.controls.second"
+                                [pending]="pending"
+                                [submitted]="submitted"
+                                formControlName="second"
+                                type="password"
+                                placeholder="Пароль ещё раз">
+                </app-form-group>
+            </div>
+            <app-form-error [form]="form"></app-form-error>
+        </md-card-content>
+        <md-card-actions align="end">
+            <md-spinner *ngIf="pending"></md-spinner>
+            <button type="submit" md-button color="primary" [disabled]="isDisabled(form)" align="end">
+                ЗАРЕГИСТРИРОВАТЬСЯ
+            </button>
+        </md-card-actions>
+    </md-card>
+</form>

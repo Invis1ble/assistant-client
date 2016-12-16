@@ -1,0 +1,36 @@
+@import "../mixins";
+
+:host {
+    /deep/ .primary-component-layout {
+        display: flex;
+        min-height: 100%;
+    }
+
+    /deep/ md-card-actions {
+        @include actions();
+    }
+}
+
+md-toolbar a {
+    color: currentColor;
+}
+
+.app-toolbar {
+    a {
+        text-decoration: none;
+    }
+
+    .btn-sidenav-toggle + .app-title {
+        margin-left: 20px;
+    }
+}
+
+md-sidenav-layout {
+    // cutting content fix
+    height: 100%;
+
+    // Floating Action Button fix (static position)
+    /deep/ .md-sidenav-content {
+        transform: initial !important;
+    }
+}

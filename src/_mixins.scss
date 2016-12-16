@@ -1,0 +1,11 @@
+@mixin actions($spinner-size: 24px) {
+    md-spinner {
+        width: $spinner-size;
+        height: $spinner-size;
+        align-self: center;
+    }
+
+    &[align="end"] [align="start"] {
+        margin-right: auto;
+    }
+}

@@ -1,0 +1,30 @@
+// TODO: Remove this dirty approach
+
+@import "~@angular/material/card/card";
+
+:host {
+    @extend md-card;
+
+    padding: 0;
+    border-radius: 0;
+    color: #ccc;
+
+    &,
+    &:hover {
+        box-shadow: none;
+    }
+
+    min-width: 252px;
+
+    .title {
+        @extend md-card-title;
+    }
+
+    .content {
+        @extend md-card-content;
+    }
+
+    .actions {
+        @extend md-card-actions;
+    }
+}

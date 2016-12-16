@@ -1,0 +1,41 @@
+:host {
+    display: block;
+    margin-bottom: 20px;
+
+    md-input,
+    md-textarea {
+        width: 100%;
+    }
+
+    md-input {
+        /deep/ .md-input-prefix {
+            width: 1px;
+        }
+
+        /deep/ [md-prefix] {
+            margin-right: .3em;
+        }
+    }
+
+    .error-list {
+        display: none;
+    }
+
+    ul.error-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &.has-error {
+        md-input /deep/ .md-input-underline .md-input-ripple {
+            /* md-warn color */
+            background-color: #f44336;
+        }
+
+        .error-list {
+            display: block;
+            color: #f44336;
+        }
+    }
+}

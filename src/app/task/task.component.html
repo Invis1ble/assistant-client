@@ -1,0 +1,24 @@
+<md-card>
+    <md-card-title class="title">
+        <button class="more" md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon fontIcon="mdi-dots-vertical"></md-icon>
+        </button>
+        <md-menu x-position="before" #menu="mdMenu">
+            <button md-menu-item (click)="editTask()">Редактировать</button>
+            <button md-menu-item (click)="deleteTask()">Удалить</button>
+        </md-menu>
+
+        {{ task.title }}
+    </md-card-title>
+    <md-card-content *ngIf="task.description">
+        <p class="description">{{ task.description }}</p>
+    </md-card-content>
+    <div>
+        <button class="toggle-run" md-raised-button [class.active]="task.isActive()" (click)="toggleRun()">
+            {{ totalTimeSpent }}
+            <span class="total-time-spent">{{ totalTimeSpent | duration }}</span>
+            <span class="revenue">${{ revenue }}</span>
+            <md-icon fontIcon="mdi-{{ task.isActive() ? 'pause' : 'play' }}" class="icon"></md-icon>
+        </button>
+    </div>
+</md-card>

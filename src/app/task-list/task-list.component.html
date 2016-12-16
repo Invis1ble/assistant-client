@@ -1,0 +1,15 @@
+<button class="btn-add-task" md-fab color="primary" (click)="showTaskForm()" *ngIf="!task">
+    <md-icon fontIcon="mdi-playlist-plus"></md-icon>
+</button>
+
+<app-task class="task-layout"
+          [class.first]="isFirst"
+          [class.last]="isLast"
+          [task]="task"
+          *ngFor="let task of tasks; let isFirst = first; let isLast = last"
+          (onTaskEdit)="showTaskForm($event)"
+          (onTaskDeleted)="onTaskDeleted($event)">
+</app-task>
+
+<md-spinner class="spinner" *ngIf="pending"></md-spinner>
+<button class="btn-load-more" md-button (click)="loadMoreTasks()" *ngIf="!pending && !loaded">Загрузить ещё</button>

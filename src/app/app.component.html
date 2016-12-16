@@ -1,0 +1,14 @@
+<md-toolbar color="primary" class="app-toolbar">
+    <button md-icon-button class="btn-sidenav-toggle" (click)="sidenav.toggle()">
+        <md-icon fontIcon="mdi-menu"></md-icon>
+    </button>
+    <a href="" class="app-title">{{ title }}</a>
+</md-toolbar>
+
+<md-sidenav-layout>
+    <md-sidenav #sidenav>
+        <app-sidenav></app-sidenav>
+    </md-sidenav>
+
+    <router-outlet></router-outlet>
+</md-sidenav-layout>
