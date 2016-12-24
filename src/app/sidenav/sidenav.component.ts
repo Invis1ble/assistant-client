@@ -44,6 +44,8 @@ export class SidenavComponent extends AbstractComponent implements OnInit, OnDes
     }
 
     ngOnInit(): void {
+        this.setUnauthorizedUserSection();
+
         this.securityEventBus.userLoggedIn$
             .subscribe((user: UserModel) => {
                 this.onUserLoggedIn(user);
@@ -92,14 +94,7 @@ export class SidenavComponent extends AbstractComponent implements OnInit, OnDes
 
     private onUserLoggedOut(): void {
         this.user = null;
-
-        this.sectionMap.account = {
-            title: 'Аккаунт',
-            items: [
-                { title: 'Вход', icon: 'mdi-login', routerLink: 'login' },
-                { title: 'Регистрация', icon: 'mdi-account-plus', routerLink: 'register' }
-            ]
-        };
+        this.setUnauthorizedUserSection();
 
         delete this.sectionMap.categories;
 
@@ -119,6 +114,16 @@ export class SidenavComponent extends AbstractComponent implements OnInit, OnDes
     private onCategoryDeleted(category: CategoryModel): void {
         this.categories.delete(category);
         this.syncCategories();
+    }
+
+    private setUnauthorizedUserSection(): void {
+        this.sectionMap.account = {
+            title: 'Аккаунт',
+            items: [
+                { title: 'Вход', icon: 'mdi-login', routerLink: 'login' },
+                { title: 'Регистрация', icon: 'mdi-account-plus', routerLink: 'register' }
+            ]
+        };
     }
     
     private syncCategories(): void {
