@@ -19,6 +19,7 @@ import { RestModule } from 'ng2-rest-service';
 import { AppComponent } from './app.component';
 import { CONFIG } from './config/config-token';
 import { CONFIG_DEV } from './config/config.dev';
+import { CategoryListModule } from './category-list/category-list.module';
 import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
 import { JwtLocalStorageService } from './security/jwt/jwt-local-storage.service';
 import { JwtStorage } from './security/jwt/jwt-storage';
@@ -28,20 +29,18 @@ import { RegistrationComponent } from './registration/registration.component';
 import { RoutingModule } from './routing/routing.module';
 import { SecurityModule } from './security/security.module';
 import { SidenavModule } from './sidenav/sidenav.module';
-import { TaskFormModule } from './task-form/task-form.module';
-import { TaskListComponent } from './task-list/task-list.component';
-import { TaskModule } from './task/task.module';
+import { TaskListModule } from './task-list/task-list.module';
 import { UserModule } from './user/user.module';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        RegistrationComponent,
-        TaskListComponent
+        RegistrationComponent
     ],
     imports: [
         BrowserModule,
+        CategoryListModule,
         ConfirmDialogModule,
         FormModule,
         FormsModule,
@@ -58,8 +57,7 @@ import { UserModule } from './user/user.module';
         RoutingModule,
         SecurityModule,
         SidenavModule,
-        TaskFormModule,
-        TaskModule,
+        TaskListModule,
         UserModule
     ],
     providers: [

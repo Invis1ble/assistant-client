@@ -3,19 +3,21 @@ import { Response } from '@angular/http';
 
 import { Action, Body, Parameter, Query } from 'ng2-rest-service';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
 
 import { AuthenticatedRestService } from '../rest/authenticated-rest.service';
-import { Config } from '../config/config';
 import { CONFIG } from '../config/config-token';
+import { CategoryModel } from '../category/category.model';
+import { Config } from '../config/config';
 import { PeriodModel } from './period/period.model';
 import { PeriodService } from './period/period.service';
 import { TaskCollection } from './task.collection';
 import { TaskCollectionResponseBodyToTaskCollectionTransformer } from './task-collection-response-body-to-task-collection.transformer';
+import { TaskEventBus } from './task.event-bus';
 import { TaskLocationToTaskModelTransformer } from './task-location-to-task-model.transformer';
 import { TaskModel } from './task.model';
 import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
 import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
-import { UserModel } from '../user/user.model';
 import { isPresent } from '../facade/lang';
 
 @Injectable()
@@ -24,7 +26,8 @@ export class TaskService extends AuthenticatedRestService {
     constructor(
         injector: Injector,
         @Inject(CONFIG) config: Config,
-        private periodService: PeriodService
+        private periodService: PeriodService,
+        private taskEventBus: TaskEventBus
     ) {
         super(injector, config);
     }
@@ -37,28 +40,46 @@ export class TaskService extends AuthenticatedRestService {
         return null;
     }
 
-    getUserTasks(user: UserModel, limit: number, offset?: number): Observable<TaskCollection> {
-        return this.getTasksByUserId(user.id, limit, offset);
+    getCategoryTasks(category: CategoryModel, limit: number, offset?: number): Observable<TaskCollection> {
+        return this.getTasksByCategoryId(category.id, limit, offset)
+            .do((tasks: TaskCollection) => {
+                this.taskEventBus.tasksLoaded$.next(tasks);
+            });
     }
 
-    @Action({
-        path: '/users/{id}/tasks',
-        responseTransformer: TaskCollectionResponseBodyToTaskCollectionTransformer
-    })
-    getTasksByUserId(
-        @Parameter('id') userId: string,
-        @Query('limit') limit: number,
-        @Query('offset') offset?: number
-    ): Observable<TaskCollection> {
-        return null;
-    }
+    saveTask(category: CategoryModel, task: TaskModel): Observable<TaskModel> {
+        let task$: Observable<TaskModel>;
 
-    saveTask(user: UserModel, task: TaskModel): Observable<TaskModel> {
         if (isPresent(task.id)) {
-            return this.updateTask(task);
+            task$ = this.updateTask(task);
+        } else {
+            task$ = this.createTask(category, task);
         }
 
-        return this.createUserTask(user.id, task);
+        return task$.do((task: TaskModel) => {
+            this.taskEventBus.taskSaved$.next(task);
+        });
+    }
+
+    createTask(category: CategoryModel, task: TaskModel): Observable<TaskModel> {
+        return this.createCategoryTask(category.id, task)
+            .do((task: TaskModel) => {
+                this.taskEventBus.taskCreated$.next(task);
+            });
+    }
+
+    updateTask(task: TaskModel): Observable<TaskModel> {
+        return this.updateTaskById(task.id, task)
+            .do((task: TaskModel) => {
+                this.taskEventBus.taskUpdated$.next(task);
+            });
+    }
+
+    deleteTask(task: TaskModel): Observable<Response> {
+        return this.deleteTaskById(task.id)
+            .do(() => {
+                this.taskEventBus.taskDeleted$.next(task);
+            });
     }
 
     toggleRun(task: TaskModel): Observable<TaskModel> {
@@ -80,22 +101,26 @@ export class TaskService extends AuthenticatedRestService {
             });
     }
 
-    deleteTask(task: TaskModel): Observable<Response> {
-        return this.deleteTaskById(task.id);
+    @Action({
+        path: '/categories/{id}/tasks',
+        responseTransformer: TaskCollectionResponseBodyToTaskCollectionTransformer
+    })
+    private getTasksByCategoryId(
+        @Parameter('id') categoryId: string,
+        @Query('limit') limit: number,
+        @Query('offset') offset?: number
+    ): Observable<TaskCollection> {
+        return null;
     }
 
     @Action({
-        path: '/users/{id}/tasks',
+        path: '/categories/{id}/tasks',
         useRawResponse: true,
         requestTransformer: TaskModelToTaskRequestBodyTransformer,
         responseTransformer: TaskLocationToTaskModelTransformer
     })
-    createUserTask(@Parameter('id') userId: string, @Body task: TaskModel): Observable<TaskModel> {
+    private createCategoryTask(@Parameter('id') categoryId: string, @Body task: TaskModel): Observable<TaskModel> {
         return null;
-    }
-
-    updateTask(task: TaskModel): Observable<TaskModel> {
-        return this.updateTaskById(task.id, task);
     }
 
     @Action({
@@ -105,7 +130,7 @@ export class TaskService extends AuthenticatedRestService {
         requestTransformer: TaskModelToTaskRequestBodyTransformer,
         responseTransformer: TaskLocationToTaskModelTransformer
     })
-    updateTaskById(@Parameter('id') id: string, @Body task: TaskModel): Observable<TaskModel> {
+    private updateTaskById(@Parameter('id') id: string, @Body task: TaskModel): Observable<TaskModel> {
         return null;
     }
 
@@ -113,7 +138,7 @@ export class TaskService extends AuthenticatedRestService {
         path: '/tasks/{id}',
         useRawResponse: true
     })
-    deleteTaskById(@Parameter('id') id: string): Observable<Response> {
+    private deleteTaskById(@Parameter('id') id: string): Observable<Response> {
         return null;
     }
 
