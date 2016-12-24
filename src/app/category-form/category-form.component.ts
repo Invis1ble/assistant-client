@@ -1,12 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { CategoryModel } from '../category/category.model';
-import { UserModel } from '../user/user.model';
-import { CustomValidators } from 'ng2-validation';
-import { Validators, FormBuilder } from '@angular/forms';
-import { MdDialogRef } from '@angular/material';
-import { CategoryService } from '../category/category.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Response } from '@angular/http';
+
+import { CustomValidators } from 'ng2-validation';
+import { MdDialogRef } from '@angular/material';
+
 import { AbstractForm } from '../form/abstract-form';
+import { CategoryModel } from '../category/category.model';
+import { CategoryService } from '../category/category.service';
+import { UserModel } from '../user/user.model';
 
 @Component({
     selector: 'app-category-form',
