@@ -10,7 +10,7 @@
     <template ngFor let-section let-last="last" [ngForOf]="sections">
         <template [ngIf]="section.items.length">
             <h3 *ngIf="section.title" md-subheader>{{ section.title }}</h3>
-            <a md-list-item routerLink="{{ item.routerLink }}" routerLinkActive="active" class="item"
+            <a md-list-item [routerLink]="item.routerLink" routerLinkActive="active" class="item"
                *ngFor="let item of section.items">
                 <md-icon *ngIf="item.icon" fontIcon="{{ item.icon }}" md-list-icon></md-icon>
                 {{ item.title }}

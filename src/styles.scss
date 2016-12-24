@@ -2,6 +2,59 @@
 @import "theme";
 @import "mixins";
 
+@include md-core();
+
+// Include all theme styles for the components.
+@include angular-material-theme($theme);
+
+
+// ================================ Sidenav ===================================
+
+// Active list item
+a[md-list-item].item.active /deep/ .md-list-item {
+    color: md-color($primary);
+    background: md-color(map-get($theme, background), 'hover');
+}
+
+// ============================================================================
+
+
+// ============================== Scrollbar ===================================
+
+::-webkit-scrollbar {
+    max-width: 10px;
+    max-height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background-color: md-color(map-get($theme, background), background);
+}
+
+::-webkit-scrollbar-thumb {
+    $primary: map-get($theme, primary);
+
+    background-color: md-color($primary, 0.87);
+    transition: background-color 0.3s;
+    will-change: background-color;
+
+    &:hover {
+        background-color: md-color($primary);
+    }
+}
+
+// ============================================================================
+
+
+// =============================== Selection ==================================
+
+::selection {
+    background-color: md-color($primary);
+    color: md-color(map-get($theme, foreground), base);
+}
+
+// ============================================================================
+
 html,
 body {
     height: 100%;

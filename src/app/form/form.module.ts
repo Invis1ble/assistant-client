@@ -1,11 +1,12 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MdIconModule, MdInputModule } from '@angular/material';
 
 import { FormErrorComponent } from './form-error/form-error.component';
 import { FormGroupComponent } from './form-group/form-group.component';
 import { IterablePipe } from './form-error/iterable.pipe';
-import { MdIconModule, MdInputModule } from '@angular/material';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 
 const FORM_DIRECTIVES = [
     FormGroupComponent,

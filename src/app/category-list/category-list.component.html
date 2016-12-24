@@ -1,0 +1,14 @@
+<button class="btn-add-category" md-fab color="primary" (click)="showCategoryForm()" *ngIf="!category">
+    <md-icon fontIcon="mdi-playlist-plus"></md-icon>
+</button>
+
+<app-category class="category-layout"
+              [class.first]="isFirst"
+              [class.last]="isLast"
+              [category]="category"
+              *ngFor="let category of categories; let isFirst = first; let isLast = last"
+              (onCategoryEdit)="showCategoryForm($event)"
+              (onCategoryDeleted)="onCategoryDeleted($event)">
+</app-category>
+
+<md-spinner class="spinner" *ngIf="pending"></md-spinner>

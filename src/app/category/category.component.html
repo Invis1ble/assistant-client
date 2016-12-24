@@ -1,0 +1,16 @@
+<md-card>
+    <md-card-title class="name">
+        <button class="more" md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon fontIcon="mdi-dots-vertical"></md-icon>
+        </button>
+        <md-menu x-position="before" #menu="mdMenu">
+            <button md-menu-item (click)="editCategory()">Редактировать</button>
+            <button md-menu-item (click)="deleteCategory()">Удалить</button>
+        </md-menu>
+
+        <a [routerLink]="['/categories', category.id, 'tasks']">{{ category.name }}</a>
+    </md-card-title>
+    <md-card-content *ngIf="category.description">
+        <p class="description">{{ category.description }}</p>
+    </md-card-content>
+</md-card>

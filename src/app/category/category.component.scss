@@ -1,0 +1,28 @@
+@import '~@angular/material/core/theming/theming';
+@import 'src/theme';
+
+:host {
+    .name,
+    .description {
+        word-wrap: break-word;
+    }
+
+    .name a {
+        color: md-color($primary);
+        text-decoration: none;
+        transition: color 0.3s;
+        will-change: color;
+
+        &:hover {
+            color: md-color($primary, lighter);
+        }
+    }
+
+    button {
+        &.more {
+            float: right;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -1,40 +1,36 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Response } from '@angular/http';
-
-import { CustomValidators } from 'ng2-validation';
-import { MdDialogRef } from '@angular/material';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/finally';
-
-import { AbstractForm } from '../form/abstract-form';
+import { Component, OnInit, Input } from '@angular/core';
 import { CategoryModel } from '../category/category.model';
-import { TaskModel } from '../task/task.model';
-import { TaskService } from '../task/task.service';
+import { UserModel } from '../user/user.model';
+import { CustomValidators } from 'ng2-validation';
+import { Validators, FormBuilder } from '@angular/forms';
+import { MdDialogRef } from '@angular/material';
+import { CategoryService } from '../category/category.service';
+import { Response } from '@angular/http';
+import { AbstractForm } from '../form/abstract-form';
 
 @Component({
-    selector: 'app-task-form',
-    templateUrl: './task-form.component.html',
-    styleUrls: ['./task-form.component.scss']
+    selector: 'app-category-form',
+    templateUrl: './category-form.component.html',
+    styleUrls: ['./category-form.component.scss']
 })
-export class TaskFormComponent extends AbstractForm implements OnInit {
+export class CategoryFormComponent extends AbstractForm implements OnInit {
 
+    @Input() user: UserModel;
     @Input() category: CategoryModel;
-    @Input() task: TaskModel;
 
     constructor(
         private formBuilder: FormBuilder,
-        private taskService: TaskService,
-        private dialogRef: MdDialogRef<TaskFormComponent>
+        private categoryService: CategoryService,
+        private dialogRef: MdDialogRef<CategoryFormComponent>
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            title: [this.task.title, Validators.required],
-            description: [this.task.description],
-            rate: [this.task.rate, [
+            name: [this.category.name, Validators.required],
+            description: [this.category.description],
+            rate: [this.category.rate, [
                 Validators.required,
                 CustomValidators.number,
                 CustomValidators.min(5)
@@ -45,12 +41,11 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
     onSubmit(): void {
         super.onSubmit();
 
-        this.saveTask(new TaskModel(
-            this.task.id,
-            this.form.value.title,
+        this.saveCategory(new CategoryModel(
+            this.category.id,
+            this.form.value.name,
             this.form.value.description,
             this.form.value.rate,
-            null,
             null
         ));
     }
@@ -59,15 +54,15 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
         this.dialogRef.close();
     }
 
-    private saveTask(task: TaskModel): void {
-        this.taskService.saveTask(this.category, task)
-            .do((task) => task.periods = this.task.periods)
+    private saveCategory(category: CategoryModel): void {
+        this.categoryService.saveCategory(this.user, category)
+            .do((category) => category.tasks = this.category.tasks)
             .finally(() => {
                 this.onResponse();
             })
             .subscribe(
-                (task: TaskModel) => {
-                    this.dialogRef.close(task);
+                (category: CategoryModel) => {
+                    this.dialogRef.close(category);
                 },
                 (response: Response) => {
                     let errors;

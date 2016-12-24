@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AnonymousGuard } from './anonymous.guard';
 import { AuthGuard } from './auth.guard';
+import { CategoryListComponent } from '../category-list/category-list.component';
 import { LoginComponent } from '../login/login.component';
 import { RegistrationComponent } from '../registration/registration.component';
 import { TaskListComponent } from '../task-list/task-list.component';
@@ -10,7 +11,7 @@ import { TaskListComponent } from '../task-list/task-list.component';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/tasks',
+        redirectTo: '/categories',
         pathMatch: 'full'
     },
     {
@@ -24,7 +25,12 @@ const routes: Routes = [
         canActivate: [ AnonymousGuard ]
     },
     {
-        path: 'tasks',
+        path: 'categories',
+        component: CategoryListComponent,
+        canActivate: [ AuthGuard ]
+    },
+    {
+        path: 'categories/:id/tasks',
         component: TaskListComponent,
         canActivate: [ AuthGuard ]
     }
