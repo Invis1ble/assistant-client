@@ -8,6 +8,8 @@
     }
 
     .name a {
+        $primary: map-get($theme, primary);
+
         color: md-color($primary);
         text-decoration: none;
         transition: color 0.3s;

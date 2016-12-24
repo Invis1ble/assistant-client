@@ -1,8 +1,11 @@
+@import '~@angular/material/core/theming/theming';
+@import 'src/theme';
+
 :host {
     display: flex;
     align-items: center;
     margin-top: 20px;
-    color: #f44336;
+    color: md-color(map-get($theme, warn));
 
     .mdi {
         font-size: 45px;
