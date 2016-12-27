@@ -6,29 +6,17 @@ import { isPresent } from '../facade/lang';
 export abstract class AbstractForm {
 
     protected form: FormGroup;
-    protected pending: boolean = false;
-    protected submitted: boolean = false;
 
-    isDisabled(control: AbstractControl): boolean {
-        return this.pending || (control.root === control &&
-            Object.keys(this.form.controls).some((key): boolean => this.form.controls[key].invalid));
+    get submitDisabled(): boolean {
+        return this.form.disabled || this.form.invalid || this.form.pending;
     }
 
     onSubmit(): void {
-        this.beforeRequest();
+        this.form.markAsPending();
     }
 
-    protected beforeRequest(): void {
-        this.lockForm();
-        this.setSubmitted();
-    }
-
-    protected lockForm(): void {
-        this.pending = true;
-    }
-
-    protected onResponse(): void {
-        this.unlockForm();
+    protected setFormErrors(errors: FormErrors): void {
+        this.setErrors(this.form, errors);
     }
 
     protected setErrors(control: AbstractControl, errors: FormErrors): void {
@@ -40,6 +28,9 @@ export abstract class AbstractForm {
             });
 
             control.setErrors(controlErrors);
+            control.markAsDirty({
+                onlySelf: true
+            });
         }
 
         if (isPresent(errors.children)) {
@@ -53,18 +44,6 @@ export abstract class AbstractForm {
                 }
             }
         }
-    }
-
-    protected setFormErrors(errors: FormErrors): void {
-        this.setErrors(this.form, errors);
-    }
-
-    protected setSubmitted(): void {
-        this.submitted = true;
-    }
-
-    protected unlockForm(): void {
-        this.pending = false;
     }
 
 }

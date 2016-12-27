@@ -52,16 +52,9 @@ export class CategoryFormComponent extends AbstractForm implements OnInit {
         ));
     }
 
-    cancel(): void {
-        this.dialogRef.close();
-    }
-
     private saveCategory(category: CategoryModel): void {
         this.categoryService.saveCategory(this.user, category)
             .do((category) => category.tasks = this.category.tasks)
-            .finally(() => {
-                this.onResponse();
-            })
             .subscribe(
                 (category: CategoryModel) => {
                     this.dialogRef.close(category);

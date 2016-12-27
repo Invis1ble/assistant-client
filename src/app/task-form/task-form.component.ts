@@ -5,7 +5,6 @@ import { Response } from '@angular/http';
 import { CustomValidators } from 'ng2-validation';
 import { MdDialogRef } from '@angular/material';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/finally';
 
 import { AbstractForm } from '../form/abstract-form';
 import { CategoryModel } from '../category/category.model';
@@ -55,16 +54,9 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
         ));
     }
 
-    cancel(): void {
-        this.dialogRef.close();
-    }
-
     private saveTask(task: TaskModel): void {
         this.taskService.saveTask(this.category, task)
             .do((task) => task.periods = this.task.periods)
-            .finally(() => {
-                this.onResponse();
-            })
             .subscribe(
                 (task: TaskModel) => {
                     this.dialogRef.close(task);

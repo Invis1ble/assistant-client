@@ -7,6 +7,7 @@
 // Include all theme styles for the components.
 @include angular-material-theme($theme);
 
+$primary: map-get($theme, primary);
 
 // ================================ Sidenav ===================================
 
@@ -14,6 +15,21 @@
 a[md-list-item].item.active /deep/ .md-list-item {
     color: md-color($primary);
     background: md-color(map-get($theme, background), 'hover');
+}
+
+// ============================================================================
+
+
+// ================================= Dialog ===================================
+
+md-dialog-container {
+    color: map-get(map-get($theme, foreground), text);
+    font-family: $md-font-family;
+}
+
+md-dialog-actions[align="end"] {
+    display: flex;
+    justify-content: flex-end;
 }
 
 // ============================================================================
@@ -32,8 +48,6 @@ a[md-list-item].item.active /deep/ .md-list-item {
 }
 
 ::-webkit-scrollbar-thumb {
-    $primary: map-get($theme, primary);
-
     background-color: md-color($primary, 0.87);
     transition: background-color 0.3s;
     will-change: background-color;
@@ -78,6 +92,11 @@ md-icon {
 }
 
 // modal
-form .actions {
-    @include actions();
+form {
+    md-dialog-actions,
+    mat-dialog-actions,
+    [md-dialog-actions],
+    [mat-dialog-actions] {
+        @include actions();
+    }
 }

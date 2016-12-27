@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import {
     MdButtonModule,
     MdDialogModule,
+    MdInputModule,
     MdProgressCircleModule
 } from '@angular/material';
 
@@ -16,6 +17,7 @@ import { TaskFormComponent } from './task-form.component';
         FormModule,
         MdButtonModule,
         MdDialogModule,
+        MdInputModule,
         MdProgressCircleModule
     ],
     entryComponents: [

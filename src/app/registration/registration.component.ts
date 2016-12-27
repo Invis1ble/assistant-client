@@ -4,7 +4,6 @@ import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { CustomValidators } from 'ng2-validation';
-import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/switchMap';
 
 import { AbstractForm } from '../form/abstract-form';
@@ -64,9 +63,6 @@ export class RegistrationComponent extends AbstractForm {
         this.userService.registerUser(user)
             .switchMap(() => {
                 return this.jwtService.createJwt(new Credentials(user.username, user.plainPassword.first));
-            })
-            .finally(() => {
-                this.onResponse();
             })
             .subscribe(
                 (jwt: JwtModel) => {

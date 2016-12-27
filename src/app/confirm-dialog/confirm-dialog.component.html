@@ -1,6 +1,6 @@
-<div class="title">{{ title }}</div>
-<div class="content" *ngIf="content">{{ content }}</div>
-<div class="actions" align="end">
-    <button md-button type="button" color="primary" (click)="cancel()">ОТМЕНА</button>
+<h1 md-dialog-title>{{ title }}</h1>
+<md-dialog-content *ngIf="content">{{ content }}</md-dialog-content>
+<md-dialog-actions align="end">
+    <button md-button md-dialog-close type="button" color="primary">ОТМЕНА</button>
     <button md-button type="button" color="primary" (click)="confirm()">ПРИНЯТЬ</button>
-</div>
+</md-dialog-actions>

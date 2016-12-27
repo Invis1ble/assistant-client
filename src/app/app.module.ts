@@ -21,11 +21,11 @@ import { CONFIG } from './config/config-token';
 import { CONFIG_DEV } from './config/config.dev';
 import { CategoryListModule } from './category-list/category-list.module';
 import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
+import { FormModule } from './form/form.module';
 import { JwtLocalStorageService } from './security/jwt/jwt-local-storage.service';
 import { JwtStorage } from './security/jwt/jwt-storage';
-import { FormModule } from './form/form.module';
-import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { LoginModule } from './login/login.module';
+import { RegistrationModule } from './registration/registration.module';
 import { RoutingModule } from './routing/routing.module';
 import { SecurityModule } from './security/security.module';
 import { SidenavModule } from './sidenav/sidenav.module';
@@ -34,9 +34,7 @@ import { UserModule } from './user/user.module';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        LoginComponent,
-        RegistrationComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,
@@ -44,6 +42,7 @@ import { UserModule } from './user/user.module';
         ConfirmDialogModule,
         FormModule,
         FormsModule,
+        LoginModule,
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
         MdIconModule.forRoot(),
@@ -53,6 +52,7 @@ import { UserModule } from './user/user.module';
         MdSidenavModule.forRoot(),
         MdSnackBarModule.forRoot(),
         MdToolbarModule.forRoot(),
+        RegistrationModule,
         RestModule.forRoot(),
         RoutingModule,
         SecurityModule,

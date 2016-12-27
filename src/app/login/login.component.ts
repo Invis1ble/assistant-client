@@ -35,9 +35,6 @@ export class LoginComponent extends AbstractForm {
 
     logIn(credentials: Credentials): void {
         this.auth.login(credentials)
-            .finally(() => {
-                this.onResponse();
-            })
             .subscribe(
                 () => {
                     let requestedUrl = this.auth.getRequestedUrl();

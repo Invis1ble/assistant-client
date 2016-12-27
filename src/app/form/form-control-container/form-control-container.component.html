@@ -1,0 +1,4 @@
+<ng-content></ng-content>
+<ul *ngIf="control.errors" class="error-list">
+    <li *ngFor="let error of control.errors | iterable">{{ error.key }}</li>
+</ul>

@@ -2,14 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MdIconModule, MdInputModule } from '@angular/material';
+import { MdIconModule } from '@angular/material';
 
 import { FormErrorComponent } from './form-error/form-error.component';
-import { FormGroupComponent } from './form-group/form-group.component';
+import { FormControlContainerComponent } from './form-control-container/form-control-container.component';
 import { IterablePipe } from './form-error/iterable.pipe';
 
 const FORM_DIRECTIVES = [
-    FormGroupComponent,
+    FormControlContainerComponent,
     FormErrorComponent
 ];
 
@@ -18,7 +18,6 @@ const FORM_DIRECTIVES = [
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        MdInputModule,
         MdIconModule
     ],
     declarations: [

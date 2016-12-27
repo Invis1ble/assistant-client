@@ -2,34 +2,28 @@
     <md-card>
         <md-card-title>Регистрация</md-card-title>
         <md-card-content>
-            <app-form-group [control]="form.controls.username"
-                            [pending]="pending"
-                            [submitted]="submitted"
-                            formControlName="username"
-                            type="text"
-                            placeholder="Имя пользователя">
-            </app-form-group>
+            <app-form-control-container [control]="form.controls.username">
+                <md-input-container>
+                    <input md-input formControlName="username" type="text" placeholder="Имя пользователя">
+                </md-input-container>
+            </app-form-control-container>
             <div class="form-group" formGroupName="plainPassword">
-                <app-form-group [control]="form.controls.plainPassword.controls.first"
-                                [pending]="pending"
-                                [submitted]="submitted"
-                                formControlName="first"
-                                type="password"
-                                placeholder="Пароль">
-                </app-form-group>
-                <app-form-group [control]="form.controls.plainPassword.controls.second"
-                                [pending]="pending"
-                                [submitted]="submitted"
-                                formControlName="second"
-                                type="password"
-                                placeholder="Пароль ещё раз">
-                </app-form-group>
+                <app-form-control-container [control]="form.controls.plainPassword.controls.first">
+                    <md-input-container>
+                        <input md-input formControlName="first" type="password" placeholder="Пароль">
+                    </md-input-container>
+                </app-form-control-container>
+                <app-form-control-container [control]="form.controls.plainPassword.controls.second">
+                    <md-input-container>
+                        <input md-input formControlName="second" type="password" placeholder="Пароль ещё раз">
+                    </md-input-container>
+                </app-form-control-container>
             </div>
             <app-form-error [form]="form"></app-form-error>
         </md-card-content>
         <md-card-actions align="end">
-            <md-spinner *ngIf="pending"></md-spinner>
-            <button type="submit" md-button color="primary" [disabled]="isDisabled(form)" align="end">
+            <md-spinner *ngIf="form.pending"></md-spinner>
+            <button type="submit" md-button color="primary" [disabled]="submitDisabled" align="end">
                 ЗАРЕГИСТРИРОВАТЬСЯ
             </button>
         </md-card-actions>
