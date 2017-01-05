@@ -4,8 +4,14 @@
             <md-icon fontIcon="mdi-dots-vertical"></md-icon>
         </button>
         <md-menu x-position="before" #menu="mdMenu">
-            <button md-menu-item (click)="editCategory()">Редактировать</button>
-            <button md-menu-item (click)="deleteCategory()">Удалить</button>
+            <button md-menu-item (click)="editCategory()">
+                <md-icon fontIcon="mdi-pencil"></md-icon>
+                <span>Редактировать</span>
+            </button>
+            <button md-menu-item (click)="deleteCategory()">
+                <md-icon fontIcon="mdi-delete-forever"></md-icon>
+                <span>Удалить</span>
+            </button>
         </md-menu>
 
         <a [routerLink]="['/categories', category.id, 'tasks']">{{ category.name }}</a>

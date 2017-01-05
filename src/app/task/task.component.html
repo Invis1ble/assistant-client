@@ -4,8 +4,14 @@
             <md-icon fontIcon="mdi-dots-vertical"></md-icon>
         </button>
         <md-menu x-position="before" #menu="mdMenu">
-            <button md-menu-item (click)="editTask()">Редактировать</button>
-            <button md-menu-item (click)="deleteTask()">Удалить</button>
+            <button md-menu-item (click)="editTask()">
+                <md-icon fontIcon="mdi-pencil"></md-icon>
+                <span>Редактировать</span>
+            </button>
+            <button md-menu-item (click)="deleteTask()">
+                <md-icon fontIcon="mdi-delete-forever"></md-icon>
+                <span>Удалить</span>
+            </button>
         </md-menu>
 
         {{ task.title }}
