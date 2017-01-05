@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/filter';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { CategoryCollection } from '../category/category.collection';
@@ -9,7 +10,6 @@ import { CategoryEventBus } from '../category/category.event-bus';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import { CategoryModel } from '../category/category.model';
 import { SecurityEventBus } from '../security/security.event-bus';
-import { TaskCollection } from '../task/task.collection';
 import { UserModel } from '../user/user.model';
 import { isPresent } from '../facade/lang';
 
@@ -64,7 +64,7 @@ export class CategoryListComponent extends AbstractComponent implements OnInit, 
 
     showCategoryForm(category?: CategoryModel): void {
         if (!isPresent(category)) {
-            category = new CategoryModel(null, '', '', 20, new TaskCollection());
+            category = new CategoryModel();
         }
 
         const dialogRef = this.dialog.open(CategoryFormComponent);
@@ -73,17 +73,17 @@ export class CategoryListComponent extends AbstractComponent implements OnInit, 
         dialogRef.componentInstance.category = category;
 
         dialogRef.afterClosed()
-            .filter((result?: CategoryModel): boolean => isPresent(result))
-            .subscribe((category: CategoryModel) => {
-                this.onCategorySaved(category);
+            .filter(isPresent)
+            .subscribe(() => {
+                this.onCategorySaved();
             });
     }
 
-    private onCategorySaved(category: CategoryModel): void {
+    private onCategorySaved(): void {
         this.showMessage('Категория успешно сохранена.');
     }
 
-    onCategoryDeleted(category: CategoryModel): void {
+    onCategoryDeleted(): void {
         this.showMessage('Категория успешно удалена.');
     }
 

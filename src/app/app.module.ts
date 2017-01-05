@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import {
     MdButtonModule,
@@ -10,6 +9,7 @@ import {
     MdListModule,
     MdMenuModule,
     MdProgressCircleModule,
+    MdSelectModule,
     MdSidenavModule,
     MdSnackBarModule,
     MdToolbarModule
@@ -21,7 +21,6 @@ import { CONFIG } from './config/config-token';
 import { CONFIG_DEV } from './config/config.dev';
 import { CategoryListModule } from './category-list/category-list.module';
 import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
-import { FormModule } from './form/form.module';
 import { JwtLocalStorageService } from './security/jwt/jwt-local-storage.service';
 import { JwtStorage } from './security/jwt/jwt-storage';
 import { LoginModule } from './login/login.module';
@@ -40,8 +39,6 @@ import { UserModule } from './user/user.module';
         BrowserModule,
         CategoryListModule,
         ConfirmDialogModule,
-        FormModule,
-        FormsModule,
         LoginModule,
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
@@ -49,6 +46,7 @@ import { UserModule } from './user/user.module';
         MdListModule.forRoot(),
         MdMenuModule.forRoot(),
         MdProgressCircleModule.forRoot(),
+        MdSelectModule.forRoot(),
         MdSidenavModule.forRoot(),
         MdSnackBarModule.forRoot(),
         MdToolbarModule.forRoot(),

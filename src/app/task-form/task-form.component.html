@@ -1,6 +1,13 @@
 <h1 md-dialog-title>{{ task.id ? 'Редактирование задачи' : 'Новая задача' }}</h1>
 <form *ngIf="form" class="task-form" (ngSubmit)="onSubmit()" [formGroup]="form">
     <md-dialog-content>
+        <app-form-control-container *ngIf="task.id" [control]="form.controls.category">
+            <md-select formControlName="category" placeholder="Категория">
+                <md-option *ngFor="let category of categories.getItems()" [value]="category.id">
+                    {{ category.name }}
+                </md-option>
+            </md-select>
+        </app-form-control-container>
         <app-form-control-container [control]="form.controls.title">
             <md-input-container>
                 <input md-input formControlName="title" type="text" placeholder="Заголовок">

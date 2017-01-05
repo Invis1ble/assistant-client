@@ -12,7 +12,8 @@ export class TaskModelToTaskRequestBodyTransformer implements Transformer<TaskMo
         return {
             title: task.title,
             description: task.description,
-            rate: task.rate
+            rate: task.rate,
+            category: task.categoryId
         };
     }
 

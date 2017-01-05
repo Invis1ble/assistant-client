@@ -7,9 +7,11 @@ import { MdDialogRef } from '@angular/material';
 import 'rxjs/add/operator/do';
 
 import { AbstractForm } from '../form/abstract-form';
+import { CategoryCollection } from '../category/category.collection';
 import { CategoryModel } from '../category/category.model';
 import { TaskModel } from '../task/task.model';
 import { TaskService } from '../task/task.service';
+import { isPresent } from '../facade/lang';
 
 @Component({
     selector: 'app-task-form',
@@ -18,6 +20,7 @@ import { TaskService } from '../task/task.service';
 })
 export class TaskFormComponent extends AbstractForm implements OnInit {
 
+    @Input() categories: CategoryCollection;
     @Input() category: CategoryModel;
     @Input() task: TaskModel;
 
@@ -31,6 +34,7 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
+            category: [this.category.name, Validators.required],
             title: [this.task.title, Validators.required],
             description: [this.task.description],
             rate: [this.task.rate, [
@@ -44,14 +48,21 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
     onSubmit(): void {
         super.onSubmit();
 
-        this.saveTask(new TaskModel(
+        const task = new TaskModel(
             this.task.id,
             this.form.value.title,
             this.form.value.description,
             this.form.value.rate,
             null,
+            null,
             null
-        ));
+        );
+
+        if (isPresent(this.form.value.category)) {
+            task.categoryId = this.form.value.category;
+        }
+
+        this.saveTask(task);
     }
 
     private saveTask(task: TaskModel): void {

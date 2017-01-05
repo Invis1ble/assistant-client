@@ -6,11 +6,13 @@ import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
+import 'rxjs/add/operator/withLatestFrom';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { CategoryCollection } from '../category/category.collection';
@@ -33,11 +35,13 @@ import { isPresent } from '../facade/lang';
 export class TaskListComponent extends AbstractComponent implements OnInit, OnDestroy {
 
     tasks: TaskCollection = new TaskCollection();
+    categories: CategoryCollection;
     category: CategoryModel;
 
     private categoriesLoadedSubscription: Subscription;
     private tasksLoadedSubscription: Subscription;
-    private taskSavedSubscription: Subscription;
+    private taskCreatedSubscription: Subscription;
+    private taskUpdatedSubscription: Subscription;
     private taskDeletedSubscription: Subscription;
 
     private limit: number = 10;
@@ -58,11 +62,18 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
 
     ngOnInit() {
         this.categoriesLoadedSubscription = this.categoryEventBus.categoriesLoaded$
-            .subscribe((categories: CategoryCollection) => {
-                this.route.params.forEach((params: Params) => {
-                    this.category = categories.findOneById(params['id']);
-                    this.loadCategoryTasks(this.limit);
-                });
+            .combineLatest(this.route.params)
+            .subscribe(([categories, params]: [CategoryCollection, Params]) => {
+                this.categories = categories;
+
+                const category: CategoryModel = categories.findOneById(params['id']);
+
+                if (!isPresent(this.category) || category.id !== this.category.id) {
+                    this.category = category;
+                    this.clearTasks();
+                }
+
+                this.loadCategoryTasks(this.limit);
             });
 
         this.tasksLoadedSubscription = this.taskEventBus.tasksLoaded$
@@ -79,13 +90,24 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
             .subscribe((tasks: TaskCollection) => {
                 this.tasks = tasks.merge(this.tasks);
             });
-        
-        this.taskSavedSubscription = this.taskEventBus.taskSaved$
+
+        this.taskCreatedSubscription = this.taskEventBus.taskCreated$
+            .filter((task: TaskModel) => task.categoryId === this.category.id)
             .subscribe((task: TaskModel) => {
-                this.tasks.update(task);
+                this.tasks.add(task);
+            });
+
+        this.taskUpdatedSubscription = this.taskEventBus.taskUpdated$
+            .subscribe((task: TaskModel) => {
+                if (task.categoryId === this.category.id) {
+                    this.tasks.update(task);
+                } else {
+                    this.tasks.delete(task);
+                }
             });
 
         this.taskDeletedSubscription = this.taskEventBus.taskDeleted$
+            .filter((task: TaskModel) => task.categoryId === this.category.id)
             .subscribe((task: TaskModel) => {
                 this.tasks.delete(task);
             });
@@ -93,26 +115,27 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
 
     showTaskForm(task?: TaskModel): void {
         if (!isPresent(task)) {
-            task = new TaskModel(null, '', '', 20, null, new PeriodCollection());
+            task = new TaskModel(null, '', '', this.category.rate, null, this.category.id, new PeriodCollection());
         }
 
         const dialogRef = this.dialog.open(TaskFormComponent);
 
+        dialogRef.componentInstance.categories = this.categories;
         dialogRef.componentInstance.category = this.category;
         dialogRef.componentInstance.task = task;
 
         dialogRef.afterClosed()
-            .filter((result?: TaskModel): boolean => isPresent(result))
-            .subscribe((task: TaskModel) => {
-                this.onTaskSaved(task);
+            .filter(isPresent)
+            .subscribe(() => {
+                this.onTaskSaved();
             });
     }
 
-    private onTaskSaved(task: TaskModel): void {
+    private onTaskSaved(): void {
         this.showMessage('Задача успешно сохранена.');
     }
 
-    onTaskDeleted(task: TaskModel): void {
+    onTaskDeleted(): void {
         this.showMessage('Задача успешно удалена.');
     }
 
@@ -123,7 +146,8 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     ngOnDestroy(): void {
         this.categoriesLoadedSubscription.unsubscribe();
         this.tasksLoadedSubscription.unsubscribe();
-        this.taskSavedSubscription.unsubscribe();
+        this.taskCreatedSubscription.unsubscribe();
+        this.taskUpdatedSubscription.unsubscribe();
         this.taskDeletedSubscription.unsubscribe();
     }
 
@@ -144,6 +168,10 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
                     this.handleError(response);
                 }
             );
+    }
+
+    private clearTasks(): void {
+        this.tasks = new TaskCollection();
     }
 
 }

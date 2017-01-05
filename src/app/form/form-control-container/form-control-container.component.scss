@@ -7,9 +7,12 @@
     display: block;
     margin-bottom: 20px;
 
-    /deep/ md-input-container {
+    /deep/ md-input-container,
+    /deep/ md-select {
         width: 100%;
+    }
 
+    /deep/ md-input-container {
         /deep/ .md-input-prefix {
             width: 1px;
         }

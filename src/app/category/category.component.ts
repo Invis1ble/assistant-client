@@ -3,6 +3,8 @@ import { Response } from '@angular/http';
 
 import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/mergeMap';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { CategoryModel } from './category.model';

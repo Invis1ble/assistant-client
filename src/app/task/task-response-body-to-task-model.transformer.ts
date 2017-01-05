@@ -29,6 +29,7 @@ export class TaskResponseBodyToTaskModelTransformer implements Transformer<TaskR
             data.description,
             data.rate,
             new Date(data.createdAt * 1000),
+            data.categoryId,
             this.responseToCollectionTransformer.transform(data.periods)
         );
     }
