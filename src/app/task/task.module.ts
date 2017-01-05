@@ -15,6 +15,7 @@ import { TaskLocationToTaskModelTransformer } from './task-location-to-task-mode
 import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
 import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
 import { TaskService } from './task.service';
+import { TaskEventBus } from './task.event-bus';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { TaskService } from './task.service';
         PeriodResponseBodyToPeriodModelTransformer,
         PeriodService,
         TaskCollectionResponseBodyToTaskCollectionTransformer,
+        TaskEventBus,
         TaskLocationToTaskModelTransformer,
         TaskModelToTaskRequestBodyTransformer,
         TaskResponseBodyToTaskModelTransformer,

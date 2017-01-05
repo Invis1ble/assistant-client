@@ -1,0 +1,27 @@
+<h1 md-dialog-title>{{ category.id ? 'Редактирование категории' : 'Новая категория' }}</h1>
+<form *ngIf="form" class="category-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <md-dialog-content>
+        <app-form-control-container [control]="form.controls.name">
+            <md-input-container>
+                <input md-input formControlName="name" type="text" placeholder="Название">
+            </md-input-container>
+        </app-form-control-container>
+        <app-form-control-container [control]="form.controls.description">
+            <md-input-container>
+                <textarea md-input formControlName="description" rows="4" placeholder="Описание"></textarea>
+            </md-input-container>
+        </app-form-control-container>
+        <app-form-control-container [control]="form.controls.rate">
+            <md-input-container>
+                <input md-input formControlName="rate" type="number" min="5.00" step="0.01" placeholder="Рейт">
+                <span md-prefix>$</span>
+            </md-input-container>
+        </app-form-control-container>
+        <app-form-error [form]="form"></app-form-error>
+    </md-dialog-content>
+    <md-dialog-actions align="end">
+        <button type="button" md-button md-dialog-close color="primary" [disabled]="pending">ОТМЕНА</button>
+        <md-spinner *ngIf="form.pending"></md-spinner>
+        <button type="submit" md-button color="primary" [disabled]="submitDisabled">СОХРАНИТЬ</button>
+    </md-dialog-actions>
+</form>

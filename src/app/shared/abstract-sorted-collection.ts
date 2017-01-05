@@ -9,7 +9,7 @@ export abstract class AbstractSortedCollection<T extends IdAware> extends Collec
         this.sort();
     }
 
-    delete(item: T) {
+    delete(item: T): void {
         super.delete(item);
 
         this.sort();
@@ -25,7 +25,7 @@ export abstract class AbstractSortedCollection<T extends IdAware> extends Collec
         this.items.sort(this.sortFn);
     }
 
-    update(item: T) {
+    update(item: T): void {
         const isReplaced = this.getItems().some((currentItem, i, items) => {
             if (currentItem.id === item.id) {
                 items[i] = item;
@@ -38,6 +38,12 @@ export abstract class AbstractSortedCollection<T extends IdAware> extends Collec
         } else {
             this.add(item);
         }
+    }
+
+    findOneById(id: string): T | undefined {
+        return this.findOne((item: T) => {
+            return item.id === id;
+        });
     }
 
     protected abstract sortFn(a: T, b: T): number;

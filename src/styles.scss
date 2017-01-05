@@ -2,6 +2,82 @@
 @import "theme";
 @import "mixins";
 
+@include md-core();
+
+// Include all theme styles for the components.
+@include angular-material-theme($theme);
+
+$primary: map-get($theme, primary);
+
+// ================================ Sidenav ===================================
+
+// Active list item
+a[md-list-item].item.active /deep/ .md-list-item {
+    color: md-color($primary);
+    background: md-color(map-get($theme, background), 'hover');
+}
+
+// ============================================================================
+
+
+// ================================= Dialog ===================================
+
+md-dialog-container {
+    color: map-get(map-get($theme, foreground), text);
+    font-family: $md-font-family;
+}
+
+md-dialog-actions[align="end"] {
+    display: flex;
+    justify-content: flex-end;
+}
+
+// ============================================================================
+
+
+// ================================= Select ===================================
+
+.md-select-content {
+    color: map-get(map-get($theme, foreground), text);
+}
+
+// ============================================================================
+
+
+// ============================== Scrollbar ===================================
+
+::-webkit-scrollbar {
+    max-width: 10px;
+    max-height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background-color: md-color(map-get($theme, background), background);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: md-color($primary, 0.87);
+    transition: background-color 0.3s;
+    will-change: background-color;
+
+    &:hover {
+        background-color: md-color($primary);
+    }
+}
+
+// ============================================================================
+
+
+// =============================== Selection ==================================
+
+::selection {
+    background-color: md-color($primary);
+    color: md-color(map-get($theme, foreground), base);
+}
+
+// ============================================================================
+
 html,
 body {
     height: 100%;
@@ -25,6 +101,11 @@ md-icon {
 }
 
 // modal
-form .actions {
-    @include actions();
+form {
+    md-dialog-actions,
+    mat-dialog-actions,
+    [md-dialog-actions],
+    [mat-dialog-actions] {
+        @include actions();
+    }
 }

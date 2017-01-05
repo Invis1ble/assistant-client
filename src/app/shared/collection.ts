@@ -32,6 +32,10 @@ export class Collection<T extends IdAware> implements Iterable<T> {
         this.items = items;
     }
 
+    findOne(predicate: (value: T, index: number, obj: T[]) => boolean, thisArg?: any): T | undefined {
+        return this.getItems().find(predicate);
+    }
+
     merge(collection: Collection<T>): this {
         return new (this.constructor as typeof Collection)(this.getItems().concat(collection.getItems())) as this;
     }

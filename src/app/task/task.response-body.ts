@@ -7,6 +7,7 @@ export type TaskResponseBody = {
     description: string;
     rate: number;
     createdAt: number;
+    categoryId: string;
     periods?: PeriodCollectionResponseBody;
 
 }

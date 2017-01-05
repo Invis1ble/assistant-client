@@ -1,13 +1,18 @@
+@import '~@angular/material/core/theming/theming';
+@import 'src/theme';
+
 :host {
+    $warn-color: md-color(map-get($theme, warn));
+
     display: block;
     margin-bottom: 20px;
 
-    md-input,
-    md-textarea {
+    /deep/ md-input-container,
+    /deep/ md-select {
         width: 100%;
     }
 
-    md-input {
+    /deep/ md-input-container {
         /deep/ .md-input-prefix {
             width: 1px;
         }
@@ -19,6 +24,7 @@
 
     .error-list {
         display: none;
+        color: $warn-color;
     }
 
     ul.error-list {
@@ -28,14 +34,12 @@
     }
 
     &.has-error {
-        md-input /deep/ .md-input-underline .md-input-ripple {
-            /* md-warn color */
-            background-color: #f44336;
+        /deep/ md-input-container .md-input-underline .md-input-ripple {
+            background-color: $warn-color;
         }
 
         .error-list {
             display: block;
-            color: #f44336;
         }
     }
 }

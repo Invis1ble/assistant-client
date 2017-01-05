@@ -1,7 +1,7 @@
 @mixin actions($spinner-size: 24px) {
     md-spinner {
-        width: $spinner-size;
-        height: $spinner-size;
+        width: $spinner-size !important;
+        height: $spinner-size !important;
         align-self: center;
     }
 

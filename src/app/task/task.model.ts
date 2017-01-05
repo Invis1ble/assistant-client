@@ -10,6 +10,7 @@ export class TaskModel implements IdAware {
         public description: string,
         public rate: number,
         public createdAt: Date,
+        public categoryId: string,
         public periods: PeriodCollection
     ) {
 

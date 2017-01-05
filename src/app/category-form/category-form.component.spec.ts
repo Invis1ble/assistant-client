@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { FormGroupComponent } from './form-group.component';
+import { CategoryFormComponent } from './category-form.component';
 
-describe('FormGroupComponent', () => {
-    let component: FormGroupComponent;
-    let fixture: ComponentFixture<FormGroupComponent>;
+describe('CategoryFormComponent', () => {
+    let component: CategoryFormComponent;
+    let fixture: ComponentFixture<CategoryFormComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FormGroupComponent]
+            declarations: [CategoryFormComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FormGroupComponent);
+        fixture = TestBed.createComponent(CategoryFormComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
