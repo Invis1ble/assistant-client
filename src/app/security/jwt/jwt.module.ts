@@ -10,6 +10,16 @@ import { JwtResponseBodyToJwtModelTransformer } from './jwt-response-body-to-jwt
 import { JwtService } from './jwt.service';
 import { JwtStorage } from './jwt-storage';
 
+// Workaround for compiling errors issue, see https://github.com/auth0/angular2-jwt/issues/258#issuecomment-272223420
+export function authHttpServiceFactory(http: Http, config: Config, jwtStorage: JwtStorage) {
+    return new AuthHttp(new AuthConfig({
+        tokenGetter() {
+            return jwtStorage.getToken().token;
+        },
+        tokenName: config.jwtName
+    }), http);
+}
+
 @NgModule({
     providers: [
         JwtHelper,
@@ -18,14 +28,7 @@ import { JwtStorage } from './jwt-storage';
         JwtModelToRefreshTokenRequestBodyTransformer,
         {
             provide: AuthHttp,
-            useFactory: (http: Http, config: Config, jwtStorage: JwtStorage) => {
-                return new AuthHttp(new AuthConfig({
-                    tokenGetter() {
-                        return jwtStorage.getToken().token;
-                    },
-                    tokenName: config.jwtName
-                }), http);
-            },
+            useFactory: authHttpServiceFactory,
             deps: [Http, CONFIG, JwtStorage]
         }
     ]
