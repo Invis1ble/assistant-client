@@ -34,7 +34,7 @@ export class TaskFormComponent extends AbstractForm implements OnInit {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            category: [this.category.name, Validators.required],
+            category: [this.category.id, Validators.required],
             title: [this.task.title, Validators.required],
             description: [this.task.description],
             rate: [this.task.rate, [
