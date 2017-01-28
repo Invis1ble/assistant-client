@@ -16,7 +16,8 @@ import { TaskCollectionResponseBodyToTaskCollectionTransformer } from './task-co
 import { TaskEventBus } from './task.event-bus';
 import { TaskLocationToTaskModelTransformer } from './task-location-to-task-model.transformer';
 import { TaskModel } from './task.model';
-import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
+import { TaskModelToCreateTaskRequestBodyTransformer } from './task-model-to-create-task-request-body.transformer';
+import { TaskModelToUpdateTaskRequestBodyTransformer } from './task-model-to-update-task-request-body.transformer';
 import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
 import { isPresent } from '../facade/lang';
 
@@ -116,7 +117,7 @@ export class TaskService extends AuthenticatedRestService {
     @Action({
         path: '/categories/{id}/tasks',
         useRawResponse: true,
-        requestTransformer: TaskModelToTaskRequestBodyTransformer,
+        requestTransformer: TaskModelToCreateTaskRequestBodyTransformer,
         responseTransformer: TaskLocationToTaskModelTransformer
     })
     private createCategoryTask(@Parameter('id') categoryId: string, @Body task: TaskModel): Observable<TaskModel> {
@@ -127,7 +128,7 @@ export class TaskService extends AuthenticatedRestService {
         path: '/tasks/{id}',
         method: 'PATCH',
         useRawResponse: true,
-        requestTransformer: TaskModelToTaskRequestBodyTransformer,
+        requestTransformer: TaskModelToUpdateTaskRequestBodyTransformer,
         responseTransformer: TaskLocationToTaskModelTransformer
     })
     private updateTaskById(@Parameter('id') id: string, @Body task: TaskModel): Observable<TaskModel> {

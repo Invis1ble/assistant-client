@@ -12,7 +12,8 @@ import { PeriodService } from './period/period.service';
 import { TaskComponent } from './task.component';
 import { TaskCollectionResponseBodyToTaskCollectionTransformer } from './task-collection-response-body-to-task-collection.transformer';
 import { TaskLocationToTaskModelTransformer } from './task-location-to-task-model.transformer';
-import { TaskModelToTaskRequestBodyTransformer } from './task-model-to-task-request-body.transformer';
+import { TaskModelToUpdateTaskRequestBodyTransformer } from './task-model-to-update-task-request-body.transformer';
+import { TaskModelToCreateTaskRequestBodyTransformer } from './task-model-to-create-task-request-body.transformer';
 import { TaskResponseBodyToTaskModelTransformer } from './task-response-body-to-task-model.transformer';
 import { TaskService } from './task.service';
 import { TaskEventBus } from './task.event-bus';
@@ -33,7 +34,8 @@ import { TaskEventBus } from './task.event-bus';
         TaskCollectionResponseBodyToTaskCollectionTransformer,
         TaskEventBus,
         TaskLocationToTaskModelTransformer,
-        TaskModelToTaskRequestBodyTransformer,
+        TaskModelToCreateTaskRequestBodyTransformer,
+        TaskModelToUpdateTaskRequestBodyTransformer,
         TaskResponseBodyToTaskModelTransformer,
         TaskService
     ],
