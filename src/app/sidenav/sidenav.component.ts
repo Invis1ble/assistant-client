@@ -142,8 +142,8 @@ export class SidenavComponent extends AbstractComponent implements OnInit, OnDes
         this.categoryService.getUserCategories(user)
             .subscribe(
                 null,
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }

@@ -164,8 +164,8 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
                         return;
                     }
                 },
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }

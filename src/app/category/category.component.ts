@@ -45,8 +45,8 @@ export class CategoryComponent extends AbstractComponent {
                 (response: Response) => {
                     this.onCategoryDeleted.emit(this.category);
                 },
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }

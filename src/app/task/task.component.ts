@@ -59,8 +59,8 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
                     this.deactivateRecalculation();
                 }
             },
-            (response: Response): void => {
-                this.handleError(response);
+            (error: any): void => {
+                this.handleError(error);
             }
         );
     }
@@ -79,8 +79,8 @@ export class TaskComponent extends AbstractComponent implements OnInit, OnDestro
                 (response: Response) => {
                     this.onTaskDeleted.emit(this.task);
                 },
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }
