@@ -1,6 +1,5 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Response } from '@angular/http';
 
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +11,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
-import 'rxjs/add/operator/withLatestFrom';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { CategoryCollection } from '../category/category.collection';
