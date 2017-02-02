@@ -45,7 +45,7 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     private taskDeletedSubscription: Subscription;
 
     private limit: number = 10;
-    private pending: boolean;
+    private pending: boolean = true;
     private loaded: boolean = false;
 
     constructor(
@@ -158,11 +158,7 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
             .finally(() => this.pending = false)
             .subscribe(
                 (tasks: TaskCollection) => {
-                    if (!tasks.getItems().length) {
-                        this.loaded = true;
-
-                        return;
-                    }
+                    this.loaded = tasks.getItems().length < this.limit;
                 },
                 (error: any): void => {
                     this.handleError(error);
