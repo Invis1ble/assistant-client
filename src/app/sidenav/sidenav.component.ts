@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { MdSnackBar } from '@angular/material';
@@ -142,8 +141,8 @@ export class SidenavComponent extends AbstractComponent implements OnInit, OnDes
         this.categoryService.getUserCategories(user)
             .subscribe(
                 null,
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }

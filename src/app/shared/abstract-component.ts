@@ -11,14 +11,18 @@ export abstract class AbstractComponent {
 
     }
 
-    protected handleError(response: Response): void {
-        const data = response.json();
-
+    protected handleError(error: any): void {
         let message: string;
 
-        if (isPresent(data.error)) {
-            message = `${data.error.code} ${data.error.message}.`;
-        } else {
+        if (error instanceof Response) {
+            const data = error.json();
+
+            if (isPresent(data.error)) {
+                message = `${data.error.code} ${data.error.message}.`;
+            }
+        }
+
+        if (!isPresent(message)) {
             message = 'Неизвестная ошибка.';
         }
 

@@ -1,6 +1,5 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Response } from '@angular/http';
 
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +11,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
-import 'rxjs/add/operator/withLatestFrom';
 
 import { AbstractComponent } from '../shared/abstract-component';
 import { CategoryCollection } from '../category/category.collection';
@@ -45,7 +43,7 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
     private taskDeletedSubscription: Subscription;
 
     private limit: number = 10;
-    private pending: boolean;
+    private pending: boolean = true;
     private loaded: boolean = false;
 
     constructor(
@@ -158,14 +156,10 @@ export class TaskListComponent extends AbstractComponent implements OnInit, OnDe
             .finally(() => this.pending = false)
             .subscribe(
                 (tasks: TaskCollection) => {
-                    if (!tasks.getItems().length) {
-                        this.loaded = true;
-
-                        return;
-                    }
+                    this.loaded = tasks.getItems().length < this.limit;
                 },
-                (response: Response): void => {
-                    this.handleError(response);
+                (error: any): void => {
+                    this.handleError(error);
                 }
             );
     }
